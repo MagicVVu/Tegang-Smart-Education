@@ -1,0 +1,33 @@
+name: repository-baseline
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  repository-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify required navigation files
+        shell: bash
+        run: |
+          test -f README.md
+          test -f docs/README.md
+          test -f docs/status.md
+          test -f .env.example
+          test -f CONTRIBUTING.md
+
+      - name: Confirm local secrets are not tracked
+        shell: bash
+        run: |
+          if git ls-files | grep -E '(^|/)\.env($|\.)' | grep -vE '(^|/)\.env\.example$'; then
+            echo "Tracked local environment file detected."
+            exit 1
+          fi
+          echo "Repository baseline checks passed."
