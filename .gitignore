@@ -24,10 +24,27 @@ build/
 node_modules/
 .next/
 coverage/
+.expo/
+*.tsbuildinfo
+playwright-report/
+test-results/
+
+# Android local and generated files
+apps/mobile/android/.gradle/
+apps/mobile/android/build/
+apps/mobile/android/app/build/
+apps/mobile/android/local.properties
+apps/mobile/android/*.iml
+apps/mobile/android/app/*.keystore
+apps/mobile/android/app/*.jks
 
 # IDE and OS
 .idea/
-.vscode/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
 .DS_Store
 Thumbs.db
 

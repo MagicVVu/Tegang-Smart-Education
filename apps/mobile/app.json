@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "特钢智教",
+    "slug": "tegang-smart-education",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "android": {
+      "package": "com.tegang.smarteducation",
+      "versionCode": 2,
+      "adaptiveIcon": {
+        "backgroundColor": "#0E3555"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [],
+    "extra": {
+      "apiBaseUrl": ""
+    }
+  }
+}

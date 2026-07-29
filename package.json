@@ -1,0 +1,38 @@
+{
+  "name": "tegang-smart-education",
+  "version": "0.2.0",
+  "private": true,
+  "description": "特钢智教 AI Agent Web 与 Android 代码型高保真交互原型",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=20.19.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev:web": "pnpm --filter @tegang/web dev",
+    "dev:mobile": "pnpm --filter @tegang/mobile start",
+    "android": "pnpm --filter @tegang/mobile android",
+    "android:studio": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-android-studio.ps1",
+    "build:web": "pnpm --filter @tegang/web build",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "lint": "eslint apps packages tests/e2e playwright.config.ts --max-warnings 0",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "capture:web": "playwright test --grep @screenshots",
+    "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build:web"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.62.0",
+    "@types/node": "^24.10.1",
+    "@vitest/coverage-v8": "^4.0.15",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.1",
+    "vitest": "^4.0.15"
+  }
+}

@@ -1,12 +1,8 @@
-# Demo 入口
+# Demo
 
-当前尚无可运行 Demo。
+代码型高保真原型已位于仓库 `apps/`：
 
-首个 Demo 形成后，本页应提供：
+- Web：`pnpm dev:web`
+- Android：`pnpm dev:mobile` 后执行 `pnpm android`
 
-- 在线体验或录屏链接；
-- 演示账号和角色说明；
-- 黄金流程步骤；
-- 使用的模拟数据与免责声明；
-- 已知限制；
-- 对应版本 tag 和复现方式。
+演示账号、旗舰路径、异常场景和环境要求见仓库根目录 [README](../../README.md)。实际截图见 [`docs/screenshots`](../screenshots/README.md)。
