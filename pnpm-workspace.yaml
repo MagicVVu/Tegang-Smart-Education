@@ -1,0 +1,12 @@
+packages:
+  - apps/*
+  - packages/*
+
+nodeLinker: hoisted
+virtualStoreDirMaxLength: 24
+
+allowBuilds:
+  esbuild: true
+
+onlyBuiltDependencies:
+  - esbuild
