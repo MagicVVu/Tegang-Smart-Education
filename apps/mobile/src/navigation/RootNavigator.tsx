@@ -4,6 +4,7 @@ import { Icon } from "react-native-paper";
 import { colors } from "@tegang/design-tokens";
 import { useMobileStore } from "../stores/mobile-store";
 import { AssessmentResultScreen } from "../screens/AssessmentResultScreen";
+import { AssessmentHubScreen } from "../screens/AssessmentHubScreen";
 import { AssessmentScreen } from "../screens/AssessmentScreen";
 import { CompletionScreen } from "../screens/CompletionScreen";
 import { ForbiddenScreen } from "../screens/ForbiddenScreen";
@@ -22,17 +23,15 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tabs = createBottomTabNavigator<MainTabParamList>();
 
 const tabIcons: Record<keyof MainTabParamList, string> = {
-  Home: "home-outline",
-  Training: "book-open-page-variant-outline",
-  Tutor: "robot-outline",
+  TrainingHome: "book-open-page-variant-outline",
+  AssessmentHub: "clipboard-check-outline",
   Messages: "bell-outline",
   Profile: "account-outline"
 };
 
 const tabLabels: Record<keyof MainTabParamList, string> = {
-  Home: "首页",
-  Training: "培训",
-  Tutor: "智能辅导",
+  TrainingHome: "我的培训",
+  AssessmentHub: "测评与结果",
   Messages: "消息",
   Profile: "我的"
 };
@@ -57,9 +56,8 @@ function MainTabs() {
         }
       })}
     >
-      <Tabs.Screen name="Home" component={HomeScreen} />
-      <Tabs.Screen name="Training" component={TrainingListScreen} />
-      <Tabs.Screen name="Tutor" component={TutorScreen} />
+      <Tabs.Screen name="TrainingHome" component={HomeScreen} />
+      <Tabs.Screen name="AssessmentHub" component={AssessmentHubScreen} />
       <Tabs.Screen name="Messages" component={MessagesScreen} />
       <Tabs.Screen name="Profile" component={ProfileScreen} />
     </Tabs.Navigator>
@@ -93,6 +91,11 @@ export function RootNavigator() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name="TrainingList"
+            component={TrainingListScreen}
+            options={{ title: "全部培训" }}
+          />
+          <Stack.Screen
             name="TrainingDetail"
             component={TrainingDetailScreen}
             options={{ title: "培训任务详情" }}
@@ -101,6 +104,11 @@ export function RootNavigator() {
             name="Learning"
             component={LearningScreen}
             options={{ title: "课程学习" }}
+          />
+          <Stack.Screen
+            name="Tutor"
+            component={TutorScreen}
+            options={{ title: "智能辅导" }}
           />
           <Stack.Screen
             name="Assessment"

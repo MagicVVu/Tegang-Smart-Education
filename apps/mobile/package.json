@@ -8,6 +8,8 @@
     "android": "expo run:android",
     "prebuild:android": "expo prebuild --platform android",
     "typecheck": "tsc --noEmit",
+    "lint": "eslint App.tsx index.ts src --max-warnings 0",
+    "test": "vitest run --root ../.. apps/mobile/src/services/mock-services.test.ts",
     "ios": "expo run:ios"
   },
   "dependencies": {

@@ -1,86 +1,178 @@
 import { create } from "zustand";
+import { mobileServices } from "../services";
 import type {
-  AssessmentResult,
-  DemoScenario,
-  TrainingStatus
-} from "@tegang/types";
-import { assessmentNextStatus } from "@tegang/business-rules";
+  AuthCredentials,
+  EmployeeProfile,
+  EmployeeTaskFilter,
+  EmployeeTrainingTask,
+  MobileAssessmentResult
+} from "../services";
 
 interface MobileState {
   authenticated: boolean;
-  scenario: DemoScenario;
-  taskStatus: TrainingStatus;
-  progress: number;
-  currentModuleIndex: number;
+  employee: EmployeeProfile | null;
+  currentTask: EmployeeTrainingTask | null;
+  tasks: EmployeeTrainingTask[];
+  taskFilter: EmployeeTaskFilter;
   assessmentAttempt: number;
-  result: AssessmentResult | null;
-  login: () => void;
-  logout: () => void;
-  setScenario: (scenario: DemoScenario) => void;
-  startLearning: () => void;
-  completeModule: () => void;
-  finishLearning: () => void;
-  setAssessmentResult: (result: AssessmentResult) => void;
-  startRemedial: () => void;
-  finishRemedial: () => void;
-  completeTraining: () => void;
-  reset: () => void;
+  result: MobileAssessmentResult | null;
+  authLoading: boolean;
+  trainingLoading: boolean;
+  authError: string | null;
+  trainingError: string | null;
+  login: (credentials: AuthCredentials) => Promise<void>;
+  logout: () => Promise<void>;
+  loadCurrentTask: () => Promise<void>;
+  loadTasks: (filter?: EmployeeTaskFilter) => Promise<void>;
+  startLearning: (taskId: string) => Promise<void>;
+  completeUnit: (taskId: string, unitId: string) => Promise<void>;
+  completeCourse: (taskId: string, remedial?: boolean) => Promise<void>;
+  recordAssessmentResult: (
+    result: MobileAssessmentResult,
+  ) => Promise<void>;
+  loadAssessmentResult: (taskId: string) => Promise<void>;
+  startRemedial: (taskId: string) => Promise<void>;
+  clearAuthError: () => void;
 }
 
-const initialState = {
-  authenticated: false,
-  scenario: "assessment_failed" as DemoScenario,
-  taskStatus: "executing" as TrainingStatus,
-  progress: 0,
-  currentModuleIndex: 0,
-  assessmentAttempt: 1,
-  result: null
-};
+function errorMessage(error: unknown) {
+  return error instanceof Error
+    ? error.message
+    : "服务暂时不可用，请稍后重试。";
+}
+
+function replaceTask(
+  tasks: EmployeeTrainingTask[],
+  nextTask: EmployeeTrainingTask,
+) {
+  return tasks.some((task) => task.id === nextTask.id)
+    ? tasks.map((task) => (task.id === nextTask.id ? nextTask : task))
+    : [nextTask, ...tasks];
+}
 
 export const useMobileStore = create<MobileState>((set, get) => ({
-  ...initialState,
-  login: () => set({ authenticated: true }),
-  logout: () => set({ authenticated: false }),
-  setScenario: (scenario) => {
-    const status: Partial<Record<DemoScenario, TrainingStatus>> = {
-      normal: "executing",
-      high_risk: "executing",
-      information_missing: "paused",
-      assessment_failed: "executing",
-      knowledge_conflict: "paused",
-      agent_failure: "execution_failed"
-    };
-    set({
-      ...initialState,
-      authenticated: true,
-      scenario,
-      taskStatus: status[scenario] ?? "executing"
-    });
+  authenticated: false,
+  employee: null,
+  currentTask: null,
+  tasks: [],
+  taskFilter: "active",
+  assessmentAttempt: 1,
+  result: null,
+  authLoading: false,
+  trainingLoading: false,
+  authError: null,
+  trainingError: null,
+  login: async (credentials) => {
+    set({ authLoading: true, authError: null });
+    try {
+      const response = await mobileServices.auth.login(credentials);
+      set({
+        authenticated: true,
+        employee: response.data,
+        authLoading: false
+      });
+      await get().loadCurrentTask();
+    } catch (error) {
+      set({
+        authenticated: false,
+        employee: null,
+        authLoading: false,
+        authError: errorMessage(error)
+      });
+      throw error;
+    }
   },
-  startLearning: () =>
-    set({ taskStatus: "learning", progress: Math.max(get().progress, 12) }),
-  completeModule: () =>
+  logout: async () => {
+    try {
+      await mobileServices.auth.logout();
+    } finally {
+      set({
+        authenticated: false,
+        employee: null,
+        currentTask: null,
+        tasks: [],
+        taskFilter: "active",
+        assessmentAttempt: 1,
+        result: null,
+        authError: null,
+        trainingError: null
+      });
+    }
+  },
+  loadCurrentTask: async () => {
+    set({ trainingLoading: true, trainingError: null });
+    try {
+      const response = await mobileServices.training.getCurrentTask();
+      set({
+        currentTask: response.data,
+        trainingLoading: false
+      });
+    } catch (error) {
+      set({
+        trainingLoading: false,
+        trainingError: errorMessage(error)
+      });
+    }
+  },
+  loadTasks: async (filter = get().taskFilter) => {
+    set({
+      taskFilter: filter,
+      trainingLoading: true,
+      trainingError: null
+    });
+    try {
+      const response = await mobileServices.training.listTasks(filter);
+      set({ tasks: response.data, trainingLoading: false });
+    } catch (error) {
+      set({
+        tasks: [],
+        trainingLoading: false,
+        trainingError: errorMessage(error)
+      });
+    }
+  },
+  startLearning: async (taskId) => {
+    const response = await mobileServices.learning.start(taskId);
     set((state) => ({
-      currentModuleIndex: Math.min(state.currentModuleIndex + 1, 2),
-      progress: Math.min(state.progress + 32, 100)
-    })),
-  finishLearning: () => set({ taskStatus: "awaiting_assessment", progress: 100 }),
-  setAssessmentResult: (result) =>
+      currentTask: response.data.task,
+      tasks: replaceTask(state.tasks, response.data.task)
+    }));
+  },
+  completeUnit: async (taskId, unitId) => {
+    const response = await mobileServices.learning.completeUnit(taskId, unitId);
+    set((state) => ({
+      currentTask: response.data.task,
+      tasks: replaceTask(state.tasks, response.data.task)
+    }));
+  },
+  completeCourse: async (taskId, remedial = false) => {
+    const response = await mobileServices.learning.completeCourse(taskId, {
+      remedial
+    });
+    set((state) => ({
+      currentTask: response.data.task,
+      tasks: replaceTask(state.tasks, response.data.task),
+      assessmentAttempt: response.data.attempt
+    }));
+  },
+  recordAssessmentResult: async (result) => {
+    const taskResponse = await mobileServices.training.getTask(result.taskId);
     set((state) => ({
       result,
-      taskStatus: assessmentNextStatus(
-        result.passed,
-        result.highRiskPassed,
-        state.assessmentAttempt - 1,
-      )
-    })),
-  startRemedial: () => set({ taskStatus: "remedial_learning", progress: 0 }),
-  finishRemedial: () =>
+      currentTask: taskResponse.data,
+      tasks: replaceTask(state.tasks, taskResponse.data)
+    }));
+  },
+  loadAssessmentResult: async (taskId) => {
+    const response = await mobileServices.assessment.getResult(taskId);
+    set({ result: response.data });
+  },
+  startRemedial: async (taskId) => {
+    const response = await mobileServices.remedial.start(taskId);
     set((state) => ({
-      taskStatus: "reassessment",
-      assessmentAttempt: state.assessmentAttempt + 1,
-      progress: 100
-    })),
-  completeTraining: () => set({ taskStatus: "completed" }),
-  reset: () => set(initialState)
+      currentTask: response.data.task,
+      tasks: replaceTask(state.tasks, response.data.task)
+    }));
+  },
+  clearAuthError: () => set({ authError: null })
 }));

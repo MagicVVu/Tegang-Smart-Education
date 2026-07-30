@@ -1,115 +1,228 @@
-import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
   Avatar,
   Button,
   Card,
   Divider,
+  Icon,
   List,
-  RadioButton,
   Text
 } from "react-native-paper";
-import type { DemoScenario } from "@tegang/types";
-import { demoUsers } from "@tegang/mock-data";
-import { colors, spacing } from "@tegang/design-tokens";
+import { colors, radii, spacing } from "@tegang/design-tokens";
 import { Screen } from "../components/Screen";
+import { SectionHeader } from "../components/SectionHeader";
+import { StatePanel } from "../components/StatePanel";
+import { useTrainingRecords } from "../hooks/useTrainingRecords";
 import { useMobileStore } from "../stores/mobile-store";
-import type { MainTabParamList } from "../navigation/types";
 
-type Props = BottomTabScreenProps<MainTabParamList, "Profile">;
-
-const scenarios: Array<{
-  id: DemoScenario;
-  label: string;
-  description: string;
-}> = [
-  { id: "normal", label: "正常达标", description: "首次测评通过" },
-  {
-    id: "assessment_failed",
-    label: "未达标与补训",
-    description: "首次失败，补训后复测"
-  },
-  {
-    id: "agent_failure",
-    label: "Agent失败",
-    description: "展示暂停和人工接管提示"
-  }
-];
-
-export function ProfileScreen({ navigation }: Props) {
-  const user = demoUsers.find((item) => item.role === "employee")!;
-  const scenario = useMobileStore((state) => state.scenario);
-  const setScenario = useMobileStore((state) => state.setScenario);
+export function ProfileScreen() {
+  const employee = useMobileStore((state) => state.employee);
   const logout = useMobileStore((state) => state.logout);
+  const { records, loading, error, reload } = useTrainingRecords();
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const signOut = async () => {
+    setLoggingOut(true);
+    try {
+      await logout();
+    } finally {
+      setLoggingOut(false);
+    }
+  };
 
   return (
     <Screen safeTop>
-      <Card mode="contained">
+      <Text variant="headlineSmall" style={styles.pageTitle}>
+        我的
+      </Text>
+
+      <Card mode="contained" style={styles.profileCard}>
         <Card.Content style={styles.profile}>
-          <Avatar.Text label="E" size={56} />
+          <Avatar.Text
+            label="E"
+            size={58}
+            color={colors.surface}
+            style={styles.avatar}
+          />
           <View style={styles.profileCopy}>
-            <Text variant="titleLarge">{user.displayName}</Text>
-            <Text variant="bodyMedium" style={styles.muted}>
-              {user.department} · {user.title}
+            <Text variant="titleLarge" style={styles.name}>
+              {employee?.displayName ?? "员工"}
             </Text>
+            <Text variant="bodyMedium" style={styles.profileMeta}>
+              {employee?.department} · {employee?.title}
+            </Text>
+            <View style={styles.verified}>
+              <Icon
+                source="shield-check-outline"
+                size={16}
+                color={colors.success}
+              />
+              <Text variant="labelSmall" style={styles.verifiedText}>
+                企业身份已验证
+              </Text>
+            </View>
           </View>
         </Card.Content>
       </Card>
+
+      <SectionHeader
+        title="个人培训记录"
+        description="仅展示当前账号的学习与完成记录"
+      />
+      {loading ? (
+        <StatePanel
+          loading
+          icon="history"
+          title="正在加载培训记录"
+          description="请稍候，正在同步个人记录。"
+        />
+      ) : error ? (
+        <StatePanel
+          icon="cloud-alert-outline"
+          title="培训记录加载失败"
+          description={error}
+          actionLabel="重新加载"
+          onAction={() => void reload()}
+          tone="error"
+        />
+      ) : records.length === 0 ? (
+        <StatePanel
+          icon="history"
+          title="暂无培训记录"
+          description="开始培训后，进度和结果会保留在这里。"
+        />
+      ) : (
+        <Card mode="outlined">
+          {records.map((record, index) => (
+            <View key={record.id}>
+              <List.Item
+                title={record.taskName}
+                description={`${record.resultSummary}${
+                  record.completedAt ? ` · ${record.completedAt}` : ""
+                }`}
+                titleNumberOfLines={2}
+                descriptionNumberOfLines={2}
+                left={(props) => (
+                  <List.Icon
+                    {...props}
+                    icon={
+                      record.status === "completed"
+                        ? "check-circle-outline"
+                        : "progress-clock"
+                    }
+                    color={
+                      record.status === "completed"
+                        ? colors.success
+                        : colors.brand
+                    }
+                  />
+                )}
+              />
+              {index < records.length - 1 ? <Divider /> : null}
+            </View>
+          ))}
+        </Card>
+      )}
+
+      <SectionHeader title="账号与权限" />
       <Card mode="outlined">
         <List.Item
-          title="个人培训记录"
-          description="已完成 1 项 · 进行中 1 项"
-          left={(props) => <List.Icon {...props} icon="history" />}
+          title="当前身份"
+          description="员工／参训人员"
+          left={(props) => (
+            <List.Icon {...props} icon="badge-account-outline" />
+          )}
         />
         <Divider />
         <List.Item
-          title="数据与权限"
-          description="仅可查看本人培训任务、结果和消息"
+          title="数据访问范围"
+          description="仅本人任务、结果、消息和已授权知识"
           left={(props) => (
             <List.Icon {...props} icon="shield-account-outline" />
           )}
         />
         <Divider />
         <List.Item
-          title="测试无权限访问"
-          description="验证移动端不允许进入管理员后台"
-          left={(props) => <List.Icon {...props} icon="lock-outline" />}
-          right={(props) => <List.Icon {...props} icon="chevron-right" />}
-          onPress={() => navigation.getParent()?.navigate("Forbidden" as never)}
+          title="需要更正身份信息？"
+          description="请联系培训管理员按企业制度处理"
+          left={(props) => (
+            <List.Icon {...props} icon="account-edit-outline" />
+          )}
         />
       </Card>
-      <Card mode="contained" style={styles.demoCard}>
-        <Card.Content style={styles.demoContent}>
-          <Text variant="titleMedium">演示场景切换</Text>
-          <Text variant="bodySmall" style={styles.muted}>
-            仅在本地演示模式出现，用于验证不同状态分支。
-          </Text>
-          <RadioButton.Group
-            value={scenario}
-            onValueChange={(value) => setScenario(value as DemoScenario)}
-          >
-            {scenarios.map((item) => (
-              <RadioButton.Item
-                key={item.id}
-                value={item.id}
-                label={item.label}
-                accessibilityLabel={item.description}
-              />
-            ))}
-          </RadioButton.Group>
-        </Card.Content>
-      </Card>
-      <Button mode="outlined" textColor={colors.risk} onPress={logout}>
-        退出演示账号
+
+      <Button
+        mode="outlined"
+        icon="logout"
+        loading={loggingOut}
+        disabled={loggingOut}
+        textColor={colors.risk}
+        contentStyle={styles.logoutButton}
+        onPress={() => void signOut()}
+      >
+        退出登录
       </Button>
+      <Text variant="bodySmall" style={styles.version}>
+        特钢智教 Android · v0.2.0
+      </Text>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  profile: { flexDirection: "row", alignItems: "center", gap: spacing.lg },
-  profileCopy: { flex: 1, gap: spacing.xs },
-  muted: { color: colors.textSecondary, lineHeight: 19 },
-  demoCard: { backgroundColor: colors.infoSoft },
-  demoContent: { gap: spacing.sm }
+  pageTitle: {
+    color: colors.text,
+    fontWeight: "800"
+  },
+  profileCard: {
+    borderRadius: radii.lg,
+    backgroundColor: colors.brandStrong
+  },
+  profile: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.lg
+  },
+  avatar: {
+    backgroundColor: colors.brand
+  },
+  profileCopy: {
+    flex: 1,
+    gap: spacing.xs
+  },
+  name: {
+    color: colors.surface,
+    fontWeight: "700"
+  },
+  muted: {
+    color: colors.textSecondary,
+    lineHeight: 19
+  },
+  profileMeta: {
+    color: "#D8E5ED",
+    lineHeight: 19
+  },
+  verified: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start",
+    gap: spacing.xs,
+    marginTop: spacing.xs,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 3,
+    borderRadius: radii.pill,
+    backgroundColor: colors.surface
+  },
+  verifiedText: {
+    color: colors.success,
+    fontWeight: "700"
+  },
+  logoutButton: {
+    height: 48
+  },
+  version: {
+    color: colors.textMuted,
+    textAlign: "center"
+  }
 });

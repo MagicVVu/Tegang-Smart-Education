@@ -1,80 +1,255 @@
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useNavigation } from "@react-navigation/native";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, Card, ProgressBar, SegmentedButtons, Text } from "react-native-paper";
-import { trainingTask } from "@tegang/mock-data";
-import { colors, spacing } from "@tegang/design-tokens";
+import {
+  Button,
+  Card,
+  Icon,
+  ProgressBar,
+  SegmentedButtons,
+  Text
+} from "react-native-paper";
+import { colors, radii, spacing } from "@tegang/design-tokens";
 import { Screen } from "../components/Screen";
 import { SectionHeader } from "../components/SectionHeader";
+import { StatePanel } from "../components/StatePanel";
 import { StatusChip } from "../components/StatusChip";
 import { useMobileStore } from "../stores/mobile-store";
+import type { EmployeeTaskFilter, EmployeeTrainingTask } from "../services";
 import type { RootStackParamList } from "../navigation/types";
 
-type Navigation = NativeStackNavigationProp<RootStackParamList>;
+type Props = NativeStackScreenProps<RootStackParamList, "TrainingList">;
 
-export function TrainingListScreen() {
-  const navigation = useNavigation<Navigation>();
-  const status = useMobileStore((state) => state.taskStatus);
-  const progress = useMobileStore((state) => state.progress);
+const filterLabels: Record<
+  EmployeeTaskFilter,
+  { label: string; emptyTitle: string; emptyDescription: string }
+> = {
+  active: {
+    label: "进行中",
+    emptyTitle: "没有进行中的培训",
+    emptyDescription: "待开始或正在学习的任务会显示在这里。"
+  },
+  waiting: {
+    label: "待处理",
+    emptyTitle: "没有待处理事项",
+    emptyDescription: "待测评、补训、复测或暂停任务会显示在这里。"
+  },
+  completed: {
+    label: "已完成",
+    emptyTitle: "暂无完成记录",
+    emptyDescription: "完成学习与测评后，记录会保留在这里。"
+  }
+};
+
+export function TrainingListScreen({ navigation }: Props) {
+  const tasks = useMobileStore((state) => state.tasks);
+  const filter = useMobileStore((state) => state.taskFilter);
+  const loading = useMobileStore((state) => state.trainingLoading);
+  const error = useMobileStore((state) => state.trainingError);
+  const loadTasks = useMobileStore((state) => state.loadTasks);
+
+  useEffect(() => {
+    void loadTasks(filter);
+  }, [filter, loadTasks]);
+
+  const openTask = (task: EmployeeTrainingTask) => {
+    if (task.status === "awaiting_assessment") {
+      navigation.navigate("Assessment", { taskId: task.id });
+    } else if (
+      task.status === "assessment_failed" ||
+      task.status === "remedial_learning"
+    ) {
+      navigation.navigate("Remedial", { taskId: task.id });
+    } else if (task.status === "reassessment") {
+      navigation.navigate("Assessment", {
+        taskId: task.id,
+        reassessment: true
+      });
+    } else if (task.status === "completed") {
+      navigation.navigate("Completion", { taskId: task.id });
+    } else if (task.status === "learning") {
+      navigation.navigate("Learning", { taskId: task.id });
+    } else {
+      navigation.navigate("TrainingDetail", { taskId: task.id });
+    }
+  };
 
   return (
-    <Screen safeTop>
+    <Screen>
       <SectionHeader
-        title="我的培训"
-        description="仅显示本人任务、截止时间和下一步，不展示他人数据。"
+        title="全部培训"
+        description="按当前阶段查看本人任务与下一步操作"
       />
       <SegmentedButtons
-        value="active"
-        onValueChange={() => undefined}
-        buttons={[
-          { value: "active", label: "进行中" },
-          { value: "todo", label: "待开始" },
-          { value: "done", label: "已完成" }
-        ]}
-      />
-      <Card mode="contained">
-        <Card.Content style={styles.content}>
-          <View style={styles.top}>
-            <StatusChip status={status} />
-            <Text variant="bodySmall" style={styles.deadline}>
-              截止 2026-08-15
-            </Text>
-          </View>
-          <Text variant="titleMedium" style={styles.title}>
-            {trainingTask.name}
-          </Text>
-          <Text variant="bodySmall" style={styles.muted}>
-            炼钢生产部新员工 · 高风险知识前置路径
-          </Text>
-          <ProgressBar progress={progress / 100} color={colors.brand} />
-          <Button
-            mode="contained"
-            onPress={() =>
-              navigation.navigate("TrainingDetail", {
-                taskId: trainingTask.id
-              })
-            }
+        value={filter}
+        onValueChange={(value) =>
+          void loadTasks(value as EmployeeTaskFilter)
+        }
+        buttons={(
+          Object.entries(filterLabels) as Array<
+            [EmployeeTaskFilter, (typeof filterLabels)[EmployeeTaskFilter]]
           >
-            查看详情
-          </Button>
-        </Card.Content>
-      </Card>
-      <Text variant="bodySmall" style={styles.emptyHelp}>
-        已完成任务会保留个人结果摘要，但不会在移动端展示完整业务报告或审批记录。
+        ).map(([value, item]) => ({
+          value,
+          label: item.label
+        }))}
+      />
+
+      {loading ? (
+        <StatePanel
+          loading
+          icon="book-clock-outline"
+          title="正在加载培训任务"
+          description="请稍候，正在同步最新状态。"
+        />
+      ) : error ? (
+        <StatePanel
+          icon="cloud-alert-outline"
+          title="培训列表加载失败"
+          description={error}
+          actionLabel="重新加载"
+          onAction={() => void loadTasks(filter)}
+          tone="error"
+        />
+      ) : tasks.length === 0 ? (
+        <StatePanel
+          icon="text-box-check-outline"
+          title={filterLabels[filter].emptyTitle}
+          description={filterLabels[filter].emptyDescription}
+        />
+      ) : (
+        <View style={styles.list}>
+          {tasks.map((task) => (
+            <Card key={task.id} mode="contained" style={styles.card}>
+              <Card.Content style={styles.content}>
+                <View style={styles.top}>
+                  <StatusChip status={task.status} />
+                  <View style={styles.deadlineRow}>
+                    <Icon
+                      source="clock-outline"
+                      size={15}
+                      color={colors.warning}
+                    />
+                    <Text variant="bodySmall" style={styles.deadline}>
+                      {task.deadline} 截止
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.copy}>
+                  <Text variant="titleMedium" style={styles.title}>
+                    {task.name}
+                  </Text>
+                  <Text variant="bodySmall" style={styles.muted}>
+                    {task.audienceLabel} · 预计 {task.estimatedMinutes} 分钟
+                  </Text>
+                </View>
+                {task.riskLevel === "high" ? (
+                  <View style={styles.riskRow}>
+                    <Icon
+                      source="shield-alert-outline"
+                      size={18}
+                      color={colors.risk}
+                    />
+                    <Text variant="bodySmall" style={styles.riskText}>
+                      含高风险知识，需单独达标
+                    </Text>
+                  </View>
+                ) : null}
+                <View style={styles.progressRow}>
+                  <ProgressBar
+                    progress={task.progress / 100}
+                    color={colors.brand}
+                    style={styles.progress}
+                  />
+                  <Text variant="labelMedium">{task.progress}%</Text>
+                </View>
+                {task.availabilityReason ? (
+                  <Text variant="bodySmall" style={styles.reason}>
+                    {task.availabilityReason}
+                  </Text>
+                ) : null}
+                <Button mode="contained" onPress={() => openTask(task)}>
+                  {task.nextActionLabel}
+                </Button>
+              </Card.Content>
+            </Card>
+          ))}
+        </View>
+      )}
+      <Text variant="bodySmall" style={styles.privacy}>
+        这里只显示当前账号的培训任务和个人进度。
       </Text>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  content: { gap: spacing.md },
+  list: {
+    gap: spacing.md
+  },
+  card: {
+    borderRadius: radii.lg,
+    backgroundColor: colors.surface
+  },
+  content: {
+    gap: spacing.md
+  },
   top: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
+    gap: spacing.sm
   },
-  deadline: { color: colors.warning },
-  title: { color: colors.text, fontWeight: "700", lineHeight: 23 },
-  muted: { color: colors.textSecondary },
-  emptyHelp: { color: colors.textMuted, lineHeight: 18, textAlign: "center" }
+  deadlineRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.xs
+  },
+  deadline: {
+    color: colors.warning
+  },
+  copy: {
+    gap: spacing.xs
+  },
+  title: {
+    color: colors.text,
+    fontWeight: "700",
+    lineHeight: 23
+  },
+  muted: {
+    color: colors.textSecondary,
+    lineHeight: 19
+  },
+  riskRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm
+  },
+  riskText: {
+    color: colors.risk,
+    fontWeight: "600"
+  },
+  progressRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.md
+  },
+  progress: {
+    flex: 1,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: colors.brandSoft
+  },
+  reason: {
+    padding: spacing.md,
+    borderRadius: radii.sm,
+    color: colors.textSecondary,
+    lineHeight: 19,
+    backgroundColor: colors.warningSoft
+  },
+  privacy: {
+    color: colors.textMuted,
+    lineHeight: 18,
+    textAlign: "center"
+  }
 });

@@ -1,4 +1,5 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
   Button,
@@ -9,113 +10,248 @@ import {
   ProgressBar,
   Text
 } from "react-native-paper";
-import { candidatePlans, trainingTask } from "@tegang/mock-data";
-import { colors, spacing } from "@tegang/design-tokens";
+import type { TrainingStatus } from "@tegang/types";
+import { colors, radii, spacing } from "@tegang/design-tokens";
 import { Screen } from "../components/Screen";
 import { SectionHeader } from "../components/SectionHeader";
+import { StatePanel } from "../components/StatePanel";
 import { StatusChip } from "../components/StatusChip";
+import { TaskStateNotice } from "../components/TaskStateNotice";
+import { useCourse } from "../hooks/useCourse";
+import { useTask } from "../hooks/useTask";
 import { useMobileStore } from "../stores/mobile-store";
 import type { RootStackParamList } from "../navigation/types";
 
 type Props = NativeStackScreenProps<RootStackParamList, "TrainingDetail">;
 
-export function TrainingDetailScreen({ navigation, route }: Props) {
-  const status = useMobileStore((state) => state.taskStatus);
-  const progress = useMobileStore((state) => state.progress);
-  const startLearning = useMobileStore((state) => state.startLearning);
-  const plan = candidatePlans[1]!;
+const blockedStatuses: TrainingStatus[] = [
+  "information_missing",
+  "awaiting_approval",
+  "execution_failed",
+  "paused",
+  "human_takeover",
+  "cancelled"
+];
 
-  const nextRoute = () => {
-    if (status === "assessment_failed" || status === "remedial_learning") {
-      navigation.navigate("Remedial", { taskId: route.params.taskId });
+export function TrainingDetailScreen({ navigation, route }: Props) {
+  const { task, loading, error, reload } = useTask(route.params.taskId);
+  const {
+    course,
+    loading: courseLoading,
+    error: courseError,
+    reload: reloadCourse
+  } = useCourse(route.params.taskId, false);
+  const startLearning = useMobileStore((state) => state.startLearning);
+  const [starting, setStarting] = useState(false);
+
+  const next = async () => {
+    if (!task || starting) return;
+    if (
+      task.status === "assessment_failed" ||
+      task.status === "remedial_learning"
+    ) {
+      navigation.navigate("Remedial", { taskId: task.id });
       return;
     }
-    if (status === "awaiting_assessment" || status === "reassessment") {
+    if (task.status === "awaiting_assessment") {
+      navigation.navigate("Assessment", { taskId: task.id });
+      return;
+    }
+    if (task.status === "reassessment") {
       navigation.navigate("Assessment", {
-        taskId: route.params.taskId,
-        reassessment: status === "reassessment"
+        taskId: task.id,
+        reassessment: true
       });
       return;
     }
-    if (status === "completed") {
-      navigation.navigate("Completion", { taskId: route.params.taskId });
+    if (task.status === "completed") {
+      navigation.navigate("Completion", { taskId: task.id });
       return;
     }
-    startLearning();
-    navigation.navigate("Learning", { taskId: route.params.taskId });
+    setStarting(true);
+    try {
+      if (task.status !== "learning") {
+        await startLearning(task.id);
+      }
+      navigation.navigate("Learning", { taskId: task.id });
+    } finally {
+      setStarting(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <Screen>
+        <StatePanel
+          loading
+          icon="book-clock-outline"
+          title="正在加载任务详情"
+          description="请稍候，正在同步培训要求和学习路径。"
+        />
+      </Screen>
+    );
+  }
+
+  if (error || !task) {
+    return (
+      <Screen>
+        <StatePanel
+          icon="cloud-alert-outline"
+          title="任务详情加载失败"
+          description={error ?? "未找到该培训任务。"}
+          actionLabel="重新加载"
+          onAction={() => void reload()}
+          tone="error"
+        />
+      </Screen>
+    );
+  }
+
+  const blocked = blockedStatuses.includes(task.status);
 
   return (
     <Screen
       footer={
         <Button
           mode="contained"
+          loading={starting}
+          disabled={blocked || starting}
           contentStyle={styles.footerButton}
-          disabled={status === "paused" || status === "execution_failed"}
-          onPress={nextRoute}
+          onPress={() => void next()}
         >
-          {status === "assessment_failed" || status === "remedial_learning"
-            ? "进入定向补训"
-            : status === "awaiting_assessment"
-              ? "开始测评"
-              : status === "reassessment"
-                ? "开始复测"
-                : status === "completed"
-                  ? "查看完成结果"
-                  : progress > 0
-                    ? "继续学习"
-                    : "开始学习"}
+          {task.nextActionLabel}
         </Button>
       }
     >
       <View style={styles.top}>
-        <StatusChip status={status} />
-        <Text variant="labelMedium" style={styles.deadline}>
-          截止 2026-08-15
+        <StatusChip status={task.status} />
+        <View style={styles.deadlineRow}>
+          <Icon source="clock-outline" size={16} color={colors.warning} />
+          <Text variant="labelMedium" style={styles.deadline}>
+            {task.deadline} 截止
+          </Text>
+        </View>
+      </View>
+      <View style={styles.heading}>
+        <Text variant="headlineSmall" style={styles.title}>
+          {task.name}
+        </Text>
+        <Text variant="bodyMedium" style={styles.muted}>
+          适用：{task.audienceLabel}
         </Text>
       </View>
-      <Text variant="headlineSmall" style={styles.title}>
-        {trainingTask.name}
-      </Text>
-      <Text variant="bodyMedium" style={styles.muted}>
-        培训路径根据部门和当前基础形成；Agent 调整理由可以查看，但正式制度和高风险要求不能被覆盖。
-      </Text>
-      <Card mode="contained">
-        <Card.Content style={styles.progressCard}>
+
+      <TaskStateNotice
+        status={task.status}
+        reason={task.availabilityReason}
+        onRetry={() => {
+          void reload();
+          void reloadCourse();
+        }}
+      />
+
+      <Card mode="contained" style={styles.summaryCard}>
+        <Card.Content style={styles.summary}>
           <View style={styles.progressTop}>
             <Text variant="titleSmall">个人进度</Text>
-            <Text variant="titleSmall">{progress}%</Text>
+            <Text variant="titleMedium" style={styles.progressValue}>
+              {task.progress}%
+            </Text>
           </View>
-          <ProgressBar progress={progress / 100} color={colors.brand} />
-          <Text variant="bodySmall" style={styles.muted}>
-            当前路径：{plan.title}
-          </Text>
+          <ProgressBar
+            progress={task.progress / 100}
+            color={colors.brand}
+            style={styles.progress}
+          />
+          <View style={styles.nextRow}>
+            <View style={styles.nextCopy}>
+              <Text variant="bodySmall" style={styles.muted}>
+                当前下一步
+              </Text>
+              <Text variant="titleMedium" style={styles.nextTitle}>
+                {task.nextActionLabel}
+              </Text>
+            </View>
+            <Button
+              compact
+              mode="contained-tonal"
+              disabled={blocked}
+              onPress={() => void next()}
+            >
+              去完成
+            </Button>
+          </View>
         </Card.Content>
       </Card>
+
       <SectionHeader title="培训目标" />
+      <Text variant="bodyMedium" style={styles.body}>
+        {task.objective}
+      </Text>
+
+      <SectionHeader title="完成要求" />
       <Card mode="outlined">
-        <Card.Content>
-          <Text variant="bodyMedium" style={styles.body}>
-            {trainingTask.objective}
-          </Text>
-        </Card.Content>
+        <List.Item
+          title="完成全部必修内容"
+          description={`预计学习 ${task.estimatedMinutes} 分钟，进度自动保存`}
+          left={(props) => (
+            <List.Icon {...props} icon="book-check-outline" />
+          )}
+        />
+        <Divider />
+        <List.Item
+          title="完成培训测评"
+          description="所有题目作答后提交，结果按知识点说明"
+          left={(props) => (
+            <List.Icon {...props} icon="clipboard-check-outline" />
+          )}
+        />
+        <Divider />
+        <List.Item
+          title="高风险知识单独达标"
+          description="未达标时需完成定向补训和复测"
+          left={(props) => (
+            <List.Icon
+              {...props}
+              icon="shield-alert-outline"
+              color={colors.risk}
+            />
+          )}
+        />
       </Card>
+
       <SectionHeader
-        title="我的学习路径"
-        description="炼钢生产部的高风险知识已前置，智信部内容不会出现在本人的路径中。"
+        title="学习路径"
+        description="学习顺序已按部门和风险要求安排"
       />
-      <Card mode="outlined">
-        {plan.modules
-          .filter(
-            (module) =>
-              module.department === "全员" ||
-              module.department === "炼钢生产部",
-          )
-          .map((module, index, visibleModules) => (
-            <View key={module.id}>
+      {courseLoading ? (
+        <Card mode="outlined">
+          <Card.Content style={styles.loadingRow}>
+            <Icon source="timer-sand" size={20} color={colors.brand} />
+            <Text variant="bodyMedium">正在加载课程目录…</Text>
+          </Card.Content>
+        </Card>
+      ) : courseError || !course ? (
+        <Card mode="contained" style={styles.courseError}>
+          <Card.Content style={styles.courseErrorContent}>
+            <Text variant="titleSmall">课程目录暂时无法加载</Text>
+            <Text variant="bodySmall" style={styles.muted}>
+              {courseError}
+            </Text>
+            <Button compact onPress={() => void reloadCourse()}>
+              重新加载
+            </Button>
+          </Card.Content>
+        </Card>
+      ) : (
+        <Card mode="outlined">
+          {course.units.map((unit, index) => (
+            <View key={unit.id}>
               <List.Item
-                title={module.title}
-                description={`${module.durationMinutes} 分钟 · ${module.riskLevel === "high" ? "高风险独立达标" : "必修"}`}
+                title={unit.title}
+                description={`${unit.durationMinutes} 分钟 · ${
+                  unit.riskLevel === "high" ? "高风险知识" : "必修"
+                }`}
                 left={() => (
                   <View style={styles.index}>
                     <Text variant="labelLarge">{index + 1}</Text>
@@ -124,32 +260,32 @@ export function TrainingDetailScreen({ navigation, route }: Props) {
                 right={() => (
                   <Icon
                     source={
-                      module.riskLevel === "high"
-                        ? "alert-outline"
-                        : "check-circle-outline"
+                      unit.riskLevel === "high"
+                        ? "shield-alert-outline"
+                        : "book-outline"
                     }
                     color={
-                      module.riskLevel === "high"
-                        ? colors.risk
-                        : colors.brand
+                      unit.riskLevel === "high" ? colors.risk : colors.brand
                     }
                     size={22}
                   />
                 )}
               />
-              {index < visibleModules.length - 1 ? <Divider /> : null}
+              {index < course.units.length - 1 ? <Divider /> : null}
             </View>
           ))}
-      </Card>
+        </Card>
+      )}
+
       <Card style={styles.riskCard} mode="contained">
         <Card.Content style={styles.riskContent}>
           <Icon source="shield-alert-outline" color={colors.risk} size={28} />
           <View style={styles.riskCopy}>
             <Text variant="titleSmall" style={styles.riskTitle}>
-              高风险知识需单独达标
+              高风险知识提醒
             </Text>
             <Text variant="bodySmall" style={styles.muted}>
-              未达标时进入针对性补训与复测；达到循环上限后转人工，不会无限重复。
+              即使总分达标，高风险知识未通过仍需补训；多次复测未达标时会转人工处理。
             </Text>
           </View>
         </Card.Content>
@@ -162,26 +298,106 @@ const styles = StyleSheet.create({
   top: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+    gap: spacing.sm
+  },
+  deadlineRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.xs
+  },
+  deadline: {
+    color: colors.warning
+  },
+  heading: {
+    gap: spacing.sm
+  },
+  title: {
+    color: colors.text,
+    fontWeight: "800",
+    lineHeight: 32
+  },
+  muted: {
+    color: colors.textSecondary,
+    lineHeight: 20
+  },
+  body: {
+    color: colors.text,
+    lineHeight: 23
+  },
+  summaryCard: {
+    borderRadius: radii.lg,
+    backgroundColor: colors.surface
+  },
+  summary: {
+    gap: spacing.md
+  },
+  progressTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center"
   },
-  deadline: { color: colors.warning },
-  title: { color: colors.text, fontWeight: "800", lineHeight: 32 },
-  muted: { color: colors.textSecondary, lineHeight: 20 },
-  body: { color: colors.text, lineHeight: 23 },
-  progressCard: { gap: spacing.md },
-  progressTop: { flexDirection: "row", justifyContent: "space-between" },
+  progressValue: {
+    color: colors.brand,
+    fontWeight: "800"
+  },
+  progress: {
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.brandSoft
+  },
+  nextRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.md,
+    paddingTop: spacing.sm,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.border
+  },
+  nextCopy: {
+    flex: 1,
+    gap: 2
+  },
+  nextTitle: {
+    color: colors.text,
+    fontWeight: "700"
+  },
+  loadingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm
+  },
+  courseError: {
+    backgroundColor: colors.riskSoft
+  },
+  courseErrorContent: {
+    gap: spacing.sm
+  },
   index: {
     width: 32,
     height: 32,
-    margin: 8,
+    margin: spacing.sm,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 16,
     backgroundColor: colors.brandSoft
   },
-  riskCard: { backgroundColor: colors.riskSoft },
-  riskContent: { flexDirection: "row", gap: spacing.md },
-  riskCopy: { flex: 1, gap: spacing.xs },
-  riskTitle: { color: colors.risk, fontWeight: "700" },
-  footerButton: { height: 50 }
+  riskCard: {
+    backgroundColor: colors.riskSoft
+  },
+  riskContent: {
+    flexDirection: "row",
+    gap: spacing.md
+  },
+  riskCopy: {
+    flex: 1,
+    gap: spacing.xs
+  },
+  riskTitle: {
+    color: colors.risk,
+    fontWeight: "700"
+  },
+  footerButton: {
+    height: 50
+  }
 });
