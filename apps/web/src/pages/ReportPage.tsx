@@ -23,27 +23,46 @@ import {
   Typography,
   message
 } from "antd";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { PageHeader } from "../components/PageHeader";
+import { StatusTag } from "../components/StatusTag";
+import { services } from "../services";
 import {
   knowledgeCitations,
   reportSummary,
   trainingTask
-} from "@tegang/mock-data";
-import { PageHeader } from "../components/PageHeader";
-import { StatusTag } from "../components/StatusTag";
+} from "../services/workspace-data";
 import { usePrototypeStore } from "../stores/prototype-store";
 
 export function ReportPage() {
   const navigate = useNavigate();
   const role = usePrototypeStore((state) => state.role);
   const taskStatus = usePrototypeStore((state) => state.taskStatus);
+  const [exporting, setExporting] = useState(false);
+  const [reportStatus, setReportStatus] = useState<
+    "draft" | "awaiting_confirmation" | "confirmed"
+  >(reportSummary.status);
+
+  const requestExport = async () => {
+    setExporting(true);
+    try {
+      const result = await services.report.requestExport(
+        trainingTask.id,
+        "pdf",
+      );
+      message.success(result.data.message);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   return (
     <>
       <PageHeader
-        eyebrow="P-07 培训报告页"
+        eyebrow="培训报告"
         title="培训结果与审计闭环"
-        description="结果关联学习、测评、补训、审批、异常和知识引用；演示数据不代表真实企业效果。"
+        description="核对完成情况、测评、补训、高风险知识与异常记录，并在依据完整后确认正式结果。"
         extra={
           <Space>
             <Button
@@ -54,11 +73,11 @@ export function ReportPage() {
             </Button>
             <Button
               icon={<DownloadOutlined />}
-              onClick={() =>
-                message.info("原型仅演示导出入口，未生成正式报告文件。")
-              }
+              loading={exporting}
+              disabled={reportStatus !== "confirmed"}
+              onClick={requestExport}
             >
-              导出
+              导出已确认版本
             </Button>
             <Button
               type="primary"
@@ -72,8 +91,15 @@ export function ReportPage() {
       />
       <Alert
         showIcon
-        type="info"
-        message={reportSummary.disclaimer}
+        type={reportStatus === "confirmed" ? "success" : "warning"}
+        message={
+          reportStatus === "confirmed"
+            ? "报告已完成确认，可作为当前版本的正式培训结果"
+            : reportStatus === "awaiting_confirmation"
+              ? "报告完整性检查已通过，等待授权人员确认"
+              : "当前为报告草稿，确认前不作为正式培训结论"
+        }
+        description="报告结论关联当前任务、方案、知识引用、审批与异常记录；版本变化后需重新核对。"
         style={{ marginBottom: 20 }}
       />
       <Card>
@@ -120,6 +146,14 @@ export function ReportPage() {
               children: `${reportSummary.highRiskInterventions} 次`
             }
           ]}
+        />
+        <Alert
+          type="warning"
+          showIcon
+          message="需要处理：3 人首次未通过高风险知识要求"
+          description="其中 1 人待复测、2 人复测已通过。完成剩余复测并核对异常记录后再确认报告。"
+          action={<Button type="link">查看未完成项</Button>}
+          style={{ marginTop: 16 }}
         />
       </Card>
       <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
@@ -282,15 +316,19 @@ export function ReportPage() {
             {role === "reviewer" ? (
               <Flex gap={8}>
                 <Button
-                  onClick={() =>
-                    message.warning("已退回补充异常处理说明。")
-                  }
+                  onClick={() => {
+                    setReportStatus("draft");
+                    message.warning("已退回补充异常处理说明。");
+                  }}
                 >
                   退回补充
                 </Button>
                 <Button
                   type="primary"
-                  onClick={() => message.success("报告已确认并保留版本。")}
+                  onClick={() => {
+                    setReportStatus("confirmed");
+                    message.success("报告已确认并保留版本。");
+                  }}
                 >
                   确认报告
                 </Button>
@@ -299,9 +337,11 @@ export function ReportPage() {
               <Button
                 type="primary"
                 block
-                onClick={() =>
-                  message.success("报告草稿已提交确认，当前不可正式发布。")
-                }
+                disabled={reportStatus !== "draft"}
+                onClick={() => {
+                  setReportStatus("awaiting_confirmation");
+                  message.success("完整性检查通过，报告已提交确认。");
+                }}
               >
                 提交确认
               </Button>

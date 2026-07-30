@@ -36,11 +36,14 @@ import {
 } from "antd";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { candidatePlans, trainingTask } from "@tegang/mock-data";
 import { StatusTag } from "../components/StatusTag";
 import { KnowledgeDrawer } from "../components/KnowledgeDrawer";
 import { PageHeader } from "../components/PageHeader";
 import { services } from "../services";
+import {
+  candidatePlans,
+  trainingTask
+} from "../services/workspace-data";
 import { usePrototypeStore } from "../stores/prototype-store";
 
 export function PlanPage() {
@@ -49,6 +52,9 @@ export function PlanPage() {
   const [editOpen, setEditOpen] = useState(false);
   const [citationOpen, setCitationOpen] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const [replanOpen, setReplanOpen] = useState(false);
+  const [replanReason, setReplanReason] = useState("");
+  const [replanning, setReplanning] = useState(false);
   const taskStatus = usePrototypeStore((state) => state.taskStatus);
   const selectedPlanId = usePrototypeStore((state) => state.selectedPlanId);
   const selectPlan = usePrototypeStore((state) => state.selectPlan);
@@ -100,7 +106,7 @@ export function PlanPage() {
   return (
     <>
       <PageHeader
-        eyebrow="P-03 方案查看与调整页"
+        eyebrow="培训任务"
         title="培训方案与执行条件"
         description="区分 Agent 建议、确定性规则和人工决定；高风险动作在正式写入前暂停。"
         extra={
@@ -231,6 +237,40 @@ export function PlanPage() {
               ))}
             </Radio.Group>
           </Card>
+          <Card title="方案摘要与员工诊断" style={{ marginTop: 20 }}>
+            <Descriptions
+              column={2}
+              items={[
+                {
+                  key: "audience",
+                  label: "适用人员",
+                  children: trainingTask.audience.join("、")
+                },
+                {
+                  key: "duration",
+                  label: "预计学习时长",
+                  children: `${selectedPlan.modules.reduce(
+                    (total, module) => total + module.durationMinutes,
+                    0,
+                  )} 分钟`
+                },
+                {
+                  key: "diagnosis",
+                  label: "员工诊断摘要",
+                  span: 2,
+                  children:
+                    "两类部门共享企业基础制度；炼钢生产部需优先补齐高温作业前置条件，智信部侧重数据权限与账号安全。"
+                },
+                {
+                  key: "difference",
+                  label: "部门差异",
+                  span: 2,
+                  children:
+                    "炼钢路径包含高风险场景练习与独立复测；智信部不进入无关现场作业内容。"
+                }
+              ]}
+            />
+          </Card>
           <Card
             title="部门化学习路径"
             style={{ marginTop: 20 }}
@@ -353,11 +393,7 @@ export function PlanPage() {
                   </Button>
                   <Button
                     icon={<ReloadOutlined />}
-                    onClick={() =>
-                      message.info(
-                        "已保持目标与约束，生成另一候选方案（演示状态）。",
-                      )
-                    }
+                    onClick={() => setReplanOpen(true)}
                   >
                     保持约束，重新生成
                   </Button>
@@ -413,6 +449,29 @@ export function PlanPage() {
               </Button>
             </Flex>
           </Card>
+          <Card title="测评与补训策略" style={{ marginTop: 20 }}>
+            <Descriptions
+              column={1}
+              size="small"
+              items={[
+                {
+                  key: "assessment",
+                  label: "测评安排",
+                  children: "基础知识测评 + 高风险知识独立达标"
+                },
+                {
+                  key: "remedial",
+                  label: "补训策略",
+                  children: "仅覆盖未达标知识点，完成后开放复测"
+                },
+                {
+                  key: "human",
+                  label: "人工确认",
+                  children: "高风险范围、独立复测条件与正式下发"
+                }
+              ]}
+            />
+          </Card>
         </Col>
       </Row>
       <Drawer
@@ -454,6 +513,45 @@ export function PlanPage() {
         open={citationOpen}
         onClose={() => setCitationOpen(false)}
       />
+      <Modal
+        title="重新生成培训方案"
+        open={replanOpen}
+        okText="确认重新生成"
+        cancelText="取消"
+        confirmLoading={replanning}
+        okButtonProps={{ disabled: !replanReason.trim() }}
+        onCancel={() => setReplanOpen(false)}
+        onOk={async () => {
+          setReplanning(true);
+          try {
+            await services.trainingPlan.requestReplan(
+              trainingTask.id,
+              replanReason,
+              `replan-${trainingTask.id}-${selectedPlan.version}`,
+            );
+            message.success("重新规划已受理，原方案与修改原因已保留。");
+            setReplanOpen(false);
+            navigate(`/agent-runs/${trainingTask.id}`);
+          } finally {
+            setReplanning(false);
+          }
+        }}
+      >
+        <Alert
+          type="info"
+          showIcon
+          message="培训目标和硬约束保持不变；新方案仍需重新完成知识、规则和风险校验。"
+          style={{ marginBottom: 16 }}
+        />
+        <Input.TextArea
+          rows={4}
+          value={replanReason}
+          onChange={(event) => setReplanReason(event.target.value)}
+          placeholder="请说明重新生成原因，例如：需要缩短完成周期或调整课程顺序。"
+          maxLength={200}
+          showCount
+        />
+      </Modal>
     </>
   );
 }

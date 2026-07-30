@@ -12,7 +12,7 @@ export function ForbiddenPage() {
       icon={<LockOutlined />}
       status="403"
       title="无权限访问"
-      subTitle="当前角色没有该页面或数据范围的访问权限。导航隐藏和路由校验均已生效。"
+      subTitle="当前账号不能访问此页面。为保护业务数据，页面内容不会显示；如需权限，请联系系统管理员。"
       extra={[
         <Button
           key="home"
@@ -24,7 +24,7 @@ export function ForbiddenPage() {
           返回当前角色首页
         </Button>,
         <Button key="login" onClick={() => navigate("/login")}>
-          退出并切换身份
+          退出登录
         </Button>
       ]}
     />

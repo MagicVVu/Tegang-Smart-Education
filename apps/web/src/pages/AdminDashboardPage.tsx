@@ -22,9 +22,9 @@ import {
   Typography
 } from "antd";
 import { useNavigate } from "react-router-dom";
-import { trainingTask } from "@tegang/mock-data";
 import { statusLabels } from "@tegang/shared-utils";
 import { PageHeader } from "../components/PageHeader";
+import { trainingTask } from "../services/workspace-data";
 import { StatusTag } from "../components/StatusTag";
 import { usePrototypeStore } from "../stores/prototype-store";
 
@@ -43,6 +43,10 @@ export function AdminDashboardPage() {
         taskStatus === "execution_failed"
           ? "知识检索 Skill 已完成 1 次有限重试，尚未进行正式写入。"
           : "候选方案已通过必修校验，高风险范围需要确认后进入审批。",
+      owner: "培训管理员",
+      deadline: taskStatus === "execution_failed" ? "需立即处理" : "今天 16:00 前",
+      status: taskStatus === "execution_failed" ? "执行失败" : "待确认",
+      risk: taskStatus === "execution_failed" ? "error" : "warning",
       icon:
         taskStatus === "execution_failed" ? (
           <ExclamationCircleOutlined />
@@ -59,12 +63,20 @@ export function AdminDashboardPage() {
     {
       title: "跟踪高风险审批",
       detail: "炼钢生产部高温作业知识等待授权审核员处理。",
+      owner: "审核员／管理者",
+      deadline: "已等待 36 分钟",
+      status: "待审批",
+      risk: "error",
       icon: <AuditOutlined />,
       action: () => navigate("/approvals")
     },
     {
       title: "核对培训报告草稿",
       detail: "报告包含补训、复测和 Agent 干预摘要，尚未确认发布。",
+      owner: "培训管理员",
+      deadline: "本周五前",
+      status: "待确认",
+      risk: "processing",
       icon: <SafetyCertificateOutlined />,
       action: () => navigate(`/admin/reports/${trainingTask.id}`)
     }
@@ -73,7 +85,7 @@ export function AdminDashboardPage() {
   return (
     <>
       <PageHeader
-        eyebrow="P-01 管理员工作台"
+        eyebrow="工作台"
         title="今天需要处理什么"
         description="聚合待确认、风险、异常和结果，不用在多个系统间查找状态。"
         extra={
@@ -82,7 +94,7 @@ export function AdminDashboardPage() {
             icon={<FileAddOutlined />}
             onClick={() => navigate("/admin/training/create")}
           >
-            创建培训任务
+            新建培训任务
           </Button>
         }
       />
@@ -125,7 +137,18 @@ export function AdminDashboardPage() {
                   <List.Item.Meta
                     avatar={<div className="task-icon">{item.icon}</div>}
                     title={item.title}
-                    description={item.detail}
+                    description={
+                      <Flex vertical gap={8}>
+                        <span>{item.detail}</span>
+                        <Flex gap={8} wrap>
+                          <Tag color={item.risk}>{item.status}</Tag>
+                          <Tag>{item.owner}</Tag>
+                          <Typography.Text type="secondary">
+                            {item.deadline}
+                          </Typography.Text>
+                        </Flex>
+                      </Flex>
+                    }
                   />
                 </List.Item>
               )}
@@ -238,8 +261,19 @@ export function AdminDashboardPage() {
             {
               title: "下一步",
               dataIndex: "status",
-              render: (value: keyof typeof statusLabels) =>
-                statusLabels[value]
+              render: (value: keyof typeof statusLabels) => {
+                const actions: Partial<Record<keyof typeof statusLabels, string>> = {
+                  information_missing: "补充任务信息",
+                  awaiting_admin_confirmation: "确认培训方案",
+                  awaiting_approval: "跟踪审批进度",
+                  awaiting_publish: "确认下发",
+                  executing: "跟踪学习进度",
+                  execution_failed: "处理异常",
+                  human_takeover: "继续人工处理",
+                  completed: "核对培训报告"
+                };
+                return actions[value] ?? `查看${statusLabels[value]}`;
+              }
             }
           ]}
         />

@@ -28,17 +28,17 @@ import {
 } from "antd";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  approvalRecord,
-  candidatePlans,
-  knowledgeCitations,
-  trainingTask
-} from "@tegang/mock-data";
 import type { ApprovalDecision } from "@tegang/types";
 import { KnowledgeDrawer } from "../components/KnowledgeDrawer";
 import { PageHeader } from "../components/PageHeader";
 import { StatusTag } from "../components/StatusTag";
 import { services } from "../services";
+import {
+  approvalRecord,
+  candidatePlans,
+  knowledgeCitations,
+  trainingTask
+} from "../services/workspace-data";
 import { usePrototypeStore } from "../stores/prototype-store";
 
 export function ApprovalsPage() {
@@ -61,7 +61,9 @@ export function ApprovalsPage() {
       await services.approval.decide(
         approvalRecord.id,
         decision,
-        values.comment,
+        decision === "approved_with_changes" && values.changes
+          ? `${values.comment}\n修改要求：${values.changes}`
+          : values.comment,
       );
       message.success(
         decision === "approved"
@@ -81,7 +83,7 @@ export function ApprovalsPage() {
   return (
     <>
       <PageHeader
-        eyebrow="P-06 审批中心"
+        eyebrow="审批中心"
         title={taskId ? "高风险培训审批详情" : "待审批任务"}
         description="在业务动作执行前核对目标、依据、影响和可恢复位置。培训管理员只能查看进度，不能作出审批决定。"
         extra={
@@ -96,7 +98,24 @@ export function ApprovalsPage() {
           type="info"
           showIcon
           message="当前为审批进度只读视图"
-          description="请退出并以审核员身份登录后作出审批决定。管理员不能替代审核员批准高风险动作。"
+          description="高风险决定由当前责任审核员处理。培训管理员可以查看进度，并按退回意见修订方案。"
+          style={{ marginBottom: 20 }}
+        />
+      ) : null}
+      {approvalStatus !== "pending" ? (
+        <Alert
+          type={approvalStatus === "rejected" ? "error" : "success"}
+          showIcon
+          message={
+            approvalStatus === "approved"
+              ? "当前版本已批准"
+              : approvalStatus === "approved_with_changes"
+                ? "已修改后批准，等待重新校验"
+                : approvalStatus === "rejected"
+                  ? "当前版本已拒绝"
+                  : "已退回补充信息"
+          }
+          description="处理决定、意见、版本和时间已写入审批记录；已完成记录不会被后续操作覆盖。"
           style={{ marginBottom: 20 }}
         />
       ) : null}
@@ -112,7 +131,10 @@ export function ApprovalsPage() {
                   id: approvalRecord.id,
                   title: trainingTask.name,
                   risk: "高风险",
-                  time: "到达 36 分钟"
+                  reason: "高风险知识与正式任务下发",
+                  impact: "2 个部门 · 新员工培训",
+                  owner: "审核员 R-001",
+                  time: "已等待 36 分钟"
                 }
               ]}
               renderItem={(item) => (
@@ -126,6 +148,9 @@ export function ApprovalsPage() {
                     description={
                       <Space direction="vertical" size={4}>
                         <span>{item.id}</span>
+                        <span>{item.reason}</span>
+                        <span>{item.impact}</span>
+                        <span>责任人：{item.owner}</span>
                         <span>{item.time}</span>
                       </Space>
                     }
@@ -164,6 +189,13 @@ export function ApprovalsPage() {
         </Col>
         <Col span={17}>
           <Card>
+            <Alert
+              type="error"
+              showIcon
+              message="待决定：是否允许下发包含高风险知识要求的培训任务"
+              description="风险等级高；影响智信部与炼钢生产部新员工。当前流程停在 CP-05，尚未发生正式业务写入。"
+              style={{ marginBottom: 20 }}
+            />
             <Flex justify="space-between" align="flex-start" gap={20}>
               <div>
                 <Typography.Text className="eyebrow">
@@ -179,7 +211,11 @@ export function ApprovalsPage() {
               </div>
               <Button
                 icon={<RobotOutlined />}
-                onClick={() => navigate(`/agent-runs/${trainingTask.id}`)}
+                onClick={() =>
+                  navigate(
+                    `/agent-runs/${trainingTask.id}?returnTo=approval`,
+                  )
+                }
               >
                 查看 Agent 业务证据
               </Button>
@@ -315,47 +351,45 @@ export function ApprovalsPage() {
               ]}
             />
           </Card>
-          <Card className="sticky-action-bar">
-            <Flex justify="space-between" align="center" gap={16}>
-              <Space>
-                <InfoCircleOutlined />
-                <Typography.Text>
-                  决定将关联当前方案和知识版本，并写入审计记录。
-                </Typography.Text>
-              </Space>
-              <Flex gap={8}>
-                <Button
-                  disabled={role !== "reviewer"}
-                  icon={<FormOutlined />}
-                  onClick={() => setDecision("returned_for_information")}
-                >
-                  退回补充
-                </Button>
-                <Button
-                  danger
-                  disabled={role !== "reviewer"}
-                  icon={<CloseOutlined />}
-                  onClick={() => setDecision("rejected")}
-                >
-                  拒绝
-                </Button>
-                <Button
-                  disabled={role !== "reviewer"}
-                  onClick={() => setDecision("approved_with_changes")}
-                >
-                  修改后批准
-                </Button>
-                <Button
-                  type="primary"
-                  disabled={role !== "reviewer"}
-                  icon={<CheckOutlined />}
-                  onClick={() => setDecision("approved")}
-                >
-                  批准
-                </Button>
+          {role === "reviewer" && approvalStatus === "pending" ? (
+            <Card className="sticky-action-bar">
+              <Flex justify="space-between" align="center" gap={16}>
+                <Space>
+                  <InfoCircleOutlined />
+                  <Typography.Text>
+                    决定将关联当前方案和知识版本，并写入审计记录。
+                  </Typography.Text>
+                </Space>
+                <Flex gap={8}>
+                  <Button
+                    icon={<FormOutlined />}
+                    onClick={() => setDecision("returned_for_information")}
+                  >
+                    退回补充
+                  </Button>
+                  <Button
+                    danger
+                    icon={<CloseOutlined />}
+                    onClick={() => setDecision("rejected")}
+                  >
+                    拒绝
+                  </Button>
+                  <Button
+                    onClick={() => setDecision("approved_with_changes")}
+                  >
+                    修改后批准
+                  </Button>
+                  <Button
+                    type="primary"
+                    icon={<CheckOutlined />}
+                    onClick={() => setDecision("approved")}
+                  >
+                    批准
+                  </Button>
+                </Flex>
               </Flex>
-            </Flex>
-          </Card>
+            </Card>
+          ) : null}
         </Col>
       </Row>
       <KnowledgeDrawer
@@ -386,8 +420,25 @@ export function ApprovalsPage() {
               : "info"
           }
           showIcon
-          message="审批决定只对当前方案、知识和风险版本有效。"
+          message={
+            decision === "approved"
+              ? "批准后，流程将恢复到待下发；当前方案的高风险范围保持不变。"
+              : decision === "approved_with_changes"
+                ? "系统将按修改要求生成新版本并重新校验，校验通过后才可下发。"
+                : decision === "rejected"
+                  ? "当前版本将被拒绝并退回方案修订，不会发生正式业务写入。"
+                  : "流程保持暂停，申请人补齐材料后需重新提交当前版本。"
+          }
           style={{ marginBottom: 16 }}
+        />
+        <Descriptions
+          size="small"
+          column={1}
+          items={[
+            { key: "scope", label: "影响范围", children: "2 个部门的新员工培训" },
+            { key: "version", label: "生效版本", children: `方案 V${plan.version} · 当前知识快照` }
+          ]}
+          style={{ marginBottom: 12 }}
         />
         <Form form={form} layout="vertical">
           {decision === "approved_with_changes" ? (

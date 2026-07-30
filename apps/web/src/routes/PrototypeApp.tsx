@@ -36,6 +36,11 @@ const MobileHandoffPage = lazy(() =>
     default: module.MobileHandoffPage
   })),
 );
+const NotFoundPage = lazy(() =>
+  import("../pages/NotFoundPage").then((module) => ({
+    default: module.NotFoundPage
+  })),
+);
 const PlanPage = lazy(() =>
   import("../pages/PlanPage").then((module) => ({
     default: module.PlanPage
@@ -172,7 +177,7 @@ export function PrototypeApp() {
           </ShellRoute>
         }
       />
-        <Route path="*" element={<Navigate to="/forbidden" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

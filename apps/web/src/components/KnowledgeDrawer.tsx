@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import {
   Alert,
+  Button,
   Descriptions,
   Drawer,
   Flex,
@@ -8,7 +9,7 @@ import {
   Tag,
   Typography
 } from "antd";
-import { knowledgeCitations } from "@tegang/mock-data";
+import { knowledgeCitations } from "../services/workspace-data";
 
 interface KnowledgeDrawerProps {
   open: boolean;
@@ -37,6 +38,11 @@ export function KnowledgeDrawer({
       width={520}
       open={open}
       onClose={onClose}
+      footer={
+        <Button type="primary" block onClick={onClose}>
+          返回当前页面
+        </Button>
+      }
     >
       <Alert
         type="info"
