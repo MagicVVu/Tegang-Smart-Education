@@ -1,3 +1,5 @@
+/* global console:readonly, window:readonly, PopStateEvent:readonly */
+
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
