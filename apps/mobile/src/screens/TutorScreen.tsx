@@ -22,7 +22,19 @@ import type { RootStackParamList } from "../navigation/types";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Tutor">;
 
-export function TutorScreen({ navigation, route }: Props) {
+interface TutorConversationProps {
+  taskId: string;
+  onExit: () => void;
+  exitLabel: string;
+  safeTop?: boolean;
+}
+
+export function TutorConversation({
+  taskId,
+  onExit,
+  exitLabel,
+  safeTop = false
+}: TutorConversationProps) {
   const listRef = useRef<FlatList<TutorMessage>>(null);
   const {
     messages,
@@ -38,7 +50,7 @@ export function TutorScreen({ navigation, route }: Props) {
     requestHumanHelp,
     submitFeedback,
     clearNotice
-  } = useTutorConversation(route.params.taskId);
+  } = useTutorConversation(taskId);
   const [citationIds, setCitationIds] = useState<string[]>([]);
   const [citationVisible, setCitationVisible] = useState(false);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
@@ -47,7 +59,7 @@ export function TutorScreen({ navigation, route }: Props) {
 
   return (
     <>
-      <Screen keyboard scroll={false}>
+      <Screen keyboard scroll={false} safeTop={safeTop}>
         <View style={styles.intro}>
           <View style={styles.introIcon}>
             <Icon
@@ -239,8 +251,8 @@ export function TutorScreen({ navigation, route }: Props) {
                 >
                   重试发送
                 </Button>
-                <Button mode="outlined" onPress={() => navigation.goBack()}>
-                  返回课程
+                <Button mode="outlined" onPress={onExit}>
+                  {exitLabel}
                 </Button>
               </View>
             </Card.Content>
@@ -285,6 +297,16 @@ export function TutorScreen({ navigation, route }: Props) {
         {notice}
       </Snackbar>
     </>
+  );
+}
+
+export function TutorScreen({ navigation, route }: Props) {
+  return (
+    <TutorConversation
+      taskId={route.params.taskId}
+      onExit={() => navigation.goBack()}
+      exitLabel="返回课程"
+    />
   );
 }
 
