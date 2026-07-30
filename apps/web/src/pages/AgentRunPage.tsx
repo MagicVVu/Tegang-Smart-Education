@@ -1,6 +1,6 @@
 import {
   ApartmentOutlined,
-  BugOutlined,
+  ArrowLeftOutlined,
   CheckCircleOutlined,
   ClockCircleOutlined,
   CopyOutlined,
@@ -24,7 +24,6 @@ import {
   Flex,
   List,
   Row,
-  Segmented,
   Space,
   Statistic,
   Steps,
@@ -33,13 +32,18 @@ import {
   Typography,
   message
 } from "antd";
-import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { agentRun, knowledgeCitations, trainingTask } from "@tegang/mock-data";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { formatDuration } from "@tegang/shared-utils";
+import type { DemoScenario, TrainingStatus } from "@tegang/types";
 import { PageHeader } from "../components/PageHeader";
 import { StatusTag } from "../components/StatusTag";
 import { services } from "../services";
+import {
+  agentRun,
+  knowledgeCitations,
+  trainingTask
+} from "../services/workspace-data";
 import { usePrototypeStore } from "../stores/prototype-store";
 
 export function AgentRunPage() {
@@ -48,15 +52,31 @@ export function AgentRunPage() {
   const taskStatus = usePrototypeStore((state) => state.taskStatus);
   const run = usePrototypeStore((state) => state.agent);
   const retryCount = usePrototypeStore((state) => state.retryCount);
-  const triggerAgentFailure = usePrototypeStore(
-    (state) => state.triggerAgentFailure,
-  );
+  const setScenario = usePrototypeStore((state) => state.setScenario);
   const pause = usePrototypeStore((state) => state.pause);
   const resume = usePrototypeStore((state) => state.resume);
   const [actionLoading, setActionLoading] = useState(false);
+  const [searchParams] = useSearchParams();
   const permittedView =
     role === "system_admin" ? "开发者视图" : "业务视图";
-  const [view, setView] = useState(permittedView);
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    const scenario = searchParams.get("scenario") as DemoScenario | null;
+    if (
+      scenario &&
+      [
+        "normal",
+        "high_risk",
+        "information_missing",
+        "assessment_failed",
+        "knowledge_conflict",
+        "agent_failure"
+      ].includes(scenario)
+    ) {
+      setScenario(scenario);
+    }
+  }, [searchParams, setScenario]);
 
   const nodes = useMemo(
     () =>
@@ -98,7 +118,7 @@ export function AgentRunPage() {
   return (
     <>
       <PageHeader
-        eyebrow="P-08 Agent运行中心"
+        eyebrow="Agent运行中心"
         title={
           permittedView === "开发者视图"
             ? "Agent 运行诊断"
@@ -111,16 +131,15 @@ export function AgentRunPage() {
         }
         extra={
           <Flex gap={8}>
+            {searchParams.get("returnTo") === "approval" ? (
+              <Button
+                icon={<ArrowLeftOutlined />}
+                onClick={() => navigate(`/approvals/${trainingTask.id}`)}
+              >
+                返回当前审批
+              </Button>
+            ) : null}
             <StatusTag status={taskStatus} />
-            <Segmented
-              value={view}
-              options={
-                role === "system_admin"
-                  ? ["开发者视图"]
-                  : ["业务视图"]
-              }
-              onChange={(value) => setView(String(value))}
-            />
           </Flex>
         }
       />
@@ -154,6 +173,7 @@ export function AgentRunPage() {
               value={
                 permittedView === "开发者视图"
                   ? run.traceId
+                      .replace("trace-demo-", "trace-")
                   : "管理员确认或异常处理"
               }
               valueStyle={{ fontSize: 16 }}
@@ -225,15 +245,12 @@ export function AgentRunPage() {
       {permittedView === "业务视图" ? (
         <BusinessTrace
           nodes={nodes}
+          taskStatus={taskStatus}
           onPause={pause}
-          onTriggerFailure={triggerAgentFailure}
           onNavigate={(path) => navigate(path)}
         />
       ) : (
-        <DeveloperTrace
-          nodes={nodes}
-          onTriggerFailure={triggerAgentFailure}
-        />
+        <DeveloperTrace nodes={nodes} />
       )}
     </>
   );
@@ -241,23 +258,25 @@ export function AgentRunPage() {
 
 function BusinessTrace({
   nodes,
+  taskStatus,
   onPause,
-  onTriggerFailure,
   onNavigate
 }: {
   nodes: typeof agentRun.nodes;
+  taskStatus: TrainingStatus;
   onPause: () => void;
-  onTriggerFailure: () => void;
   onNavigate: (path: string) => void;
 }) {
   const run = usePrototypeStore((state) => state.agent);
   return (
-    <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
+    <>
+      <RunActionSummary taskStatus={taskStatus} waitingFor={run.waitingFor} />
+      <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
       <Col span={7}>
         <Card title="培训阶段">
           <Steps
             direction="vertical"
-            current={4}
+            current={3}
             items={[
               "目标与上下文",
               "诊断与知识检索",
@@ -273,7 +292,13 @@ function BusinessTrace({
                 index < 3
                   ? "已完成并留痕"
                   : index === 3
-                    ? "当前或最近处理阶段"
+                    ? [
+                        "execution_failed",
+                        "paused",
+                        "human_takeover"
+                      ].includes(taskStatus)
+                      ? "异常处理中"
+                      : "当前或最近处理阶段"
                     : "等待上游状态"
             }))}
           />
@@ -305,7 +330,7 @@ function BusinessTrace({
                             : "blue"
                       }
                     >
-                      {node.status}
+                      {nodeStatusLabels[node.status]}
                     </Tag>
                   </Flex>
                   <Typography.Paragraph type="secondary">
@@ -397,27 +422,86 @@ function BusinessTrace({
             >
               暂停任务
             </Button>
-            <Button
-              danger
-              icon={<BugOutlined />}
-              onClick={onTriggerFailure}
-            >
-              演示 Skill 失败
-            </Button>
           </Flex>
         </Card>
       </Col>
-    </Row>
+      </Row>
+    </>
   );
 }
 
-function DeveloperTrace({
-  nodes,
-  onTriggerFailure
+function RunActionSummary({
+  taskStatus,
+  waitingFor
 }: {
-  nodes: typeof agentRun.nodes;
-  onTriggerFailure: () => void;
+  taskStatus: TrainingStatus;
+  waitingFor?: string;
 }) {
+  const isException = [
+    "execution_failed",
+    "paused",
+    "human_takeover"
+  ].includes(taskStatus);
+  const facts = [
+    {
+      label: "发生了什么",
+      value:
+        taskStatus === "execution_failed"
+          ? "知识检索调用超时"
+          : taskStatus === "human_takeover"
+            ? "自动恢复已转人工"
+            : taskStatus === "paused"
+              ? "流程等待恢复条件"
+              : "候选方案与规则校验已完成"
+    },
+    {
+      label: "系统已采取措施",
+      value: isException
+        ? "保留检查点，未重复写入"
+        : "保存证据并暂停高风险写入"
+    },
+    {
+      label: "当前责任人",
+      value: isException ? "培训管理员" : waitingFor ?? "系统执行"
+    },
+    {
+      label: "下一步",
+      value: isException
+        ? "选择重试、回退或人工处理"
+        : "确认方案并按风险进入审批"
+    }
+  ];
+
+  return (
+    <Card
+      className={
+        isException ? "run-summary run-summary--exception" : "run-summary"
+      }
+      style={{ marginTop: 20 }}
+    >
+      <Row gutter={[16, 16]}>
+        {facts.map((fact) => (
+          <Col span={6} key={fact.label}>
+            <Typography.Text type="secondary">
+              {fact.label}
+            </Typography.Text>
+            <strong>{fact.value}</strong>
+          </Col>
+        ))}
+      </Row>
+    </Card>
+  );
+}
+
+const nodeStatusLabels = {
+  pending: "等待",
+  running: "执行中",
+  succeeded: "已完成",
+  failed: "失败",
+  paused: "已暂停"
+} as const;
+
+function DeveloperTrace({ nodes }: { nodes: typeof agentRun.nodes }) {
   return (
     <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
       <Col span={8}>
@@ -442,7 +526,7 @@ function DeveloperTrace({
                   title={node.label}
                   description={`${node.capability} · ${node.checkpointId ?? "无检查点"}`}
                 />
-                <Tag>{node.status}</Tag>
+                <Tag>{nodeStatusLabels[node.status]}</Tag>
               </List.Item>
             )}
           />
@@ -451,15 +535,7 @@ function DeveloperTrace({
       <Col span={16}>
         <Card
           title="节点输入、调用与恢复详情"
-          extra={
-            <Button
-              danger
-              icon={<BugOutlined />}
-              onClick={onTriggerFailure}
-            >
-              注入 Skill 超时
-            </Button>
-          }
+          extra={<Tag color="blue">只读诊断</Tag>}
         >
           <Collapse
             defaultActiveKey={nodes[0]?.id}
@@ -473,7 +549,7 @@ function DeveloperTrace({
                       <Tag>{formatDuration(node.latencyMs)}</Tag>
                     ) : null}
                     <Tag color={node.status === "failed" ? "red" : "green"}>
-                      {node.status}
+                      {nodeStatusLabels[node.status]}
                     </Tag>
                   </Space>
                 </Flex>
@@ -499,7 +575,7 @@ function DeveloperTrace({
                     {
                       key: "model",
                       label: "模型",
-                      children: node.model ?? "未调用模型"
+                      children: node.model?.replace("demo-", "") ?? "未调用模型"
                     },
                     {
                       key: "prompt",

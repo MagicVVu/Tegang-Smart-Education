@@ -1,18 +1,35 @@
 import {
   AuditOutlined,
   BookOutlined,
+  LockOutlined,
   MobileOutlined,
   RobotOutlined,
   SafetyCertificateOutlined,
-  SettingOutlined
+  SettingOutlined,
+  UserOutlined
 } from "@ant-design/icons";
-import { Button, Card, Col, Flex, Row, Tag, Typography } from "antd";
-import { useNavigate } from "react-router-dom";
-import { homeRouteForRole } from "@tegang/business-rules";
-import { demoUsers } from "@tegang/mock-data";
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Flex,
+  Form,
+  Input,
+  Row,
+  Tag,
+  Typography
+} from "antd";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  canAccessPath,
+  homeRouteForRole
+} from "@tegang/business-rules";
 import { roleLabels } from "@tegang/shared-utils";
-import type { UserRole } from "@tegang/types";
-import { usePrototypeStore } from "../stores/prototype-store";
+import type { DemoUser, UserRole } from "@tegang/types";
+import { services } from "../services";
 
 const icons: Record<UserRole, React.ReactNode> = {
   employee: <MobileOutlined />,
@@ -21,20 +38,70 @@ const icons: Record<UserRole, React.ReactNode> = {
   system_admin: <SettingOutlined />
 };
 
-const descriptions: Record<UserRole, string> = {
-  employee: "移动端完成学习、智能辅导、测评、补训与复测。",
-  training_admin: "创建培训目标、确认方案、下发任务并跟踪报告。",
-  reviewer: "在高风险动作执行前核对依据、影响并作出决定。",
-  system_admin: "维护知识与规则配置，查看开发者 Trace。"
-};
+interface LoginValue {
+  account: string;
+  password: string;
+}
 
 export function LoginPage() {
-  const login = usePrototypeStore((state) => state.login);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string>();
+  const [developmentProfiles, setDevelopmentProfiles] = useState<DemoUser[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleLogin = (role: UserRole) => {
-    login(role);
-    navigate(homeRouteForRole(role));
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    void services.auth
+      .listDevelopmentProfiles()
+      .then(setDevelopmentProfiles);
+  }, []);
+
+  const finishLogin = (role: UserRole) => {
+    const requestedPath = (
+      location.state as { from?: string } | null
+    )?.from;
+    const target =
+      requestedPath &&
+      requestedPath !== "/forbidden" &&
+      canAccessPath(role, requestedPath)
+        ? requestedPath
+        : homeRouteForRole(role);
+    navigate(target, { replace: true });
+  };
+
+  const handleLogin = async (values: LoginValue) => {
+    setSubmitting(true);
+    setError(undefined);
+    try {
+      const result = await services.auth.login(values);
+      finishLogin(result.data.user.role);
+    } catch (cause) {
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : "认证服务暂时不可用，请稍后重试。",
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDevelopmentLogin = async (role: UserRole) => {
+    setSubmitting(true);
+    setError(undefined);
+    try {
+      const result = await services.auth.developmentLogin(role);
+      finishLogin(result.data.user.role);
+    } catch (cause) {
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : "当前开发账号不可用。",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -54,7 +121,7 @@ export function LoginPage() {
         </Typography.Paragraph>
         <Flex gap={8} wrap>
           <Tag icon={<SafetyCertificateOutlined />} color="blue">
-            受控自主
+            受控执行
           </Tag>
           <Tag icon={<RobotOutlined />} color="purple">
             动态规划
@@ -63,43 +130,109 @@ export function LoginPage() {
           <Tag color="orange">高风险先审批</Tag>
         </Flex>
         <div className="login-boundary">
-          <strong>演示说明</strong>
+          <strong>企业数据保护</strong>
           <span>
-            所有账号和业务数据均为模拟数据。不同身份具有独立导航、路由和操作权限。
+            登录后仅展示当前账号获授权的部门、任务和业务操作，关键操作将记录审计信息。
           </span>
         </div>
       </section>
+
       <section className="login-panel">
-        <div>
-          <Typography.Text className="eyebrow">P-00 身份入口</Typography.Text>
-          <Typography.Title level={2}>选择演示身份</Typography.Title>
+        <Card className="login-card" bordered={false}>
+          <Typography.Text className="eyebrow">统一身份认证</Typography.Text>
+          <Typography.Title level={2}>登录培训管理平台</Typography.Title>
           <Typography.Paragraph type="secondary">
-            角色切换相当于重新登录，不会在当前会话中绕过权限。
+            使用企业账号登录。系统将根据账号权限进入工作台、审批中心或系统管理空间。
           </Typography.Paragraph>
-        </div>
-        <Row gutter={[16, 16]}>
-          {demoUsers.map((user) => (
-            <Col span={12} key={user.role}>
-              <Card
-                className="role-card"
-                hoverable
-                onClick={() => handleLogin(user.role)}
-              >
-                <div className="role-card__icon">{icons[user.role]}</div>
-                <Typography.Title level={4}>
-                  {roleLabels[user.role]}
-                </Typography.Title>
-                <Typography.Paragraph type="secondary">
-                  {descriptions[user.role]}
-                </Typography.Paragraph>
-                <Typography.Text>{user.displayName}</Typography.Text>
-                <Button type="link" block>
-                  以该身份进入
-                </Button>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+
+          {error ? (
+            <Alert
+              type="error"
+              showIcon
+              message="登录失败"
+              description={error}
+              closable
+              onClose={() => setError(undefined)}
+              style={{ marginBottom: 20 }}
+            />
+          ) : null}
+
+          <Form<LoginValue>
+            layout="vertical"
+            onFinish={handleLogin}
+            requiredMark="optional"
+          >
+            <Form.Item
+              name="account"
+              label="企业账号"
+              rules={[{ required: true, message: "请输入企业账号" }]}
+            >
+              <Input
+                autoComplete="username"
+                prefix={<UserOutlined />}
+                placeholder="请输入工号或企业账号"
+                size="large"
+              />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              label="密码"
+              rules={[
+                { required: true, message: "请输入密码" },
+                { min: 6, message: "密码至少 6 位" }
+              ]}
+            >
+              <Input.Password
+                autoComplete="current-password"
+                prefix={<LockOutlined />}
+                placeholder="请输入密码"
+                size="large"
+              />
+            </Form.Item>
+            <Flex justify="space-between" align="center" className="login-help">
+              <Typography.Text type="secondary">
+                登录即表示你同意按企业安全规范使用授权数据。
+              </Typography.Text>
+              <Button type="link">无法登录？</Button>
+            </Flex>
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              block
+              loading={submitting}
+            >
+              登录
+            </Button>
+          </Form>
+        </Card>
+
+        {import.meta.env.DEV && developmentProfiles.length ? (
+          <section className="development-login" aria-label="开发环境快捷入口">
+            <Divider>开发环境快捷入口</Divider>
+            <Typography.Paragraph type="secondary">
+              仅在本地开发环境显示，用于验证角色导航与权限边界。
+            </Typography.Paragraph>
+            <Row gutter={[12, 12]}>
+              {developmentProfiles.map((user) => (
+                <Col span={6} key={user.role}>
+                  <Card
+                    size="small"
+                    className="role-card"
+                    hoverable
+                    onClick={() => handleDevelopmentLogin(user.role)}
+                  >
+                    <div className="role-card__icon">{icons[user.role]}</div>
+                    <strong>{roleLabels[user.role]}</strong>
+                    <Typography.Text type="secondary">
+                      {user.displayName}
+                    </Typography.Text>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </section>
+        ) : null}
       </section>
     </main>
   );

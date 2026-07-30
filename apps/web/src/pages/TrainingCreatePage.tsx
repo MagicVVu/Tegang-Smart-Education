@@ -22,9 +22,10 @@ import {
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { trainingTask } from "@tegang/mock-data";
 import { AgentExecutionPanel } from "../components/AgentExecutionPanel";
 import { PageHeader } from "../components/PageHeader";
+import { services } from "../services";
+import { trainingTask } from "../services/workspace-data";
 import { usePrototypeStore } from "../stores/prototype-store";
 
 interface TrainingFormValue {
@@ -36,13 +37,16 @@ interface TrainingFormValue {
   mandatoryRequirements: string[];
   highRiskRequirements: string[];
   completionCondition: string;
+  knowledgeScope: string[];
+  approvalRequirement: string;
 }
 
 const stepFields: Array<Array<keyof TrainingFormValue>> = [
   ["name", "deadline"],
   ["departments", "audience"],
   ["objective", "completionCondition"],
-  ["mandatoryRequirements", "highRiskRequirements"],
+  ["mandatoryRequirements", "knowledgeScope"],
+  ["highRiskRequirements", "approvalRequirement"],
   []
 ];
 
@@ -54,7 +58,6 @@ export function TrainingCreatePage() {
   const taskStatus = usePrototypeStore((state) => state.taskStatus);
   const scenario = usePrototypeStore((state) => state.scenario);
   const saveDraft = usePrototypeStore((state) => state.saveDraft);
-  const submitTraining = usePrototypeStore((state) => state.submitTraining);
   const completeAnalysis = usePrototypeStore(
     (state) => state.completeAnalysis,
   );
@@ -73,6 +76,12 @@ export function TrainingCreatePage() {
       deadline: dayjs(trainingTask.deadline),
       mandatoryRequirements: trainingTask.mandatoryRequirements,
       highRiskRequirements: trainingTask.highRiskRequirements,
+      knowledgeScope: [
+        "企业基础制度",
+        "智信部岗位知识",
+        "炼钢生产部安全规范"
+      ],
+      approvalRequirement: "高风险知识或正式下发命中规则时提交审批",
       completionCondition:
         "完成必修内容与部门路径；高风险知识点独立达标；未达标进入补训与复测。"
     }),
@@ -81,15 +90,23 @@ export function TrainingCreatePage() {
 
   const next = async () => {
     await form.validateFields(stepFields[step]);
-    setStep((value) => Math.min(value + 1, 4));
+    setStep((value) => Math.min(value + 1, 5));
   };
 
   const handleSubmit = async () => {
     try {
-      await form.validateFields();
+      const values = await form.validateFields();
       setSubmitting(true);
-      await new Promise((resolve) => setTimeout(resolve, 650));
-      submitTraining();
+      await services.training.createTask({
+        name: values.name,
+        objective: values.objective,
+        departments: values.departments,
+        audience: values.audience,
+        deadline: values.deadline.format("YYYY-MM-DD"),
+        mandatoryRequirements: values.mandatoryRequirements,
+        highRiskRequirements: values.highRiskRequirements,
+        riskLevel: "high"
+      });
       if (scenario === "information_missing") {
         message.warning("信息不足，已列出缺失项，Agent 尚未启动。");
         setSubmitting(false);
@@ -108,9 +125,9 @@ export function TrainingCreatePage() {
     return (
       <>
         <PageHeader
-          eyebrow="P-02 培训目标创建页"
+          eyebrow="培训任务"
           title="Agent 正在分析任务"
-          description="系统按确定性依赖顺序执行，并保存可恢复检查点。"
+          description="系统正在核对上下文、知识范围和硬约束；可以安全离开页面，进度会持续保留。"
         />
         <AgentExecutionPanel
           status={taskStatus}
@@ -128,7 +145,7 @@ export function TrainingCreatePage() {
   return (
     <>
       <PageHeader
-        eyebrow="P-02 培训目标创建页"
+        eyebrow="培训任务"
         title="创建培训目标与约束"
         description="管理员提供业务目标、对象和不可违反的约束，不需要手工编排全部课程与题目。"
         extra={
@@ -154,7 +171,8 @@ export function TrainingCreatePage() {
             { title: "基本信息" },
             { title: "培训对象" },
             { title: "目标与约束" },
-            { title: "知识与风险" },
+            { title: "知识范围" },
+            { title: "风险与审批" },
             { title: "确认提交" }
           ]}
         />
@@ -163,8 +181,8 @@ export function TrainingCreatePage() {
           <Alert
             showIcon
             type="warning"
-            message="演示场景：必要员工基础信息缺失"
-            description="可以继续保存草稿，但提交后系统将列出缺口并暂停，不会让模型自行补造。"
+            message="部分员工基础信息待补充"
+            description="可以继续保存草稿；提交后系统会列出缺口并暂停分析，不会使用推测信息补全员工资料。"
             style={{ marginBottom: 20 }}
           />
         ) : null}
@@ -257,6 +275,31 @@ export function TrainingCreatePage() {
               />
             </Form.Item>
             <Form.Item
+              name="knowledgeScope"
+              label="允许使用的知识范围"
+              extra="系统只检索已授权、在有效期内且适用于当前部门的知识版本。"
+              rules={[{ required: true, message: "请选择知识范围" }]}
+            >
+              <Select
+                mode="multiple"
+                options={[
+                  { value: "企业基础制度", label: "企业基础制度" },
+                  { value: "智信部岗位知识", label: "智信部岗位知识" },
+                  {
+                    value: "炼钢生产部安全规范",
+                    label: "炼钢生产部安全规范"
+                  }
+                ]}
+              />
+            </Form.Item>
+            <Alert
+              type="info"
+              showIcon
+              message="版本冲突或引用失效时，方案生成将暂停并转知识责任人处理。"
+            />
+          </div>
+          <div hidden={step !== 4}>
+            <Form.Item
               name="highRiskRequirements"
               label="高风险要求"
               rules={[{ required: true, message: "请确认高风险要求" }]}
@@ -271,13 +314,27 @@ export function TrainingCreatePage() {
                 ]}
               />
             </Form.Item>
+            <Form.Item
+              name="approvalRequirement"
+              label="审批要求"
+              rules={[{ required: true, message: "请选择审批要求" }]}
+            >
+              <Select
+                options={[
+                  {
+                    value: "高风险知识或正式下发命中规则时提交审批",
+                    label: "命中高风险或正式下发规则时提交审批"
+                  }
+                ]}
+              />
+            </Form.Item>
             <Alert
               type="warning"
               showIcon
               message="高风险要求将进入确定性风险分级；正式业务写入前必须完成必要审批。"
             />
           </div>
-          <div hidden={step !== 4}>
+          <div hidden={step !== 5}>
             <Typography.Title level={4}>提交前确认</Typography.Title>
             <Typography.Paragraph>
               提交后 Supervisor 将拆解诊断、检索、规划、校验、审批、下发、学习、测评与报告节点。Agent
@@ -296,7 +353,7 @@ export function TrainingCreatePage() {
             icon={<SaveOutlined />}
             onClick={() => {
               saveDraft();
-              message.success("草稿已保存在本地演示状态。");
+              message.success("草稿已保存。");
             }}
           >
             保存草稿
@@ -305,7 +362,7 @@ export function TrainingCreatePage() {
             <Button disabled={step === 0} onClick={() => setStep(step - 1)}>
               上一步
             </Button>
-            {step < 4 ? (
+            {step < 5 ? (
               <Button type="primary" onClick={next}>
                 下一步
               </Button>
@@ -316,7 +373,7 @@ export function TrainingCreatePage() {
                 loading={submitting}
                 onClick={handleSubmit}
               >
-                提交并启动 Agent
+                提交分析
               </Button>
             )}
           </Flex>

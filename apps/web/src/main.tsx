@@ -4,6 +4,7 @@ import { App as AntApp, ConfigProvider } from "antd";
 import zhCN from "antd/locale/zh_CN";
 import { BrowserRouter } from "react-router-dom";
 import { webThemeToken } from "@tegang/design-tokens";
+import { AppErrorBoundary } from "./components/AppErrorBoundary";
 import { PrototypeApp } from "./routes/PrototypeApp";
 import "./styles/global.css";
 
@@ -27,9 +28,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       }}
     >
       <AntApp>
-        <BrowserRouter>
-          <PrototypeApp />
-        </BrowserRouter>
+        <AppErrorBoundary>
+          <BrowserRouter>
+            <PrototypeApp />
+          </BrowserRouter>
+        </AppErrorBoundary>
       </AntApp>
     </ConfigProvider>
   </React.StrictMode>,

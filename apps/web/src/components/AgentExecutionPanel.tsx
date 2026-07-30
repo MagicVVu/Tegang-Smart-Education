@@ -48,7 +48,7 @@ export function AgentExecutionPanel({
       <Flex justify="space-between" align="flex-start" gap={24}>
         <div>
           <Typography.Text className="eyebrow">
-            AGENT 执行状态
+            执行进度
           </Typography.Text>
           <Typography.Title level={3}>
             {isFailed
@@ -111,7 +111,7 @@ export function AgentExecutionPanel({
             请求人工接管
           </Button>
           <Button type="primary" onClick={onComplete}>
-            完成演示并查看方案
+            查看已生成方案
           </Button>
         </Flex>
       </Flex>

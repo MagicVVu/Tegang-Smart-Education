@@ -12,7 +12,6 @@ import {
   Button,
   Card,
   Col,
-  Descriptions,
   Flex,
   List,
   Row,
@@ -23,9 +22,8 @@ import {
   Typography,
   message
 } from "antd";
-import { knowledgeCitations } from "@tegang/mock-data";
-import { colors, radii, spacing } from "@tegang/design-tokens";
 import { PageHeader } from "../components/PageHeader";
+import { knowledgeCitations } from "../services/workspace-data";
 
 export function SystemConfigPage() {
   const items = [
@@ -48,26 +46,22 @@ export function SystemConfigPage() {
       key: "health",
       label: "系统运行状态",
       children: <HealthTab />
-    },
-    {
-      key: "design",
-      label: "设计规范与公共组件",
-      children: <DesignSystemTab />
     }
   ];
 
   return (
     <>
       <PageHeader
-        eyebrow="P-09 知识与配置管理页"
+        eyebrow="系统管理"
         title="知识、权限与受控执行配置"
         description="配置版本化发布并保留影响分析；系统管理员不能在这里修改学习结果或业务审批。"
-        extra={<Tag color="blue">配置环境 · 本地演示</Tag>}
+        extra={<Tag color="green">当前配置版本 R-0.1</Tag>}
       />
       <Alert
-        type="info"
+        type="warning"
         showIcon
-        message="本页展示最小治理配置的原型，不连接真实身份、知识或业务系统。"
+        message="发布配置前必须完成影响分析与回归检查"
+        description="校验失败、知识冲突或回归失败时，系统保持上一有效版本，不影响正在执行的任务快照。"
         style={{ marginBottom: 20 }}
       />
       <Card>
@@ -89,7 +83,7 @@ function KnowledgeTab() {
         </div>
         <Button
           type="primary"
-          onClick={() => message.info("已创建知识版本草稿（演示）。")}
+          onClick={() => message.success("知识版本草稿已创建。")}
         >
           新建版本草稿
         </Button>
@@ -284,19 +278,19 @@ function HealthTab() {
         {
           icon: <CloudSyncOutlined />,
           title: "培训系统连接",
-          detail: "Mock 服务 · 正常",
+          detail: "连接正常",
           color: "green"
         },
         {
           icon: <FileSearchOutlined />,
           title: "知识索引",
-          detail: "3 条演示来源 · 正常",
+          detail: "3 个有效来源",
           color: "green"
         },
         {
           icon: <WarningOutlined />,
           title: "失败任务",
-          detail: "1 个可恢复演示任务",
+          detail: "1 个任务待恢复",
           color: "orange"
         },
         {
@@ -320,72 +314,6 @@ function HealthTab() {
           </Card>
         </Col>
       ))}
-    </Row>
-  );
-}
-
-function DesignSystemTab() {
-  const colorItems = [
-    ["主色", colors.brand],
-    ["Agent建议", colors.agent],
-    ["成功", colors.success],
-    ["警告", colors.warning],
-    ["风险／错误", colors.risk],
-    ["信息", colors.info]
-  ];
-  return (
-    <Row gutter={[20, 20]}>
-      <Col span={12}>
-        <Card title="语义色彩">
-          <div className="token-grid">
-            {colorItems.map(([name, value]) => (
-              <div className="color-token" key={name}>
-                <span style={{ background: value }} />
-                <div>
-                  <strong>{name}</strong>
-                  <code>{value}</code>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      </Col>
-      <Col span={12}>
-        <Card title="基础尺寸">
-          <Descriptions
-            column={1}
-            items={[
-              {
-                key: "spacing",
-                label: "间距",
-                children: Object.values(spacing).join(" / ")
-              },
-              {
-                key: "radii",
-                label: "圆角",
-                children: Object.values(radii).join(" / ")
-              },
-              {
-                key: "hierarchy",
-                label: "信息顺序",
-                children:
-                  "当前任务 → 下一步 → 风险异常 → 业务信息 → Agent依据 → 技术详情"
-              }
-            ]}
-          />
-        </Card>
-        <Card title="公共组件" style={{ marginTop: 16 }}>
-          <Flex gap={8} wrap>
-            <Button type="primary">主要操作</Button>
-            <Button>次要操作</Button>
-            <Button danger>风险操作</Button>
-            <Tag color="purple">Agent建议</Tag>
-            <Tag color="blue">确定性规则</Tag>
-            <Tag color="green">人工已确认</Tag>
-            <Tag color="red">高风险</Tag>
-          </Flex>
-        </Card>
-      </Col>
     </Row>
   );
 }

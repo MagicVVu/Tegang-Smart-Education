@@ -3,7 +3,6 @@ import {
   AlertOutlined,
   AuditOutlined,
   BarChartOutlined,
-  BookOutlined,
   DashboardOutlined,
   FileSearchOutlined,
   LogoutOutlined,
@@ -22,19 +21,33 @@ import {
   Layout,
   Menu,
   Space,
-  Tag,
-  Tooltip,
-  Typography
+  Tooltip
 } from "antd";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { demoUsers } from "@tegang/mock-data";
 import { roleLabels } from "@tegang/shared-utils";
 import type { UserRole } from "@tegang/types";
-import { ScenarioSwitcher } from "../components/ScenarioSwitcher";
 import { usePrototypeStore } from "../stores/prototype-store";
 
 const { Header, Sider, Content } = Layout;
+
+const identityByRole: Record<
+  Exclude<UserRole, "employee">,
+  { displayName: string; department: string }
+> = {
+  training_admin: {
+    displayName: "培训管理员 A-001",
+    department: "培训管理中心"
+  },
+  reviewer: {
+    displayName: "审核员 R-001",
+    department: "安全管理"
+  },
+  system_admin: {
+    displayName: "系统管理员 S-001",
+    department: "智信部"
+  }
+};
 
 const navByRole: Record<
   Exclude<UserRole, "employee">,
@@ -43,14 +56,9 @@ const navByRole: Record<
   training_admin: [
     { key: "/admin/dashboard", icon: <DashboardOutlined />, label: "工作台" },
     {
-      key: "/admin/training/create",
-      icon: <BookOutlined />,
-      label: "新建培训任务"
-    },
-    {
       key: "/admin/plans/T-20260728-01",
       icon: <FileSearchOutlined />,
-      label: "方案与任务详情"
+      label: "培训任务"
     },
     {
       key: "/admin/reports/T-20260728-01",
@@ -85,7 +93,7 @@ const navByRole: Record<
     {
       key: "/agent-runs/T-20260728-01",
       icon: <RobotOutlined />,
-      label: "开发者Trace"
+      label: "Agent运行中心"
     }
   ]
 };
@@ -99,8 +107,11 @@ export function AppShell({ children }: PropsWithChildren) {
 
   if (!role || role === "employee") return <>{children}</>;
 
-  const user = demoUsers.find((item) => item.role === role)!;
+  const user = identityByRole[role];
   const nav = navByRole[role];
+  const selectedKey =
+    nav.find((item) => location.pathname.startsWith(item.key))?.key ??
+    location.pathname;
 
   return (
     <Layout className="app-shell">
@@ -122,7 +133,7 @@ export function AppShell({ children }: PropsWithChildren) {
         <Menu
           theme="dark"
           mode="inline"
-          selectedKeys={[location.pathname]}
+          selectedKeys={[selectedKey]}
           items={nav}
           onClick={({ key }) => navigate(key)}
         />
@@ -152,13 +163,12 @@ export function AppShell({ children }: PropsWithChildren) {
                 icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                 onClick={() => setCollapsed((value) => !value)}
               />
-              <Tag color="blue">演示数据</Tag>
-              <Typography.Text type="secondary">
-                旗舰任务 T-20260728-01
-              </Typography.Text>
+              <div className="workspace-context">
+                <strong>{roleLabels[role]}工作空间</strong>
+                <span>当前数据范围：已授权部门与任务</span>
+              </div>
             </Space>
             <Space size={16}>
-              <ScenarioSwitcher />
               <Badge dot>
                 <Button
                   type="text"
@@ -171,7 +181,7 @@ export function AppShell({ children }: PropsWithChildren) {
                 <strong>{user.displayName}</strong>
                 <span>{user.department}</span>
               </div>
-              <Tooltip title="退出并切换演示身份">
+              <Tooltip title="退出登录">
                 <Button
                   type="text"
                   aria-label="退出登录"
