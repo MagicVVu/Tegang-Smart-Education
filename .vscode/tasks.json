@@ -4,7 +4,12 @@
     {
       "label": "Web：启动开发服务",
       "type": "shell",
-      "command": "pnpm dev:web",
+      "command": "npx",
+      "args": [
+        "--yes",
+        "pnpm@11.9.0",
+        "dev:web"
+      ],
       "isBackground": true,
       "problemMatcher": {
         "owner": "vite",
