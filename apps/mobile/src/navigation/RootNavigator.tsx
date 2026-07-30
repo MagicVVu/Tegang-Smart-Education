@@ -16,6 +16,7 @@ import { ProfileScreen } from "../screens/ProfileScreen";
 import { RemedialScreen } from "../screens/RemedialScreen";
 import { TrainingDetailScreen } from "../screens/TrainingDetailScreen";
 import { TrainingListScreen } from "../screens/TrainingListScreen";
+import { TutorHubScreen } from "../screens/TutorHubScreen";
 import { TutorScreen } from "../screens/TutorScreen";
 import type { MainTabParamList, RootStackParamList } from "./types";
 
@@ -25,6 +26,7 @@ const Tabs = createBottomTabNavigator<MainTabParamList>();
 const tabIcons: Record<keyof MainTabParamList, string> = {
   TrainingHome: "book-open-page-variant-outline",
   AssessmentHub: "clipboard-check-outline",
+  TutorHub: "message-processing-outline",
   Messages: "bell-outline",
   Profile: "account-outline"
 };
@@ -32,6 +34,7 @@ const tabIcons: Record<keyof MainTabParamList, string> = {
 const tabLabels: Record<keyof MainTabParamList, string> = {
   TrainingHome: "我的培训",
   AssessmentHub: "测评与结果",
+  TutorHub: "智能问答",
   Messages: "消息",
   Profile: "我的"
 };
@@ -58,6 +61,7 @@ function MainTabs() {
     >
       <Tabs.Screen name="TrainingHome" component={HomeScreen} />
       <Tabs.Screen name="AssessmentHub" component={AssessmentHubScreen} />
+      <Tabs.Screen name="TutorHub" component={TutorHubScreen} />
       <Tabs.Screen name="Messages" component={MessagesScreen} />
       <Tabs.Screen name="Profile" component={ProfileScreen} />
     </Tabs.Navigator>

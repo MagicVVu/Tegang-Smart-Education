@@ -3,6 +3,7 @@ import type { NavigatorScreenParams } from "@react-navigation/native";
 export type MainTabParamList = {
   TrainingHome: undefined;
   AssessmentHub: undefined;
+  TutorHub: undefined;
   Messages: undefined;
   Profile: undefined;
 };
