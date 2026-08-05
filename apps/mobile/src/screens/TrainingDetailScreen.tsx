@@ -10,7 +10,7 @@ import {
   ProgressBar,
   Text
 } from "react-native-paper";
-import type { TrainingStatus } from "@tegang/types";
+import type { ContractTrainingTaskStatus } from "@tegang/types";
 import { colors, radii, spacing } from "@tegang/design-tokens";
 import { Screen } from "../components/Screen";
 import { SectionHeader } from "../components/SectionHeader";
@@ -24,13 +24,8 @@ import type { RootStackParamList } from "../navigation/types";
 
 type Props = NativeStackScreenProps<RootStackParamList, "TrainingDetail">;
 
-const blockedStatuses: TrainingStatus[] = [
-  "information_missing",
-  "awaiting_approval",
-  "execution_failed",
-  "paused",
-  "human_takeover",
-  "cancelled"
+const blockedStatuses: ContractTrainingTaskStatus[] = [
+  "TB-NEED-INPUT", "TB-WAIT-APPROVAL", "TB-FAILED", "TB-PAUSED", "TB-MANUAL", "TB-CANCELLED"
 ];
 
 export function TrainingDetailScreen({ navigation, route }: Props) {
@@ -47,30 +42,30 @@ export function TrainingDetailScreen({ navigation, route }: Props) {
   const next = async () => {
     if (!task || starting) return;
     if (
-      task.status === "assessment_failed" ||
-      task.status === "remedial_learning"
+      task.learning_status === "LR-NOT-MET" ||
+      task.learning_status === "LR-REMEDIAL"
     ) {
       navigation.navigate("Remedial", { taskId: task.id });
       return;
     }
-    if (task.status === "awaiting_assessment") {
+    if (task.learning_status === "LR-WAIT-ASSESSMENT") {
       navigation.navigate("Assessment", { taskId: task.id });
       return;
     }
-    if (task.status === "reassessment") {
+    if (task.learning_status === "LR-RETESTING") {
       navigation.navigate("Assessment", {
         taskId: task.id,
         reassessment: true
       });
       return;
     }
-    if (task.status === "completed") {
+    if (task.learning_status === "LR-COMPLETED") {
       navigation.navigate("Completion", { taskId: task.id });
       return;
     }
     setStarting(true);
     try {
-      if (task.status !== "learning") {
+      if (task.learning_status !== "LR-LEARNING") {
         await startLearning(task.id);
       }
       navigation.navigate("Learning", { taskId: task.id });
@@ -107,7 +102,7 @@ export function TrainingDetailScreen({ navigation, route }: Props) {
     );
   }
 
-  const blocked = blockedStatuses.includes(task.status);
+  const blocked = blockedStatuses.includes(task.task_status);
 
   return (
     <Screen
@@ -119,12 +114,12 @@ export function TrainingDetailScreen({ navigation, route }: Props) {
           contentStyle={styles.footerButton}
           onPress={() => void next()}
         >
-          {task.nextActionLabel}
+          {task.next_action_label}
         </Button>
       }
     >
       <View style={styles.top}>
-        <StatusChip status={task.status} />
+        <StatusChip status={blocked ? task.task_status : task.learning_status} />
         <View style={styles.deadlineRow}>
           <Icon source="clock-outline" size={16} color={colors.warning} />
           <Text variant="labelMedium" style={styles.deadline}>
@@ -137,13 +132,13 @@ export function TrainingDetailScreen({ navigation, route }: Props) {
           {task.name}
         </Text>
         <Text variant="bodyMedium" style={styles.muted}>
-          适用：{task.audienceLabel}
+          适用：{task.audience_label}
         </Text>
       </View>
 
       <TaskStateNotice
-        status={task.status}
-        reason={task.availabilityReason}
+        status={task.task_status}
+        reason={task.availability_reason ?? undefined}
         onRetry={() => {
           void reload();
           void reloadCourse();
@@ -155,11 +150,11 @@ export function TrainingDetailScreen({ navigation, route }: Props) {
           <View style={styles.progressTop}>
             <Text variant="titleSmall">个人进度</Text>
             <Text variant="titleMedium" style={styles.progressValue}>
-              {task.progress}%
+              {task.progress_percent}%
             </Text>
           </View>
           <ProgressBar
-            progress={task.progress / 100}
+            progress={task.progress_percent / 100}
             color={colors.brand}
             style={styles.progress}
           />
@@ -169,7 +164,7 @@ export function TrainingDetailScreen({ navigation, route }: Props) {
                 当前下一步
               </Text>
               <Text variant="titleMedium" style={styles.nextTitle}>
-                {task.nextActionLabel}
+                {task.next_action_label}
               </Text>
             </View>
             <Button
@@ -193,7 +188,7 @@ export function TrainingDetailScreen({ navigation, route }: Props) {
       <Card mode="outlined">
         <List.Item
           title="完成全部必修内容"
-          description={`预计学习 ${task.estimatedMinutes} 分钟，进度自动保存`}
+          description={`预计学习 ${task.estimated_minutes} 分钟，进度自动保存`}
           left={(props) => (
             <List.Icon {...props} icon="book-check-outline" />
           )}
@@ -249,8 +244,8 @@ export function TrainingDetailScreen({ navigation, route }: Props) {
             <View key={unit.id}>
               <List.Item
                 title={unit.title}
-                description={`${unit.durationMinutes} 分钟 · ${
-                  unit.riskLevel === "high" ? "高风险知识" : "必修"
+                description={`${unit.duration_minutes} 分钟 · ${
+                  unit.risk_level === "high" ? "高风险知识" : "必修"
                 }`}
                 left={() => (
                   <View style={styles.index}>
@@ -260,12 +255,12 @@ export function TrainingDetailScreen({ navigation, route }: Props) {
                 right={() => (
                   <Icon
                     source={
-                      unit.riskLevel === "high"
+                      unit.risk_level === "high"
                         ? "shield-alert-outline"
                         : "book-outline"
                     }
                     color={
-                      unit.riskLevel === "high" ? colors.risk : colors.brand
+                      unit.risk_level === "high" ? colors.risk : colors.brand
                     }
                     size={22}
                   />

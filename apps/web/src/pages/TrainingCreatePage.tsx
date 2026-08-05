@@ -55,7 +55,7 @@ export function TrainingCreatePage() {
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [showExecution, setShowExecution] = useState(false);
-  const taskStatus = usePrototypeStore((state) => state.taskStatus);
+  const taskStatus = usePrototypeStore((state) => state.task_status);
   const scenario = usePrototypeStore((state) => state.scenario);
   const saveDraft = usePrototypeStore((state) => state.saveDraft);
   const completeAnalysis = usePrototypeStore(
@@ -71,11 +71,11 @@ export function TrainingCreatePage() {
     () => ({
       name: trainingTask.name,
       objective: trainingTask.objective,
-      departments: trainingTask.departments,
-      audience: trainingTask.audience,
+      departments: trainingTask.department_names ?? [],
+      audience: trainingTask.audience_labels ?? [],
       deadline: dayjs(trainingTask.deadline),
-      mandatoryRequirements: trainingTask.mandatoryRequirements,
-      highRiskRequirements: trainingTask.highRiskRequirements,
+      mandatoryRequirements: trainingTask.mandatory_requirements ?? [],
+      highRiskRequirements: trainingTask.high_risk_requirements ?? [],
       knowledgeScope: [
         "企业基础制度",
         "智信部岗位知识",
@@ -100,12 +100,12 @@ export function TrainingCreatePage() {
       await services.training.createTask({
         name: values.name,
         objective: values.objective,
-        departments: values.departments,
-        audience: values.audience,
+        department_names: values.departments,
+        audience_labels: values.audience,
         deadline: values.deadline.format("YYYY-MM-DD"),
-        mandatoryRequirements: values.mandatoryRequirements,
-        highRiskRequirements: values.highRiskRequirements,
-        riskLevel: "high"
+        mandatory_requirements: values.mandatoryRequirements,
+        high_risk_requirements: values.highRiskRequirements,
+        risk_level: "high"
       });
       if (scenario === "information_missing") {
         message.warning("信息不足，已列出缺失项，Agent 尚未启动。");
@@ -121,7 +121,7 @@ export function TrainingCreatePage() {
     }
   };
 
-  if (showExecution || taskStatus === "agent_analyzing") {
+  if (showExecution || taskStatus === "TB-ANALYZING") {
     return (
       <>
         <PageHeader

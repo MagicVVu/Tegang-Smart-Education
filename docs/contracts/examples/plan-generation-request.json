@@ -1,0 +1,18 @@
+{
+  "actor_id": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "data": {
+    "candidate_count": 2,
+    "constraints": [
+      "high-risk knowledge requires approval"
+    ],
+    "required_course_ids": [
+      "course_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    ],
+    "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "training_goal_id": "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+  },
+  "idempotency_key": "idem_plan_generate_20260804_001",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.0.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

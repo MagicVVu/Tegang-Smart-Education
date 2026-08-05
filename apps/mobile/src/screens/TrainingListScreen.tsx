@@ -15,7 +15,7 @@ import { SectionHeader } from "../components/SectionHeader";
 import { StatePanel } from "../components/StatePanel";
 import { StatusChip } from "../components/StatusChip";
 import { useMobileStore } from "../stores/mobile-store";
-import type { EmployeeTaskFilter, EmployeeTrainingTask } from "../services";
+import type { ContractTrainingTaskView, EmployeeTaskFilter } from "../services";
 import type { RootStackParamList } from "../navigation/types";
 
 type Props = NativeStackScreenProps<RootStackParamList, "TrainingList">;
@@ -52,22 +52,22 @@ export function TrainingListScreen({ navigation }: Props) {
     void loadTasks(filter);
   }, [filter, loadTasks]);
 
-  const openTask = (task: EmployeeTrainingTask) => {
-    if (task.status === "awaiting_assessment") {
+  const openTask = (task: ContractTrainingTaskView) => {
+    if (task.learning_status === "LR-WAIT-ASSESSMENT") {
       navigation.navigate("Assessment", { taskId: task.id });
     } else if (
-      task.status === "assessment_failed" ||
-      task.status === "remedial_learning"
+      task.learning_status === "LR-NOT-MET" ||
+      task.learning_status === "LR-REMEDIAL"
     ) {
       navigation.navigate("Remedial", { taskId: task.id });
-    } else if (task.status === "reassessment") {
+    } else if (task.learning_status === "LR-RETESTING") {
       navigation.navigate("Assessment", {
         taskId: task.id,
         reassessment: true
       });
-    } else if (task.status === "completed") {
+    } else if (task.learning_status === "LR-COMPLETED") {
       navigation.navigate("Completion", { taskId: task.id });
-    } else if (task.status === "learning") {
+    } else if (task.learning_status === "LR-LEARNING") {
       navigation.navigate("Learning", { taskId: task.id });
     } else {
       navigation.navigate("TrainingDetail", { taskId: task.id });
@@ -123,7 +123,7 @@ export function TrainingListScreen({ navigation }: Props) {
             <Card key={task.id} mode="contained" style={styles.card}>
               <Card.Content style={styles.content}>
                 <View style={styles.top}>
-                  <StatusChip status={task.status} />
+                  <StatusChip status={task.learning_status} />
                   <View style={styles.deadlineRow}>
                     <Icon
                       source="clock-outline"
@@ -140,10 +140,10 @@ export function TrainingListScreen({ navigation }: Props) {
                     {task.name}
                   </Text>
                   <Text variant="bodySmall" style={styles.muted}>
-                    {task.audienceLabel} · 预计 {task.estimatedMinutes} 分钟
+                    {task.audience_label} · 预计 {task.estimated_minutes} 分钟
                   </Text>
                 </View>
-                {task.riskLevel === "high" ? (
+                {task.risk_level === "high" ? (
                   <View style={styles.riskRow}>
                     <Icon
                       source="shield-alert-outline"
@@ -157,19 +157,19 @@ export function TrainingListScreen({ navigation }: Props) {
                 ) : null}
                 <View style={styles.progressRow}>
                   <ProgressBar
-                    progress={task.progress / 100}
+                    progress={task.progress_percent / 100}
                     color={colors.brand}
                     style={styles.progress}
                   />
-                  <Text variant="labelMedium">{task.progress}%</Text>
+                  <Text variant="labelMedium">{task.progress_percent}%</Text>
                 </View>
-                {task.availabilityReason ? (
+                {task.availability_reason ? (
                   <Text variant="bodySmall" style={styles.reason}>
-                    {task.availabilityReason}
+                    {task.availability_reason}
                   </Text>
                 ) : null}
                 <Button mode="contained" onPress={() => openTask(task)}>
-                  {task.nextActionLabel}
+                  {task.next_action_label}
                 </Button>
               </Card.Content>
             </Card>

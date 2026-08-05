@@ -1,0 +1,20 @@
+{
+  "confidence": 0.82,
+  "course_ids": [
+    "course_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+  ],
+  "human_review_required": true,
+  "knowledge_citation_ids": [
+    "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+  ],
+  "proposed_plan_id": "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "risk_level": "high",
+  "schema_version": "2.0.0",
+  "selection_reason": "Shortens the exposure window while preserving department-specific paths.",
+  "summary": "Front-load high-risk knowledge before operational learning.",
+  "title": "Risk-first differentiated path",
+  "training_goal_id": "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "warnings": [
+    "Formal publication remains blocked before approval."
+  ]
+}

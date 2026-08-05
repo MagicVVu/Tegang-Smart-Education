@@ -10,7 +10,7 @@ import {
   Surface,
   Text
 } from "react-native-paper";
-import type { TrainingStatus } from "@tegang/types";
+import type { ContractTrainingTaskStatus } from "@tegang/types";
 import { colors, radii, spacing } from "@tegang/design-tokens";
 import { Screen } from "../components/Screen";
 import { SectionHeader } from "../components/SectionHeader";
@@ -22,13 +22,13 @@ import type { RootStackParamList } from "../navigation/types";
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
-const blockedStatuses: TrainingStatus[] = [
-  "information_missing",
-  "awaiting_approval",
-  "execution_failed",
-  "paused",
-  "human_takeover",
-  "cancelled"
+const blockedStatuses: ContractTrainingTaskStatus[] = [
+  "TB-NEED-INPUT",
+  "TB-WAIT-APPROVAL",
+  "TB-FAILED",
+  "TB-PAUSED",
+  "TB-MANUAL",
+  "TB-CANCELLED"
 ];
 
 export function HomeScreen() {
@@ -47,29 +47,29 @@ export function HomeScreen() {
 
   const openNext = () => {
     if (!task) return;
-    if (task.status === "learning") {
+    if (task.learning_status === "LR-LEARNING") {
       navigation.navigate("Learning", { taskId: task.id });
       return;
     }
-    if (task.status === "awaiting_assessment") {
+    if (task.learning_status === "LR-WAIT-ASSESSMENT") {
       navigation.navigate("Assessment", { taskId: task.id });
       return;
     }
     if (
-      task.status === "assessment_failed" ||
-      task.status === "remedial_learning"
+      task.learning_status === "LR-NOT-MET" ||
+      task.learning_status === "LR-REMEDIAL"
     ) {
       navigation.navigate("Remedial", { taskId: task.id });
       return;
     }
-    if (task.status === "reassessment") {
+    if (task.learning_status === "LR-RETESTING") {
       navigation.navigate("Assessment", {
         taskId: task.id,
         reassessment: true
       });
       return;
     }
-    if (task.status === "completed") {
+    if (task.learning_status === "LR-COMPLETED") {
       navigation.navigate("Completion", { taskId: task.id });
       return;
     }
@@ -110,7 +110,7 @@ export function HomeScreen() {
         <View style={styles.header}>
           <View>
             <Text variant="bodyMedium" style={styles.muted}>
-              {employee?.department ?? "员工培训"}
+              {employee?.department_name ?? "员工培训"}
             </Text>
             <Text variant="headlineSmall" style={styles.title}>
               我的培训
@@ -128,10 +128,11 @@ export function HomeScreen() {
     );
   }
 
-  const blocked = blockedStatuses.includes(task.status);
+  const blocked = blockedStatuses.includes(task.task_status);
+  const displayStatus = blocked ? task.task_status : task.learning_status;
   const remainingMinutes = Math.max(
     0,
-    Math.round(task.estimatedMinutes * (1 - task.progress / 100)),
+    Math.round(task.estimated_minutes * (1 - task.progress_percent / 100)),
   );
 
   return (
@@ -139,7 +140,7 @@ export function HomeScreen() {
       <View style={styles.header}>
         <View style={styles.headerCopy}>
           <Text variant="bodyMedium" style={styles.muted}>
-            {employee?.displayName ?? "员工"} · {employee?.department}
+            {employee?.display_name ?? "员工"} · {employee?.department_name}
           </Text>
           <Text variant="headlineSmall" style={styles.title}>
             我的培训
@@ -155,15 +156,15 @@ export function HomeScreen() {
       </View>
 
       <TaskStateNotice
-        status={task.status}
-        reason={task.availabilityReason}
+        status={task.task_status}
+        reason={task.availability_reason ?? undefined}
         onRetry={() => void loadCurrentTask()}
       />
 
       <Card style={styles.primaryCard} mode="contained">
         <Card.Content style={styles.cardContent}>
           <View style={styles.cardTop}>
-            <StatusChip status={task.status} />
+            <StatusChip status={displayStatus} />
             <View style={styles.deadlineWrap}>
               <Icon source="clock-outline" size={16} color={colors.warning} />
               <Text variant="labelMedium" style={styles.deadline}>
@@ -176,17 +177,17 @@ export function HomeScreen() {
               {task.name}
             </Text>
             <Text variant="bodyMedium" style={styles.description}>
-              {task.department} · 高风险知识需单独达标
+              {task.department_name} · 高风险知识需单独达标
             </Text>
           </View>
           <View style={styles.progressHeading}>
             <Text variant="labelLarge">当前进度</Text>
             <Text variant="titleMedium" style={styles.progressValue}>
-              {task.progress}%
+              {task.progress_percent}%
             </Text>
           </View>
           <ProgressBar
-            progress={task.progress / 100}
+            progress={task.progress_percent / 100}
             color={colors.brand}
             style={styles.progress}
           />
@@ -197,7 +198,7 @@ export function HomeScreen() {
                 : "学习内容已完成"}
             </Text>
             <Text variant="bodySmall" style={styles.muted}>
-              共 {task.estimatedMinutes} 分钟
+              共 {task.estimated_minutes} 分钟
             </Text>
           </View>
           <View style={styles.nextAction}>
@@ -209,7 +210,7 @@ export function HomeScreen() {
                 下一步
               </Text>
               <Text variant="titleMedium" style={styles.nextTitle}>
-                {task.nextActionLabel}
+                {task.next_action_label}
               </Text>
             </View>
           </View>
@@ -220,7 +221,7 @@ export function HomeScreen() {
             disabled={blocked}
             onPress={openNext}
           >
-            {task.nextActionLabel}
+            {task.next_action_label}
           </Button>
           {blocked ? (
             <Button

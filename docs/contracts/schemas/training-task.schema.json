@@ -1,0 +1,296 @@
+{
+  "$defs": {
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    },
+    "TrainingTaskStatus": {
+      "description": "Training business states from chapter 15.8.",
+      "enum": [
+        "TB-DRAFT",
+        "TB-NEED-INPUT",
+        "TB-ANALYZING",
+        "TB-PLAN-READY",
+        "TB-WAIT-CONFIRM",
+        "TB-WAIT-APPROVAL",
+        "TB-APPROVAL-EDIT",
+        "TB-APPROVAL-REJECTED",
+        "TB-WAIT-PUBLISH",
+        "TB-IN-PROGRESS",
+        "TB-COMPLETED",
+        "TB-FAILED",
+        "TB-PAUSED",
+        "TB-MANUAL",
+        "TB-CANCELLED"
+      ],
+      "title": "TrainingTaskStatus",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:training-task",
+  "additionalProperties": false,
+  "description": "Executable training assignment governed by chapter 15 business states.",
+  "properties": {
+    "approval_id": {
+      "anyOf": [
+        {
+          "description": "Immutable external approval ID: approval_<ULID>.",
+          "examples": [
+            "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^approval_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approval Id"
+    },
+    "confidence": {
+      "anyOf": [
+        {
+          "description": "Model or retrieval confidence in the closed interval [0, 1].",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confidence"
+    },
+    "created_at": {
+      "description": "Creation time with timezone; serialized as ISO 8601.",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "created_by": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Created By"
+    },
+    "current_plan_id": {
+      "anyOf": [
+        {
+          "description": "Immutable external training plan ID: plan_<ULID>.",
+          "examples": [
+            "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Current Plan Id"
+    },
+    "deadline": {
+      "format": "date",
+      "title": "Deadline",
+      "type": "string"
+    },
+    "entity_version": {
+      "default": 1,
+      "description": "Optimistic entity revision, independent of schema_version.",
+      "minimum": 1,
+      "title": "Entity Version",
+      "type": "integer"
+    },
+    "id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "anyOf": [
+        {
+          "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+          "examples": [
+            "idem_training_create_20260804_001"
+          ],
+          "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Idempotency Key"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
+      "title": "Metadata",
+      "type": "object"
+    },
+    "name": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "objective": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Objective",
+      "type": "string"
+    },
+    "progress_percent": {
+      "default": 0,
+      "description": "Percentage value in the closed interval [0, 100].",
+      "maximum": 100.0,
+      "minimum": 0.0,
+      "title": "Progress Percent",
+      "type": "number"
+    },
+    "request_id": {
+      "anyOf": [
+        {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Request Id"
+    },
+    "risk_level": {
+      "$ref": "#/$defs/RiskLevel",
+      "default": "low"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/TrainingTaskStatus"
+    },
+    "target_department_ids": {
+      "items": {
+        "description": "Immutable external department ID: dept_<ULID>.",
+        "examples": [
+          "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Target Department Ids",
+      "type": "array"
+    },
+    "target_employee_profile_ids": {
+      "items": {
+        "description": "Immutable external employee profile ID: emp_<ULID>.",
+        "examples": [
+          "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Target Employee Profile Ids",
+      "type": "array"
+    },
+    "trace_id": {
+      "anyOf": [
+        {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Trace Id"
+    },
+    "training_goal_id": {
+      "description": "Immutable external training goal ID: goal_<ULID>.",
+      "examples": [
+        "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^goal_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Training Goal Id",
+      "type": "string"
+    },
+    "updated_at": {
+      "description": "Last update time with timezone; serialized as ISO 8601.",
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "updated_by": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Updated By"
+    }
+  },
+  "required": [
+    "created_at",
+    "updated_at",
+    "id",
+    "status",
+    "training_goal_id",
+    "name",
+    "objective",
+    "deadline"
+  ],
+  "title": "TrainingTask",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.training.TrainingTask"
+}

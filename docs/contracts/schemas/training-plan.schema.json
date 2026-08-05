@@ -1,0 +1,469 @@
+{
+  "$defs": {
+    "PlanStatus": {
+      "enum": [
+        "draft",
+        "candidate",
+        "confirmed",
+        "superseded"
+      ],
+      "title": "PlanStatus",
+      "type": "string"
+    },
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    },
+    "RuleCheckResult": {
+      "enum": [
+        "passed",
+        "warning",
+        "blocked"
+      ],
+      "title": "RuleCheckResult",
+      "type": "string"
+    },
+    "RuleCheckSummary": {
+      "additionalProperties": false,
+      "description": "Deterministic rule result referenced by a plan or task.",
+      "properties": {
+        "confidence": {
+          "anyOf": [
+            {
+              "description": "Model or retrieval confidence in the closed interval [0, 1].",
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "created_at": {
+          "description": "Creation time with timezone; serialized as ISO 8601.",
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "created_by": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Created By"
+        },
+        "detail": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Detail",
+          "type": "string"
+        },
+        "deterministic": {
+          "default": true,
+          "title": "Deterministic",
+          "type": "boolean"
+        },
+        "entity_version": {
+          "default": 1,
+          "description": "Optimistic entity revision, independent of schema_version.",
+          "minimum": 1,
+          "title": "Entity Version",
+          "type": "integer"
+        },
+        "id": {
+          "pattern": "^rule_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "idempotency_key": {
+          "anyOf": [
+            {
+              "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+              "examples": [
+                "idem_training_create_20260804_001"
+              ],
+              "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idempotency Key"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
+          "title": "Metadata",
+          "type": "object"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "description": "Single request ID: req_<ULID>.",
+              "examples": [
+                "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Id"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/RiskLevel",
+          "default": "low"
+        },
+        "rule_code": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Rule Code",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "2.0.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/RuleCheckResult"
+        },
+        "trace_id": {
+          "anyOf": [
+            {
+              "description": "Cross-service trace ID: trc_<ULID>.",
+              "examples": [
+                "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trace Id"
+        },
+        "updated_at": {
+          "description": "Last update time with timezone; serialized as ISO 8601.",
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "updated_by": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Updated By"
+        }
+      },
+      "required": [
+        "created_at",
+        "updated_at",
+        "id",
+        "status",
+        "rule_code",
+        "label",
+        "detail"
+      ],
+      "title": "RuleCheckSummary",
+      "type": "object"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:training-plan",
+  "additionalProperties": false,
+  "description": "Versioned candidate or confirmed plan for one training goal.",
+  "properties": {
+    "approval_id": {
+      "anyOf": [
+        {
+          "description": "Immutable external approval ID: approval_<ULID>.",
+          "examples": [
+            "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^approval_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approval Id"
+    },
+    "candidate_label": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Candidate Label",
+      "type": "string"
+    },
+    "confidence": {
+      "anyOf": [
+        {
+          "description": "Model or retrieval confidence in the closed interval [0, 1].",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confidence"
+    },
+    "course_ids": {
+      "items": {
+        "description": "Immutable external course ID: course_<ULID>.",
+        "examples": [
+          "course_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^course_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Course Ids",
+      "type": "array"
+    },
+    "created_at": {
+      "description": "Creation time with timezone; serialized as ISO 8601.",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "created_by": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Created By"
+    },
+    "entity_version": {
+      "default": 1,
+      "description": "Optimistic entity revision, independent of schema_version.",
+      "minimum": 1,
+      "title": "Entity Version",
+      "type": "integer"
+    },
+    "id": {
+      "description": "Immutable external training plan ID: plan_<ULID>.",
+      "examples": [
+        "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "anyOf": [
+        {
+          "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+          "examples": [
+            "idem_training_create_20260804_001"
+          ],
+          "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Idempotency Key"
+    },
+    "knowledge_citation_ids": {
+      "items": {
+        "description": "Immutable external knowledge citation ID: know_<ULID>.",
+        "examples": [
+          "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^know_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Knowledge Citation Ids",
+      "type": "array"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
+      "title": "Metadata",
+      "type": "object"
+    },
+    "request_id": {
+      "anyOf": [
+        {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Request Id"
+    },
+    "risk_level": {
+      "$ref": "#/$defs/RiskLevel",
+      "default": "low"
+    },
+    "rule_checks": {
+      "items": {
+        "$ref": "#/$defs/RuleCheckSummary"
+      },
+      "title": "Rule Checks",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selection_reason": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Selection Reason",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/PlanStatus"
+    },
+    "summary": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "trace_id": {
+      "anyOf": [
+        {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Trace Id"
+    },
+    "training_goal_id": {
+      "description": "Immutable external training goal ID: goal_<ULID>.",
+      "examples": [
+        "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^goal_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Training Goal Id",
+      "type": "string"
+    },
+    "updated_at": {
+      "description": "Last update time with timezone; serialized as ISO 8601.",
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "updated_by": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Updated By"
+    }
+  },
+  "required": [
+    "created_at",
+    "updated_at",
+    "id",
+    "status",
+    "training_goal_id",
+    "title",
+    "candidate_label",
+    "summary",
+    "selection_reason",
+    "course_ids"
+  ],
+  "title": "TrainingPlan",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.training.TrainingPlan"
+}

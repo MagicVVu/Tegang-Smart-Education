@@ -1,0 +1,58 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:plan-generation-input",
+  "additionalProperties": false,
+  "properties": {
+    "candidate_count": {
+      "default": 2,
+      "maximum": 5,
+      "minimum": 1,
+      "title": "Candidate Count",
+      "type": "integer"
+    },
+    "constraints": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Constraints",
+      "type": "array"
+    },
+    "required_course_ids": {
+      "items": {
+        "description": "Immutable external course ID: course_<ULID>.",
+        "examples": [
+          "course_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^course_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Required Course Ids",
+      "type": "array"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "training_goal_id": {
+      "description": "Immutable external training goal ID: goal_<ULID>.",
+      "examples": [
+        "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^goal_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Training Goal Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "training_goal_id",
+    "task_id"
+  ],
+  "title": "PlanGenerationInput",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.api.PlanGenerationInput"
+}

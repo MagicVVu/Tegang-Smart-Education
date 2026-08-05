@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import type { KnowledgeCitation } from "@tegang/types";
+import type { ContractKnowledgeCitation } from "@tegang/types";
 import { mobileServices } from "../services";
 
 export function useKnowledgeCitations(
   visible: boolean,
   citationIds?: readonly string[],
 ) {
-  const [citations, setCitations] = useState<KnowledgeCitation[]>([]);
+  const [citations, setCitations] = useState<ContractKnowledgeCitation[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

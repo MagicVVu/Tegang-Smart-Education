@@ -57,12 +57,12 @@ export function KnowledgeDrawer({
             <div className="citation-detail">
               <Flex justify="space-between" align="center" gap={12}>
                 <Typography.Title level={5}>
-                  {citation.documentName}
+                  {citation.document_name}
                 </Typography.Title>
-                <Tag color={citation.validity === "effective" ? "green" : "red"}>
-                  {citation.validity === "effective"
+                <Tag color={citation.status === "effective" ? "green" : "red"}>
+                  {citation.status === "effective"
                     ? "现行有效"
-                    : citation.validity === "conflict"
+                    : citation.status === "conflict"
                       ? "版本冲突"
                       : "已过期"}
                 </Tag>
@@ -71,11 +71,11 @@ export function KnowledgeDrawer({
                 column={1}
                 size="small"
                 items={[
-                  { key: "version", label: "版本", children: citation.version },
+                  { key: "version", label: "版本", children: citation.document_version },
                   {
                     key: "department",
                     label: "所属范围",
-                    children: citation.department
+                    children: (citation.authorized_scopes ?? []).join("、")
                   },
                   { key: "section", label: "章节", children: citation.section }
                 ]}

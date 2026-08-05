@@ -1,0 +1,61 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:assessment-draft-view",
+  "additionalProperties": false,
+  "properties": {
+    "answers": {
+      "additionalProperties": {
+        "items": {
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "title": "Answers",
+      "type": "object"
+    },
+    "attempt": {
+      "minimum": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "saved_at": {
+      "format": "date-time",
+      "title": "Saved At",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "storage": {
+      "enum": [
+        "local",
+        "synced"
+      ],
+      "title": "Storage",
+      "type": "string"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "attempt",
+    "answers",
+    "saved_at",
+    "storage"
+  ],
+  "title": "AssessmentDraftView",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.experience.AssessmentDraftView"
+}

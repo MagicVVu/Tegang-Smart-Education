@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { mobileServices, type EmployeeTrainingTask } from "../services";
+import { mobileServices, type ContractTrainingTaskView } from "../services";
 
 export function useTask(taskId: string) {
-  const [task, setTask] = useState<EmployeeTrainingTask | null>(null);
+  const [task, setTask] = useState<ContractTrainingTaskView | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

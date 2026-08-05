@@ -1,0 +1,279 @@
+{
+  "$defs": {
+    "RetestStatus": {
+      "enum": [
+        "waiting",
+        "in_progress",
+        "completed",
+        "manual",
+        "cancelled"
+      ],
+      "title": "RetestStatus",
+      "type": "string"
+    },
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:retest",
+  "additionalProperties": false,
+  "description": "Retest scheduled after a remediation intervention.",
+  "properties": {
+    "assessment_session_id": {
+      "anyOf": [
+        {
+          "description": "Immutable assessment session ID: assessment_<ULID>.",
+          "examples": [
+            "assessment_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^assessment_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Assessment Session Id"
+    },
+    "completed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Completed At"
+    },
+    "confidence": {
+      "anyOf": [
+        {
+          "description": "Model or retrieval confidence in the closed interval [0, 1].",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confidence"
+    },
+    "created_at": {
+      "description": "Creation time with timezone; serialized as ISO 8601.",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "created_by": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Created By"
+    },
+    "employee_profile_id": {
+      "description": "Immutable external employee profile ID: emp_<ULID>.",
+      "examples": [
+        "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Employee Profile Id",
+      "type": "string"
+    },
+    "entity_version": {
+      "default": 1,
+      "description": "Optimistic entity revision, independent of schema_version.",
+      "minimum": 1,
+      "title": "Entity Version",
+      "type": "integer"
+    },
+    "id": {
+      "description": "Immutable retest ID: retest_<ULID>.",
+      "examples": [
+        "retest_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^retest_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "anyOf": [
+        {
+          "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+          "examples": [
+            "idem_training_create_20260804_001"
+          ],
+          "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Idempotency Key"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
+      "title": "Metadata",
+      "type": "object"
+    },
+    "remediation_id": {
+      "description": "Immutable remediation intervention ID: intervention_<ULID>.",
+      "examples": [
+        "intervention_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^intervention_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Remediation Id",
+      "type": "string"
+    },
+    "request_id": {
+      "anyOf": [
+        {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Request Id"
+    },
+    "result_id": {
+      "anyOf": [
+        {
+          "description": "Immutable assessment result ID: assessment_result_<ULID>.",
+          "examples": [
+            "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^assessment_result_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Result Id"
+    },
+    "risk_level": {
+      "$ref": "#/$defs/RiskLevel",
+      "default": "low"
+    },
+    "scheduled_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Scheduled At"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/RetestStatus"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "trace_id": {
+      "anyOf": [
+        {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Trace Id"
+    },
+    "updated_at": {
+      "description": "Last update time with timezone; serialized as ISO 8601.",
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "updated_by": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Updated By"
+    }
+  },
+  "required": [
+    "created_at",
+    "updated_at",
+    "id",
+    "status",
+    "remediation_id",
+    "task_id",
+    "employee_profile_id"
+  ],
+  "title": "Retest",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.assessment.Retest"
+}

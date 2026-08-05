@@ -1,0 +1,285 @@
+{
+  "$defs": {
+    "LearningRecordStatus": {
+      "description": "Employee learning states from chapter 15.8.",
+      "enum": [
+        "LR-PENDING",
+        "LR-LEARNING",
+        "LR-WAIT-ASSESSMENT",
+        "LR-NOT-MET",
+        "LR-REMEDIAL",
+        "LR-WAIT-RETEST",
+        "LR-RETESTING",
+        "LR-COMPLETED",
+        "LR-PAUSED"
+      ],
+      "title": "LearningRecordStatus",
+      "type": "string"
+    },
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    },
+    "TrainingTaskStatus": {
+      "description": "Training business states from chapter 15.8.",
+      "enum": [
+        "TB-DRAFT",
+        "TB-NEED-INPUT",
+        "TB-ANALYZING",
+        "TB-PLAN-READY",
+        "TB-WAIT-CONFIRM",
+        "TB-WAIT-APPROVAL",
+        "TB-APPROVAL-EDIT",
+        "TB-APPROVAL-REJECTED",
+        "TB-WAIT-PUBLISH",
+        "TB-IN-PROGRESS",
+        "TB-COMPLETED",
+        "TB-FAILED",
+        "TB-PAUSED",
+        "TB-MANUAL",
+        "TB-CANCELLED"
+      ],
+      "title": "TrainingTaskStatus",
+      "type": "string"
+    },
+    "TrainingTaskView": {
+      "additionalProperties": false,
+      "description": "Direct client read contract with task and employee-learning states separated.",
+      "properties": {
+        "approval_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external approval ID: approval_<ULID>.",
+              "examples": [
+                "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^approval_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approval Id"
+        },
+        "audience_label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Audience Label",
+          "type": "string"
+        },
+        "audience_labels": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Audience Labels",
+          "type": "array"
+        },
+        "availability_reason": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Availability Reason"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "current_plan_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external training plan ID: plan_<ULID>.",
+              "examples": [
+                "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Current Plan Id"
+        },
+        "deadline": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Deadline",
+          "type": "string"
+        },
+        "department_name": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Department Name",
+          "type": "string"
+        },
+        "department_names": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Department Names",
+          "type": "array"
+        },
+        "estimated_minutes": {
+          "maximum": 10080,
+          "minimum": 1,
+          "title": "Estimated Minutes",
+          "type": "integer"
+        },
+        "high_risk_requirements": {
+          "items": {
+            "type": "string"
+          },
+          "title": "High Risk Requirements",
+          "type": "array"
+        },
+        "id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "learning_status": {
+          "$ref": "#/$defs/LearningRecordStatus"
+        },
+        "mandatory_requirements": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Mandatory Requirements",
+          "type": "array"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "next_action_label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Next Action Label",
+          "type": "string"
+        },
+        "objective": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Objective",
+          "type": "string"
+        },
+        "progress_percent": {
+          "description": "Percentage value in the closed interval [0, 100].",
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Progress Percent",
+          "type": "number"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/RiskLevel"
+        },
+        "schema_version": {
+          "default": "2.0.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "task_status": {
+          "$ref": "#/$defs/TrainingTaskStatus"
+        },
+        "training_goal_id": {
+          "description": "Immutable external training goal ID: goal_<ULID>.",
+          "examples": [
+            "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^goal_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Training Goal Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "training_goal_id",
+        "task_status",
+        "learning_status",
+        "name",
+        "objective",
+        "department_name",
+        "audience_label",
+        "deadline",
+        "risk_level",
+        "progress_percent",
+        "estimated_minutes",
+        "next_action_label",
+        "created_at"
+      ],
+      "title": "TrainingTaskView",
+      "type": "object"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:learning-progress-view",
+  "additionalProperties": false,
+  "properties": {
+    "attempt": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Attempt"
+    },
+    "current_unit_index": {
+      "minimum": 0,
+      "title": "Current Unit Index",
+      "type": "integer"
+    },
+    "saved_at": {
+      "format": "date-time",
+      "title": "Saved At",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "task": {
+      "$ref": "#/$defs/TrainingTaskView"
+    }
+  },
+  "required": [
+    "task",
+    "current_unit_index",
+    "saved_at"
+  ],
+  "title": "LearningProgressView",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.experience.LearningProgressView"
+}

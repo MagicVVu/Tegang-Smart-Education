@@ -1,0 +1,76 @@
+{
+  "$defs": {
+    "TutorAnswerKind": {
+      "enum": [
+        "supported",
+        "refused",
+        "manual"
+      ],
+      "title": "TutorAnswerKind",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:tutor-answer-view",
+  "additionalProperties": false,
+  "properties": {
+    "answer": {
+      "maxLength": 8000,
+      "minLength": 1,
+      "title": "Answer",
+      "type": "string"
+    },
+    "high_risk_notice": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "High Risk Notice"
+    },
+    "id": {
+      "description": "Immutable tutor answer ID: answer_<ULID>.",
+      "examples": [
+        "answer_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^answer_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/TutorAnswerKind"
+    },
+    "knowledge_citation_ids": {
+      "items": {
+        "description": "Immutable external knowledge citation ID: know_<ULID>.",
+        "examples": [
+          "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^know_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Knowledge Citation Ids",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "answer",
+    "kind"
+  ],
+  "title": "TutorAnswerView",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.experience.TutorAnswerView"
+}

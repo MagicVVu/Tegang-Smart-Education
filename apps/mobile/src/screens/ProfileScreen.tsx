@@ -47,10 +47,10 @@ export function ProfileScreen() {
           />
           <View style={styles.profileCopy}>
             <Text variant="titleLarge" style={styles.name}>
-              {employee?.displayName ?? "员工"}
+              {employee?.display_name ?? "员工"}
             </Text>
             <Text variant="bodyMedium" style={styles.profileMeta}>
-              {employee?.department} · {employee?.title}
+              {employee?.department_name} · {employee?.job_title}
             </Text>
             <View style={styles.verified}>
               <Icon
@@ -95,11 +95,11 @@ export function ProfileScreen() {
       ) : (
         <Card mode="outlined">
           {records.map((record, index) => (
-            <View key={record.id}>
+            <View key={record.task_id}>
               <List.Item
-                title={record.taskName}
-                description={`${record.resultSummary}${
-                  record.completedAt ? ` · ${record.completedAt}` : ""
+                title={record.task_name}
+                description={`${record.result_summary}${
+                  record.completed_at ? ` · ${record.completed_at}` : ""
                 }`}
                 titleNumberOfLines={2}
                 descriptionNumberOfLines={2}
@@ -107,12 +107,12 @@ export function ProfileScreen() {
                   <List.Icon
                     {...props}
                     icon={
-                      record.status === "completed"
+                      record.learning_status === "LR-COMPLETED"
                         ? "check-circle-outline"
                         : "progress-clock"
                     }
                     color={
-                      record.status === "completed"
+                      record.learning_status === "LR-COMPLETED"
                         ? colors.success
                         : colors.brand
                     }

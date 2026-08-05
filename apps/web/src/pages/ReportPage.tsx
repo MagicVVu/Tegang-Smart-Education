@@ -38,7 +38,7 @@ import { usePrototypeStore } from "../stores/prototype-store";
 export function ReportPage() {
   const navigate = useNavigate();
   const role = usePrototypeStore((state) => state.role);
-  const taskStatus = usePrototypeStore((state) => state.taskStatus);
+  const taskStatus = usePrototypeStore((state) => state.task_status);
   const [exporting, setExporting] = useState(false);
   const [reportStatus, setReportStatus] = useState<
     "draft" | "awaiting_confirmation" | "confirmed"
@@ -115,11 +115,7 @@ export function ReportPage() {
               覆盖智信部与炼钢生产部新员工 · 目标期限 2026-08-15
             </Typography.Paragraph>
           </div>
-          <StatusTag
-            status={
-              taskStatus === "completed" ? "completed" : "executing"
-            }
-          />
+          <StatusTag status={taskStatus} />
         </Flex>
         <Descriptions
           bordered
@@ -128,22 +124,22 @@ export function ReportPage() {
             {
               key: "completion",
               label: "任务完成",
-              children: `${reportSummary.completionRate}%`
+          children: `${reportSummary.completion_rate_percent}%`
             },
             {
               key: "pass",
               label: "首次达标",
-              children: `${reportSummary.assessmentPassRate}%`
+          children: `${reportSummary.assessment_pass_rate_percent}%`
             },
             {
               key: "remedial",
               label: "进入补训",
-              children: `${reportSummary.remedialCount} 人`
+          children: `${reportSummary.remedial_count} 人`
             },
             {
               key: "risk",
               label: "高风险干预",
-              children: `${reportSummary.highRiskInterventions} 次`
+          children: `${reportSummary.high_risk_intervention_count} 次`
             }
           ]}
         />
@@ -301,8 +297,8 @@ export function ReportPage() {
                 <List.Item>
                   <List.Item.Meta
                     avatar={<FileSearchOutlined />}
-                    title={`${item.documentName} ${item.version}`}
-                    description={`${item.section} · ${item.department}`}
+                    title={`${item.document_name} ${item.document_version}`}
+                    description={`${item.section} · ${(item.authorized_scopes ?? []).join("、")}`}
                   />
                   <Tag color="green">有效</Tag>
                 </List.Item>

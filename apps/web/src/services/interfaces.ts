@@ -1,17 +1,20 @@
-export type {
-  AgentTraceService,
-  ApprovalService,
-  AssessmentService,
-  TrainingService
-} from "@tegang/types";
 import type {
-  AgentRun,
-  DemoUser,
-  ReportSummary,
-  ServiceResponse,
-  TrainingPlan,
-  UserRole
+  ContractAgentRun,
+  ContractApiEnvelope,
+  ContractApproval,
+  ContractApprovalDecision,
+  ContractAssessmentQuestion,
+  ContractAssessmentResultView,
+  ContractPrototypeUserProfile,
+  ContractRealtimeEvent,
+  ContractReportSummary,
+  ContractTrainingPlanDetail,
+  ContractTrainingTaskStatus,
+  ContractTrainingTaskView,
+  ContractUserRole
 } from "@tegang/types";
+
+export type ServiceResponse<T> = ContractApiEnvelope & { data: T };
 
 export interface AuthCredentials {
   account: string;
@@ -19,82 +22,76 @@ export interface AuthCredentials {
 }
 
 export interface AuthSession {
-  user: DemoUser;
-  authenticatedAt: string;
-  expiresAt: string;
+  user: ContractPrototypeUserProfile;
+  authenticated_at: string;
+  expires_at: string;
 }
 
 export interface AuthService {
   login(credentials: AuthCredentials): Promise<ServiceResponse<AuthSession>>;
-  developmentLogin(role: UserRole): Promise<ServiceResponse<AuthSession>>;
-  listDevelopmentProfiles(): Promise<DemoUser[]>;
+  developmentLogin(role: ContractUserRole): Promise<ServiceResponse<AuthSession>>;
+  listDevelopmentProfiles(): Promise<ContractPrototypeUserProfile[]>;
+}
+
+export interface TrainingService {
+  listTasks(role: ContractUserRole): Promise<ServiceResponse<ContractTrainingTaskView[]>>;
+  getTask(task_id: string): Promise<ServiceResponse<ContractTrainingTaskView>>;
+  createTask(input: Partial<ContractTrainingTaskView>): Promise<ServiceResponse<ContractTrainingTaskView>>;
+  publishTask(task_id: string): Promise<ServiceResponse<ContractTrainingTaskView>>;
+}
+
+export interface ApprovalService {
+  getApproval(task_id: string): Promise<ServiceResponse<ContractApproval>>;
+  decide(
+    approval_id: string,
+    decision: ContractApprovalDecision,
+    comment: string,
+  ): Promise<ServiceResponse<ContractApproval>>;
+}
+
+export interface AssessmentService {
+  getQuestions(task_id: string): Promise<ServiceResponse<ContractAssessmentQuestion[]>>;
+  submit(
+    task_id: string,
+    answers: Record<string, number[]>,
+    attempt: number,
+  ): Promise<ServiceResponse<ContractAssessmentResultView>>;
 }
 
 export interface KnowledgeService {
   search(query: string): Promise<{
-    citationIds: string[];
+    knowledge_citation_ids: string[];
     refused: boolean;
     message: string;
   }>;
 }
 
 export interface TrainingPlanService {
-  list(taskId: string): Promise<ServiceResponse<TrainingPlan[]>>;
+  list(task_id: string): Promise<ServiceResponse<ContractTrainingPlanDetail[]>>;
   requestReplan(
-    taskId: string,
+    task_id: string,
     reason: string,
-    idempotencyKey: string,
-  ): Promise<
-    ServiceResponse<{
-      accepted: boolean;
-      runId: string;
-      status: "agent_analyzing";
-    }>
-  >;
+    idempotency_key: string,
+  ): Promise<ServiceResponse<{
+    accepted: boolean;
+    run_id: string;
+    status: Extract<ContractTrainingTaskStatus, "TB-ANALYZING">;
+  }>>;
 }
 
 export interface ReportService {
-  getSummary(taskId: string): Promise<ServiceResponse<ReportSummary>>;
-  requestExport(
-    taskId: string,
-    format: "pdf" | "xlsx",
-  ): Promise<
-    ServiceResponse<{
-      accepted: boolean;
-      operationId: string;
-      message: string;
-    }>
-  >;
-}
-
-export type AgentRunEventType =
-  | "AgentStageChanged"
-  | "SkillStarted"
-  | "SkillSucceeded"
-  | "SkillFailed"
-  | "RuleBlocked"
-  | "ApprovalRequired"
-  | "PlanReplanned"
-  | "RunRetried"
-  | "RunRolledBack"
-  | "HumanTakeoverRequired"
-  | "RunCompleted"
-  | "RunFailed";
-
-export interface AgentRunEvent {
-  id: string;
-  runId: string;
-  type: AgentRunEventType;
-  occurredAt: string;
-  summary: string;
-  checkpointId?: string;
-  retryable?: boolean;
+  getSummary(task_id: string): Promise<ServiceResponse<ContractReportSummary>>;
+  requestExport(task_id: string, format: "pdf" | "xlsx"): Promise<ServiceResponse<{
+    accepted: boolean;
+    operation_id: string;
+    message: string;
+  }>>;
 }
 
 export interface AgentRunService {
-  getRun(taskId: string): Promise<ServiceResponse<AgentRun>>;
-  getEvents(runId: string): Promise<ServiceResponse<AgentRunEvent[]>>;
-  retry(runId: string): Promise<ServiceResponse<AgentRun>>;
-  rollback(runId: string): Promise<ServiceResponse<AgentRun>>;
-  requestHumanTakeover(runId: string): Promise<ServiceResponse<AgentRun>>;
+  getRun(task_id: string): Promise<ServiceResponse<ContractAgentRun>>;
+  getEvents(run_id: string): Promise<ServiceResponse<ContractRealtimeEvent[]>>;
+  retry(run_id: string): Promise<ServiceResponse<ContractAgentRun>>;
+  rollback(run_id: string): Promise<ServiceResponse<ContractAgentRun>>;
+  requestHumanTakeover(run_id: string): Promise<ServiceResponse<ContractAgentRun>>;
 }

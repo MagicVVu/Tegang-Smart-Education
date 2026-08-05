@@ -1,0 +1,135 @@
+"""Stable registry used by schema, example, and TypeScript generation."""
+
+from __future__ import annotations
+
+from pydantic import BaseModel
+from .common import ApiEnvelope
+
+from .agent import (
+    AgentDecisionSummary,
+    AgentProgressPayload,
+    AgentRun,
+    AgentState,
+    AgentStepSummary,
+    ApprovalEventPayload,
+    ErrorEventPayload,
+    RealtimeEvent,
+)
+from .api import (
+    AgentStateResponse,
+    ApprovalResultResponse,
+    AssessmentResultResponse,
+    CreateTrainingTaskInput,
+    CreateTrainingTaskRequest,
+    CreateTrainingTaskResponse,
+    DifyPlanAgentOutput,
+    ErrorResponse,
+    PlanGenerationInput,
+    PlanGenerationRequest,
+    PlanGenerationResponse,
+    RealtimeEventResponse,
+    RemediationResultResponse,
+    RetestResultResponse,
+    SubmitApprovalInput,
+    SubmitApprovalRequest,
+)
+from .approval import Approval, ApprovalResult
+from .assessment import (
+    AssessmentQuestion,
+    AssessmentResult,
+    AssessmentSession,
+    KnowledgePointPerformance,
+    RemediationIntervention,
+    Retest,
+)
+from .errors import FieldError, UnifiedError
+from .experience import (
+    AssessmentDraftView,
+    AssessmentResultView,
+    CourseDetailView,
+    CoursePlanItem,
+    CourseUnitContent,
+    LearningProgressView,
+    NotificationItemView,
+    PrototypeUserProfile,
+    RemedialPlanView,
+    ReportSummary,
+    TrainingPlanDetail,
+    TrainingRecordView,
+    TrainingTaskView,
+    TutorAnswerView,
+    TutorSessionView,
+    WeakKnowledgePoint,
+    WrongAnswerReason,
+)
+from .identity import Department, EmployeeProfile, Role, User
+from .knowledge import KnowledgeCitation
+from .training import Course, RuleCheckSummary, TrainingGoal, TrainingPlan, TrainingTask
+
+
+CONTRACT_MODELS: tuple[type[BaseModel], ...] = (
+    ApiEnvelope,
+    User,
+    Role,
+    Department,
+    EmployeeProfile,
+    TrainingGoal,
+    TrainingTask,
+    TrainingPlan,
+    Course,
+    RuleCheckSummary,
+    KnowledgeCitation,
+    Approval,
+    ApprovalResult,
+    AssessmentSession,
+    AssessmentQuestion,
+    AssessmentResult,
+    KnowledgePointPerformance,
+    RemediationIntervention,
+    Retest,
+    AgentRun,
+    AgentDecisionSummary,
+    AgentState,
+    AgentStepSummary,
+    AgentProgressPayload,
+    ApprovalEventPayload,
+    ErrorEventPayload,
+    RealtimeEvent,
+    FieldError,
+    UnifiedError,
+    CreateTrainingTaskInput,
+    CreateTrainingTaskRequest,
+    CreateTrainingTaskResponse,
+    PlanGenerationInput,
+    PlanGenerationRequest,
+    PlanGenerationResponse,
+    SubmitApprovalInput,
+    SubmitApprovalRequest,
+    ApprovalResultResponse,
+    AssessmentResultResponse,
+    RemediationResultResponse,
+    RetestResultResponse,
+    AgentStateResponse,
+    RealtimeEventResponse,
+    ErrorResponse,
+    DifyPlanAgentOutput,
+    PrototypeUserProfile,
+    CoursePlanItem,
+    TrainingPlanDetail,
+    TrainingTaskView,
+    TrainingRecordView,
+    CourseUnitContent,
+    CourseDetailView,
+    LearningProgressView,
+    TutorSessionView,
+    TutorAnswerView,
+    WrongAnswerReason,
+    AssessmentResultView,
+    AssessmentDraftView,
+    WeakKnowledgePoint,
+    RemedialPlanView,
+    NotificationItemView,
+    ReportSummary,
+)
+
+MODEL_BY_NAME: dict[str, type[BaseModel]] = {model.__name__: model for model in CONTRACT_MODELS}

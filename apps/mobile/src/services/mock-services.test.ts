@@ -1,10 +1,11 @@
 import { beforeEach, describe, expect, it } from "vitest";
+import { assessmentQuestions, trainingTask } from "@tegang/mock-data";
 import { __mobileMockControl, mobileServices } from "./mock-services";
 
 const allCorrect = {
-  "Q-01": [1],
-  "Q-02": [0, 1, 2],
-  "Q-03": [1]
+  [assessmentQuestions[0]!.id]: [1],
+  [assessmentQuestions[1]!.id]: [0, 1, 2],
+  [assessmentQuestions[2]!.id]: [1]
 };
 
 describe("mobile mock services", () => {
@@ -18,7 +19,7 @@ describe("mobile mock services", () => {
       password: "123456"
     });
 
-    expect(success.data.accountLabel).toBe("E-0231");
+    expect(success.data.account_label).toBe("E-0231");
     await expect(
       mobileServices.auth.login({
         account: "A-001",
@@ -31,56 +32,56 @@ describe("mobile mock services", () => {
 
   it("requires remedial learning when the total passes but high-risk knowledge fails", async () => {
     const response = await mobileServices.assessment.submit(
-      "T-20260728-01",
+      trainingTask.id,
       {
         ...allCorrect,
-        "Q-01": [0]
+        [assessmentQuestions[0]!.id]: [0]
       },
       1,
     );
 
-    expect(response.data.score).toBe(80);
+    expect(response.data.score_percent).toBe(80);
     expect(response.data.passed).toBe(true);
-    expect(response.data.highRiskPassed).toBe(false);
-    expect(response.data.nextAction).toBe("remedial");
-    expect(__mobileMockControl.getSnapshot().status).toBe(
-      "assessment_failed",
+    expect(response.data.high_risk_passed).toBe(false);
+    expect(response.data.next_action).toBe("remediation");
+    expect(__mobileMockControl.getSnapshot().learning_status).toBe(
+      "LR-NOT-MET",
     );
   });
 
   it("distinguishes an ordinary knowledge failure from high-risk failure", async () => {
     const response = await mobileServices.assessment.submit(
-      "T-20260728-01",
+      trainingTask.id,
       {
         ...allCorrect,
-        "Q-02": [0]
+        [assessmentQuestions[1]!.id]: [0]
       },
       1,
     );
 
-    expect(response.data.score).toBe(60);
+    expect(response.data.score_percent).toBe(60);
     expect(response.data.passed).toBe(false);
-    expect(response.data.highRiskPassed).toBe(true);
-    expect(response.data.wrongAnswerReasons[0]?.knowledgePoint).toBe(
+    expect(response.data.high_risk_passed).toBe(true);
+    expect(response.data.wrong_answer_reasons?.[0]?.knowledge_point_name).toBe(
       "培训过程留痕",
     );
   });
 
   it("completes only after all assessment rules pass", async () => {
     const response = await mobileServices.assessment.submit(
-      "T-20260728-01",
+      trainingTask.id,
       allCorrect,
       1,
     );
 
-    expect(response.data.score).toBe(100);
-    expect(response.data.nextAction).toBe("complete");
-    expect(__mobileMockControl.getSnapshot().status).toBe("completed");
+    expect(response.data.score_percent).toBe(100);
+    expect(response.data.next_action).toBe("complete");
+    expect(__mobileMockControl.getSnapshot().learning_status).toBe("LR-COMPLETED");
   });
 
   it("replaces stale reminders after the task is completed", async () => {
     await mobileServices.assessment.submit(
-      "T-20260728-01",
+      trainingTask.id,
       allCorrect,
       1,
     );
@@ -95,43 +96,43 @@ describe("mobile mock services", () => {
 
   it("moves from failed assessment through remedial learning to reassessment", async () => {
     const failed = await mobileServices.assessment.submit(
-      "T-20260728-01",
+      trainingTask.id,
       {
         ...allCorrect,
-        "Q-01": [0]
+        [assessmentQuestions[0]!.id]: [0]
       },
       1,
     );
-    expect(failed.data.nextAction).toBe("remedial");
+    expect(failed.data.next_action).toBe("remediation");
 
-    await mobileServices.remedial.start("T-20260728-01");
+    await mobileServices.remedial.start(trainingTask.id);
     const remedial = await mobileServices.learning.completeCourse(
-      "T-20260728-01",
+      trainingTask.id,
       { remedial: true },
     );
-    expect(remedial.data.task.status).toBe("reassessment");
+    expect(remedial.data.task.learning_status).toBe("LR-RETESTING");
     expect(remedial.data.attempt).toBe(2);
 
     const reassessment = await mobileServices.assessment.submit(
-      "T-20260728-01",
+      trainingTask.id,
       allCorrect,
       2,
     );
-    expect(reassessment.data.nextAction).toBe("complete");
-    expect(reassessment.data.previousScore).toBe(80);
-    expect(reassessment.data.scoreChange).toBe(20);
+    expect(reassessment.data.next_action).toBe("complete");
+    expect(reassessment.data.previous_score_percent).toBe(80);
+    expect(reassessment.data.score_change_percent).toBe(20);
   });
 
   it("blocks duplicate submissions for the same attempt", async () => {
     await mobileServices.assessment.submit(
-      "T-20260728-01",
+      trainingTask.id,
       allCorrect,
       1,
     );
 
     await expect(
       mobileServices.assessment.submit(
-        "T-20260728-01",
+        trainingTask.id,
         allCorrect,
         1,
       ),
@@ -149,6 +150,6 @@ describe("mobile mock services", () => {
       code: "NETWORK_ERROR",
       retryable: true
     });
-    expect(__mobileMockControl.getSnapshot().progress).toBe(36);
+    expect(__mobileMockControl.getSnapshot().progress_percent).toBe(36);
   });
 });

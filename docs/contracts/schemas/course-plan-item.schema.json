@@ -1,0 +1,85 @@
+{
+  "$defs": {
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:course-plan-item",
+  "additionalProperties": false,
+  "description": "Course projection embedded in a training-plan read response.",
+  "properties": {
+    "completed": {
+      "default": false,
+      "title": "Completed",
+      "type": "boolean"
+    },
+    "department_name": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Department Name",
+      "type": "string"
+    },
+    "duration_minutes": {
+      "maximum": 10080,
+      "minimum": 1,
+      "title": "Duration Minutes",
+      "type": "integer"
+    },
+    "id": {
+      "description": "Immutable external course ID: course_<ULID>.",
+      "examples": [
+        "course_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^course_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "knowledge_point_ids": {
+      "items": {
+        "description": "Immutable external knowledge point ID: kp_<ULID>.",
+        "examples": [
+          "kp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^kp_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Knowledge Point Ids",
+      "type": "array"
+    },
+    "risk_level": {
+      "$ref": "#/$defs/RiskLevel"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "department_name",
+    "duration_minutes",
+    "risk_level"
+  ],
+  "title": "CoursePlanItem",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.experience.CoursePlanItem"
+}

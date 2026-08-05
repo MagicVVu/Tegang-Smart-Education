@@ -1,0 +1,235 @@
+{
+  "$defs": {
+    "AssessmentQuestionType": {
+      "enum": [
+        "single",
+        "multiple",
+        "boolean"
+      ],
+      "title": "AssessmentQuestionType",
+      "type": "string"
+    },
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:assessment-question",
+  "additionalProperties": false,
+  "description": "Scorable question bound to one governed knowledge point.",
+  "properties": {
+    "confidence": {
+      "anyOf": [
+        {
+          "description": "Model or retrieval confidence in the closed interval [0, 1].",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confidence"
+    },
+    "correct_option_indexes": {
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 1,
+      "title": "Correct Option Indexes",
+      "type": "array"
+    },
+    "created_at": {
+      "description": "Creation time with timezone; serialized as ISO 8601.",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "created_by": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Created By"
+    },
+    "entity_version": {
+      "default": 1,
+      "description": "Optimistic entity revision, independent of schema_version.",
+      "minimum": 1,
+      "title": "Entity Version",
+      "type": "integer"
+    },
+    "id": {
+      "description": "Immutable assessment question ID: question_<ULID>.",
+      "examples": [
+        "question_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^question_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "anyOf": [
+        {
+          "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+          "examples": [
+            "idem_training_create_20260804_001"
+          ],
+          "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Idempotency Key"
+    },
+    "knowledge_point_id": {
+      "description": "Immutable external knowledge point ID: kp_<ULID>.",
+      "examples": [
+        "kp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^kp_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Knowledge Point Id",
+      "type": "string"
+    },
+    "knowledge_point_name": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Knowledge Point Name",
+      "type": "string"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
+      "title": "Metadata",
+      "type": "object"
+    },
+    "options": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 2,
+      "title": "Options",
+      "type": "array"
+    },
+    "prompt": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Prompt",
+      "type": "string"
+    },
+    "question_type": {
+      "$ref": "#/$defs/AssessmentQuestionType"
+    },
+    "request_id": {
+      "anyOf": [
+        {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Request Id"
+    },
+    "risk_level": {
+      "$ref": "#/$defs/RiskLevel"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "const": "active",
+      "default": "active",
+      "title": "Status",
+      "type": "string"
+    },
+    "trace_id": {
+      "anyOf": [
+        {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Trace Id"
+    },
+    "updated_at": {
+      "description": "Last update time with timezone; serialized as ISO 8601.",
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "updated_by": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Updated By"
+    }
+  },
+  "required": [
+    "created_at",
+    "updated_at",
+    "risk_level",
+    "id",
+    "question_type",
+    "prompt",
+    "options",
+    "correct_option_indexes",
+    "knowledge_point_id",
+    "knowledge_point_name"
+  ],
+  "title": "AssessmentQuestion",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.assessment.AssessmentQuestion"
+}

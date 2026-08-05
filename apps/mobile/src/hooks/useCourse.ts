@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { mobileServices, type CourseDetail } from "../services";
+import { mobileServices, type ContractCourseDetailView } from "../services";
 import { useMobileStore } from "../stores/mobile-store";
 
 export function useCourse(taskId: string, remedial: boolean) {
-  const [course, setCourse] = useState<CourseDetail | null>(null);
+  const [course, setCourse] = useState<ContractCourseDetailView | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +37,7 @@ export function useCourse(taskId: string, remedial: boolean) {
 
   const completeCurrentUnit = async () => {
     if (!course) return;
-    const unit = course.units[course.currentUnitIndex];
+    const unit = course.units[course.current_unit_index];
     if (!unit) return;
     setSaving(true);
     setError(null);
@@ -46,14 +46,14 @@ export function useCourse(taskId: string, remedial: boolean) {
       setCourse((current) => {
         if (!current) return current;
         const nextIndex = Math.min(
-          current.currentUnitIndex + 1,
+          current.current_unit_index + 1,
           current.units.length - 1,
         );
         return {
           ...current,
-          currentUnitIndex: nextIndex,
+          current_unit_index: nextIndex,
           units: current.units.map((item, index) =>
-            index <= current.currentUnitIndex
+            index <= current.current_unit_index
               ? { ...item, completed: true }
               : item,
           )

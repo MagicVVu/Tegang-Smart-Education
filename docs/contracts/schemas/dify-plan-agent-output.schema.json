@@ -1,0 +1,124 @@
+{
+  "$defs": {
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:dify-plan-agent-output",
+  "additionalProperties": false,
+  "description": "Dify-style structured output example backed by the same Pydantic schema.",
+  "properties": {
+    "confidence": {
+      "description": "Model or retrieval confidence in the closed interval [0, 1].",
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "course_ids": {
+      "items": {
+        "description": "Immutable external course ID: course_<ULID>.",
+        "examples": [
+          "course_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^course_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Course Ids",
+      "type": "array"
+    },
+    "human_review_required": {
+      "title": "Human Review Required",
+      "type": "boolean"
+    },
+    "knowledge_citation_ids": {
+      "items": {
+        "description": "Immutable external knowledge citation ID: know_<ULID>.",
+        "examples": [
+          "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^know_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Knowledge Citation Ids",
+      "type": "array"
+    },
+    "proposed_plan_id": {
+      "description": "Immutable external training plan ID: plan_<ULID>.",
+      "examples": [
+        "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Proposed Plan Id",
+      "type": "string"
+    },
+    "risk_level": {
+      "$ref": "#/$defs/RiskLevel"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selection_reason": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Selection Reason",
+      "type": "string"
+    },
+    "summary": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "training_goal_id": {
+      "description": "Immutable external training goal ID: goal_<ULID>.",
+      "examples": [
+        "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^goal_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Training Goal Id",
+      "type": "string"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "training_goal_id",
+    "proposed_plan_id",
+    "title",
+    "summary",
+    "selection_reason",
+    "course_ids",
+    "risk_level",
+    "confidence",
+    "human_review_required"
+  ],
+  "title": "DifyPlanAgentOutput",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.api.DifyPlanAgentOutput"
+}

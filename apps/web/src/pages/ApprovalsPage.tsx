@@ -28,7 +28,7 @@ import {
 } from "antd";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { ApprovalDecision } from "@tegang/types";
+import type { ContractApprovalDecision } from "@tegang/types";
 import { KnowledgeDrawer } from "../components/KnowledgeDrawer";
 import { PageHeader } from "../components/PageHeader";
 import { StatusTag } from "../components/StatusTag";
@@ -45,10 +45,10 @@ export function ApprovalsPage() {
   const { taskId } = useParams();
   const navigate = useNavigate();
   const role = usePrototypeStore((state) => state.role);
-  const taskStatus = usePrototypeStore((state) => state.taskStatus);
-  const approvalStatus = usePrototypeStore((state) => state.approvalStatus);
+  const taskStatus = usePrototypeStore((state) => state.task_status);
+  const approvalStatus = usePrototypeStore((state) => state.approval_status);
   const [citationOpen, setCitationOpen] = useState(false);
-  const [decision, setDecision] = useState<ApprovalDecision | null>(null);
+  const [decision, setDecision] = useState<ContractApprovalDecision | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [form] = Form.useForm<{ comment: string; changes?: string }>();
   const plan = candidatePlans[1]!;
@@ -102,16 +102,16 @@ export function ApprovalsPage() {
           style={{ marginBottom: 20 }}
         />
       ) : null}
-      {approvalStatus !== "pending" ? (
+      {approvalStatus !== "AP-WAITING" ? (
         <Alert
-          type={approvalStatus === "rejected" ? "error" : "success"}
+          type={approvalStatus === "AP-REJECTED" ? "error" : "success"}
           showIcon
           message={
-            approvalStatus === "approved"
+            approvalStatus === "AP-APPROVED"
               ? "当前版本已批准"
-              : approvalStatus === "approved_with_changes"
+              : approvalStatus === "AP-EDITING"
                 ? "已修改后批准，等待重新校验"
-                : approvalStatus === "rejected"
+                : approvalStatus === "AP-REJECTED"
                   ? "当前版本已拒绝"
                   : "已退回补充信息"
           }
@@ -169,14 +169,14 @@ export function ApprovalsPage() {
                   key: "status",
                   label: "当前状态",
                   children:
-                    approvalStatus === "pending"
+                    approvalStatus === "AP-WAITING"
                       ? "待审核员处理"
                       : approvalStatus
                 },
                 {
                   key: "checkpoint",
                   label: "暂停检查点",
-                  children: "CP-05 风险分级完成"
+                  children: "风险分级正式检查点"
                 },
                 {
                   key: "write",
@@ -193,7 +193,7 @@ export function ApprovalsPage() {
               type="error"
               showIcon
               message="待决定：是否允许下发包含高风险知识要求的培训任务"
-              description="风险等级高；影响智信部与炼钢生产部新员工。当前流程停在 CP-05，尚未发生正式业务写入。"
+              description="风险等级高；影响智信部与炼钢生产部新员工。当前流程停在风险分级正式检查点，尚未发生正式业务写入。"
               style={{ marginBottom: 20 }}
             />
             <Flex justify="space-between" align="flex-start" gap={20}>
@@ -234,7 +234,7 @@ export function ApprovalsPage() {
                 {
                   key: "scope",
                   label: "影响对象",
-                  children: trainingTask.audience.join("、")
+                  children: (trainingTask.audience_labels ?? []).join("、")
                 },
                 {
                   key: "deadline",
@@ -249,7 +249,7 @@ export function ApprovalsPage() {
                 {
                   key: "version",
                   label: "方案版本",
-                  children: `${plan.title} · V${plan.version}`
+                  children: `${plan.title} · V${plan.entity_version ?? 1}`
                 }
               ]}
             />
@@ -319,8 +319,8 @@ export function ApprovalsPage() {
                 <List.Item>
                   <List.Item.Meta
                     avatar={<FileSearchOutlined />}
-                    title={`${item.documentName} ${item.version}`}
-                    description={`${item.section} · ${item.department} · ${item.relation}`}
+                    title={`${item.document_name} ${item.document_version}`}
+                    description={`${item.section} · ${(item.authorized_scopes ?? []).join("、")} · ${item.relation}`}
                   />
                   <Tag color="green">现行有效</Tag>
                 </List.Item>
@@ -351,7 +351,7 @@ export function ApprovalsPage() {
               ]}
             />
           </Card>
-          {role === "reviewer" && approvalStatus === "pending" ? (
+          {role === "reviewer" && approvalStatus === "AP-WAITING" ? (
             <Card className="sticky-action-bar">
               <Flex justify="space-between" align="center" gap={16}>
                 <Space>
@@ -436,7 +436,7 @@ export function ApprovalsPage() {
           column={1}
           items={[
             { key: "scope", label: "影响范围", children: "2 个部门的新员工培训" },
-            { key: "version", label: "生效版本", children: `方案 V${plan.version} · 当前知识快照` }
+            { key: "version", label: "生效版本", children: `方案 V${plan.entity_version ?? 1} · 当前知识快照` }
           ]}
           style={{ marginBottom: 12 }}
         />

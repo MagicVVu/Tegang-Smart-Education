@@ -1,0 +1,31 @@
+{
+  "data": {
+    "assessment_result_id": "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "attempt": 1,
+    "created_at": "2026-08-04T08:00:00Z",
+    "created_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "employee_profile_id": "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "entity_version": 1,
+    "id": "intervention_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "metadata": {},
+    "reason": "High-risk knowledge point did not meet the independent threshold.",
+    "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "required_course_ids": [
+      "course_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    ],
+    "risk_level": "high",
+    "schema_version": "2.0.0",
+    "status": "planned",
+    "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "updated_at": "2026-08-04T08:05:00Z",
+    "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "weak_knowledge_point_ids": [
+      "kp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    ]
+  },
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.0.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

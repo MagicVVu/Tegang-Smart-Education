@@ -1,0 +1,85 @@
+{
+  "$defs": {
+    "ReportStatus": {
+      "enum": [
+        "draft",
+        "awaiting_confirmation",
+        "confirmed"
+      ],
+      "title": "ReportStatus",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:report-summary",
+  "additionalProperties": false,
+  "properties": {
+    "assessment_pass_rate_percent": {
+      "description": "Percentage value in the closed interval [0, 100].",
+      "maximum": 100.0,
+      "minimum": 0.0,
+      "title": "Assessment Pass Rate Percent",
+      "type": "number"
+    },
+    "completion_rate_percent": {
+      "description": "Percentage value in the closed interval [0, 100].",
+      "maximum": 100.0,
+      "minimum": 0.0,
+      "title": "Completion Rate Percent",
+      "type": "number"
+    },
+    "disclaimer": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Disclaimer",
+      "type": "string"
+    },
+    "high_risk_intervention_count": {
+      "minimum": 0,
+      "title": "High Risk Intervention Count",
+      "type": "integer"
+    },
+    "reassessment_count": {
+      "minimum": 0,
+      "title": "Reassessment Count",
+      "type": "integer"
+    },
+    "remedial_count": {
+      "minimum": 0,
+      "title": "Remedial Count",
+      "type": "integer"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ReportStatus"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "completion_rate_percent",
+    "assessment_pass_rate_percent",
+    "remedial_count",
+    "reassessment_count",
+    "high_risk_intervention_count",
+    "status",
+    "disclaimer"
+  ],
+  "title": "ReportSummary",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.experience.ReportSummary"
+}

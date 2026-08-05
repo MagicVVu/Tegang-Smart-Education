@@ -1,0 +1,123 @@
+{
+  "$defs": {
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:course-unit-content",
+  "additionalProperties": false,
+  "properties": {
+    "completed": {
+      "default": false,
+      "title": "Completed",
+      "type": "boolean"
+    },
+    "duration_minutes": {
+      "maximum": 10080,
+      "minimum": 1,
+      "title": "Duration Minutes",
+      "type": "integer"
+    },
+    "eyebrow": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Eyebrow",
+      "type": "string"
+    },
+    "heading": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Heading",
+      "type": "string"
+    },
+    "id": {
+      "description": "Immutable external course ID: course_<ULID>.",
+      "examples": [
+        "course_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^course_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "key_points": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Key Points",
+      "type": "array"
+    },
+    "knowledge_citation_ids": {
+      "items": {
+        "description": "Immutable external knowledge citation ID: know_<ULID>.",
+        "examples": [
+          "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^know_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Knowledge Citation Ids",
+      "type": "array"
+    },
+    "paragraphs": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Paragraphs",
+      "type": "array"
+    },
+    "risk_level": {
+      "$ref": "#/$defs/RiskLevel"
+    },
+    "scenario_answer": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Scenario Answer",
+      "type": "string"
+    },
+    "scenario_question": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Scenario Question",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "duration_minutes",
+    "risk_level",
+    "eyebrow",
+    "heading",
+    "paragraphs",
+    "key_points",
+    "scenario_question",
+    "scenario_answer"
+  ],
+  "title": "CourseUnitContent",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.experience.CourseUnitContent"
+}

@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { AssessmentQuestion } from "@tegang/types";
+import type { ContractAssessmentQuestion, ContractAssessmentResultView } from "@tegang/types";
 import {
   MobileServiceError,
   mobileServices,
-  type MobileAssessmentResult
 } from "../services";
 import { useMobileStore } from "../stores/mobile-store";
 
 export type DraftSaveState = "idle" | "saving" | "synced" | "local";
 
 export function useAssessmentSession(taskId: string, attempt: number) {
-  const [questions, setQuestions] = useState<AssessmentQuestion[]>([]);
+  const [questions, setQuestions] = useState<ContractAssessmentQuestion[]>([]);
   const [answers, setAnswers] = useState<Record<string, number[]>>({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -57,12 +56,12 @@ export function useAssessmentSession(taskId: string, attempt: number) {
     [answers, questions],
   );
 
-  const choose = async (question: AssessmentQuestion, optionIndex: number) => {
+  const choose = async (question: ContractAssessmentQuestion, optionIndex: number) => {
     const selected = answers[question.id] ?? [];
     const nextAnswers = {
       ...answers,
       [question.id]:
-        question.type === "multiple"
+        question.question_type === "multiple"
           ? selected.includes(optionIndex)
             ? selected.filter((item) => item !== optionIndex)
             : [...selected, optionIndex]
@@ -78,7 +77,7 @@ export function useAssessmentSession(taskId: string, attempt: number) {
     }
   };
 
-  const submit = async (): Promise<MobileAssessmentResult | null> => {
+  const submit = async (): Promise<ContractAssessmentResultView | null> => {
     if (submitting || submitted) return null;
     if (answeredCount < questions.length) {
       setError(`还有 ${questions.length - answeredCount} 道题未完成。`);

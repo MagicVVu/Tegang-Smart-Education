@@ -1,0 +1,18 @@
+{
+  "actor_id": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "data": {
+    "deadline": "2026-08-15",
+    "name": "New employee high-risk safety training",
+    "objective": "Complete role-specific learning, assessment, remediation, and retest with traceable evidence.",
+    "target_department_ids": [
+      "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    ],
+    "target_employee_profile_ids": [
+      "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    ],
+    "training_goal_id": "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+  },
+  "idempotency_key": "idem_training_create_20260804_001",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.0.0"
+}

@@ -1,0 +1,19 @@
+{
+  "actor_id": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "data": {
+    "impact_scope": [
+      "department:steelmaking",
+      "action:publish_training"
+    ],
+    "knowledge_citation_ids": [
+      "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    ],
+    "plan_id": "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "reviewer_role_id": "role_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "risk_summary": "High-risk knowledge is included and formal publication requires approval.",
+    "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+  },
+  "idempotency_key": "idem_approval_submit_20260804_001",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.0.0"
+}

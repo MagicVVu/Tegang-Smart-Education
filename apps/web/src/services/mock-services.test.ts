@@ -24,21 +24,21 @@ describe("Web service adapters", () => {
 
     expect(result.data.user.role).toBe("reviewer");
     expect(usePrototypeStore.getState().role).toBe("reviewer");
-    expect(result.requestId).toMatch(/^web-/);
+    expect(result.request_id).toMatch(/^req_[0-9A-HJKMNP-TV-Z]{26}$/);
   });
 
   it("accepts a reasoned replan request and starts a new analysis run", async () => {
     const result = await services.trainingPlan.requestReplan(
       trainingTask.id,
       "员工岗位范围发生变化，需要重新核对必修知识。",
-      "replan-test-001",
+      "idem_replan_test_001",
     );
 
     expect(result.data).toMatchObject({
       accepted: true,
-      status: "agent_analyzing"
+      status: "TB-ANALYZING"
     });
-    expect(usePrototypeStore.getState().taskStatus).toBe("agent_analyzing");
+    expect(usePrototypeStore.getState().task_status).toBe("TB-ANALYZING");
   });
 
   it("queues confirmed report export and exposes auditable run events", async () => {
@@ -48,8 +48,8 @@ describe("Web service adapters", () => {
     ]);
 
     expect(exportResult.data.accepted).toBe(true);
-    expect(exportResult.data.operationId).toMatch(/^report-pdf-/);
-    expect(eventsResult.data.some((event) => event.type === "ApprovalRequired"))
+    expect(exportResult.data.operation_id).toMatch(/^operation_[0-9A-HJKMNP-TV-Z]{26}$/);
+    expect(eventsResult.data.some((event) => event.event_type === "approval_required"))
       .toBe(true);
   });
 });

@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import { mobileServices, type TutorAnswerKind } from "../services";
+import { mobileServices } from "../services";
+import type { ContractTutorAnswerKind } from "@tegang/types";
 
 export interface TutorMessage {
   id: string;
   role: "employee" | "assistant";
   text: string;
   citationIds?: string[];
-  kind?: TutorAnswerKind;
+  kind?: ContractTutorAnswerKind;
   highRiskNotice?: string;
   feedback?: "helpful" | "unhelpful";
 }
@@ -36,7 +37,7 @@ export function useTutorConversation(taskId: string) {
           text: response.data.welcome
         }
       ]);
-      setSuggestions(response.data.suggestions);
+      setSuggestions(response.data.suggestions ?? []);
     } catch (loadError) {
       setFailure({
         question: "",
@@ -83,9 +84,9 @@ export function useTutorConversation(taskId: string) {
           id: response.data.id,
           role: "assistant",
           text: response.data.answer,
-          citationIds: response.data.citationIds,
+          citationIds: response.data.knowledge_citation_ids,
           kind: response.data.kind,
-          highRiskNotice: response.data.highRiskNotice
+          highRiskNotice: response.data.high_risk_notice ?? undefined
         }
       ]);
     } catch (sendError) {

@@ -28,15 +28,15 @@ export function CompletionScreen({ navigation, route }: Props) {
   const result = useMobileStore((state) => state.result);
   const loadResult = useMobileStore((state) => state.loadAssessmentResult);
   const [resultLoading, setResultLoading] = useState(
-    result?.taskId !== route.params.taskId,
+      result?.task_id !== route.params.taskId,
   );
 
   useEffect(() => {
-    if (result?.taskId === route.params.taskId) {
+    if (result?.task_id === route.params.taskId) {
       return;
     }
     loadResult(route.params.taskId).finally(() => setResultLoading(false));
-  }, [loadResult, result?.taskId, route.params.taskId]);
+  }, [loadResult, result?.task_id, route.params.taskId]);
 
   if (taskLoading || resultLoading) {
     return (
@@ -51,7 +51,7 @@ export function CompletionScreen({ navigation, route }: Props) {
     );
   }
 
-  if (!task || !result || result.taskId !== route.params.taskId) {
+  if (!task || !result || result.task_id !== route.params.taskId) {
     return (
       <Screen>
         <StatePanel
@@ -123,7 +123,7 @@ export function CompletionScreen({ navigation, route }: Props) {
             学习、测评{usedRemedialFlow ? "、补训与复测" : ""}记录已保存。
           </Text>
           <Text variant="labelMedium" style={styles.time}>
-            完成时间 {formatCompletionTime(result.submittedAt)}
+          完成时间 {formatCompletionTime(result.submitted_at)}
           </Text>
         </Card.Content>
       </Card>
@@ -147,7 +147,7 @@ export function CompletionScreen({ navigation, route }: Props) {
           left={(props) => <List.Icon {...props} icon="book-check-outline" />}
         />
         <List.Item
-          title={`最终测评 ${result.score} 分`}
+          title={`最终测评 ${result.score_percent} 分`}
           description={`第 ${result.attempt} 次测评达标`}
           left={(props) => (
             <List.Icon {...props} icon="clipboard-check-outline" />
@@ -184,8 +184,8 @@ export function CompletionScreen({ navigation, route }: Props) {
               <Text variant="bodySmall" style={styles.muted}>
                 已针对未达标知识点完成补充学习，并在第 {result.attempt}{" "}
                 次测评中通过。最终结果较上次
-                {result.scoreChange !== undefined
-                  ? `提高 ${Math.max(result.scoreChange, 0)} 分`
+                {result.score_change_percent != null
+                  ? `提高 ${Math.max(result.score_change_percent, 0)} 分`
                   : "已有改善"}
                 。
               </Text>

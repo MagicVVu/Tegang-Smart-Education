@@ -1,0 +1,56 @@
+{
+  "data": [
+    {
+      "approval_id": "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "candidate_label": "Candidate B",
+      "confidence": 0.82,
+      "course_ids": [
+        "course_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "created_at": "2026-08-04T08:00:00Z",
+      "created_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "entity_version": 1,
+      "id": "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "knowledge_citation_ids": [
+        "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "metadata": {},
+      "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "risk_level": "high",
+      "rule_checks": [
+        {
+          "created_at": "2026-08-04T08:00:00Z",
+          "created_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+          "detail": "Formal publication remains blocked until an authorized reviewer approves.",
+          "deterministic": true,
+          "entity_version": 1,
+          "id": "rule_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+          "label": "High-risk publication approval",
+          "metadata": {},
+          "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+          "risk_level": "high",
+          "rule_code": "HIGH_RISK_APPROVAL_REQUIRED",
+          "schema_version": "2.0.0",
+          "status": "warning",
+          "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+          "updated_at": "2026-08-04T08:05:00Z",
+          "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        }
+      ],
+      "schema_version": "2.0.0",
+      "selection_reason": "Shortens the exposure window while preserving department-specific paths.",
+      "status": "candidate",
+      "summary": "Front-load high-risk knowledge before operational learning.",
+      "title": "Risk-first differentiated path",
+      "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "training_goal_id": "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "updated_at": "2026-08-04T08:05:00Z",
+      "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    }
+  ],
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "run_id": "run_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.0.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

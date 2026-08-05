@@ -6,7 +6,7 @@ import { colors, radii, spacing } from "@tegang/design-tokens";
 import { Screen } from "../components/Screen";
 import { StatePanel } from "../components/StatePanel";
 import { useNotifications } from "../hooks/useNotifications";
-import type { NotificationItem } from "../services";
+import type { ContractNotificationItemView } from "../services";
 import type { RootStackParamList } from "../navigation/types";
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
@@ -16,15 +16,15 @@ export function MessagesScreen() {
   const { items, loading, error, reload, markRead } = useNotifications();
   const unreadCount = items.filter((item) => item.unread).length;
 
-  const open = async (item: NotificationItem) => {
+  const open = async (item: ContractNotificationItemView) => {
     if (item.unread) await markRead(item.id);
-    if (!item.taskId) return;
+    if (!item.task_id) return;
     if (item.destination === "assessment") {
-      navigation.navigate("Assessment", { taskId: item.taskId });
+      navigation.navigate("Assessment", { taskId: item.task_id });
     } else if (item.destination === "remedial") {
-      navigation.navigate("Remedial", { taskId: item.taskId });
+      navigation.navigate("Remedial", { taskId: item.task_id });
     } else {
-      navigation.navigate("TrainingDetail", { taskId: item.taskId });
+      navigation.navigate("TrainingDetail", { taskId: item.task_id });
     }
   };
 
@@ -109,7 +109,7 @@ export function MessagesScreen() {
                     {item.description}
                   </Text>
                   <Text variant="labelSmall" style={styles.time}>
-                    {item.createdAt}
+                    {item.created_at}
                   </Text>
                 </View>
                 <Icon

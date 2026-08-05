@@ -1,0 +1,128 @@
+{
+  "$defs": {
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    },
+    "WeakKnowledgePoint": {
+      "additionalProperties": false,
+      "properties": {
+        "knowledge_point_id": {
+          "description": "Immutable external knowledge point ID: kp_<ULID>.",
+          "examples": [
+            "kp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^kp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Knowledge Point Id",
+          "type": "string"
+        },
+        "knowledge_point_name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Knowledge Point Name",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/RiskLevel"
+        }
+      },
+      "required": [
+        "knowledge_point_id",
+        "knowledge_point_name",
+        "reason",
+        "risk_level"
+      ],
+      "title": "WeakKnowledgePoint",
+      "type": "object"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:remedial-plan-view",
+  "additionalProperties": false,
+  "properties": {
+    "current_step": {
+      "enum": [
+        1,
+        2,
+        3
+      ],
+      "title": "Current Step",
+      "type": "integer"
+    },
+    "next_step": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Next Step",
+      "type": "string"
+    },
+    "reason": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    },
+    "requirements": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Requirements",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "weak_points": {
+      "items": {
+        "$ref": "#/$defs/WeakKnowledgePoint"
+      },
+      "minItems": 1,
+      "title": "Weak Points",
+      "type": "array"
+    }
+  },
+  "required": [
+    "task_id",
+    "title",
+    "reason",
+    "weak_points",
+    "requirements",
+    "next_step",
+    "current_step"
+  ],
+  "title": "RemedialPlanView",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.experience.RemedialPlanView"
+}

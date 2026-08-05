@@ -4,13 +4,17 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
-    "types": [
-      "react",
-      "react-native"
-    ]
+    "paths": {
+      "@tegang/*": ["../../packages/*/src"]
+    }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "android",
+    ".expo"
   ]
 }

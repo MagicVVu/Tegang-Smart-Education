@@ -1,0 +1,33 @@
+{
+  "data": {
+    "approval_id": "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "created_at": "2026-08-04T08:00:00Z",
+    "created_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "current_plan_id": "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "deadline": "2026-08-15",
+    "entity_version": 1,
+    "id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "metadata": {},
+    "name": "New employee high-risk safety training",
+    "objective": "Complete role-specific learning, assessment, remediation, and retest with traceable evidence.",
+    "progress_percent": 42.0,
+    "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "risk_level": "high",
+    "schema_version": "2.0.0",
+    "status": "TB-WAIT-CONFIRM",
+    "target_department_ids": [
+      "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    ],
+    "target_employee_profile_ids": [
+      "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    ],
+    "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "training_goal_id": "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "updated_at": "2026-08-04T08:05:00Z",
+    "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+  },
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.0.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

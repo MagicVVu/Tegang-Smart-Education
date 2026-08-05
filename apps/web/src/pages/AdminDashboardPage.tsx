@@ -30,32 +30,32 @@ import { usePrototypeStore } from "../stores/prototype-store";
 
 export function AdminDashboardPage() {
   const navigate = useNavigate();
-  const taskStatus = usePrototypeStore((state) => state.taskStatus);
+  const taskStatus = usePrototypeStore((state) => state.task_status);
   const scenario = usePrototypeStore((state) => state.scenario);
 
   const priorityActions = [
     {
       title:
-        taskStatus === "execution_failed"
+    taskStatus === "TB-FAILED"
           ? "处理 Agent 执行失败"
           : "确认新员工培训方案",
       detail:
-        taskStatus === "execution_failed"
+        taskStatus === "TB-FAILED"
           ? "知识检索 Skill 已完成 1 次有限重试，尚未进行正式写入。"
           : "候选方案已通过必修校验，高风险范围需要确认后进入审批。",
       owner: "培训管理员",
-      deadline: taskStatus === "execution_failed" ? "需立即处理" : "今天 16:00 前",
-      status: taskStatus === "execution_failed" ? "执行失败" : "待确认",
-      risk: taskStatus === "execution_failed" ? "error" : "warning",
+      deadline: taskStatus === "TB-FAILED" ? "需立即处理" : "今天 16:00 前",
+      status: taskStatus === "TB-FAILED" ? "执行失败" : "待确认",
+      risk: taskStatus === "TB-FAILED" ? "error" : "warning",
       icon:
-        taskStatus === "execution_failed" ? (
+        taskStatus === "TB-FAILED" ? (
           <ExclamationCircleOutlined />
         ) : (
           <RobotOutlined />
         ),
       action: () =>
         navigate(
-          taskStatus === "execution_failed"
+        taskStatus === "TB-FAILED"
             ? `/agent-runs/${trainingTask.id}`
             : `/admin/plans/${trainingTask.id}`,
         )
@@ -172,9 +172,9 @@ export function AdminDashboardPage() {
               </Typography.Paragraph>
               <Progress
                 percent={
-                  taskStatus === "completed"
+                taskStatus === "TB-COMPLETED"
                     ? 100
-                    : taskStatus === "executing"
+                  : taskStatus === "TB-IN-PROGRESS"
                       ? 58
                       : 42
                 }
@@ -216,7 +216,7 @@ export function AdminDashboardPage() {
               status: taskStatus,
               owner: "培训管理员 A-001",
               exception:
-                taskStatus === "execution_failed"
+          taskStatus === "TB-FAILED"
                   ? "Skill 调用失败"
                   : "无"
             }
@@ -239,7 +239,7 @@ export function AdminDashboardPage() {
             {
               title: "部门",
               dataIndex: "departments",
-              render: (value: string[]) => value.join("、")
+              render: (value: string[]) => value?.join("、") ?? "-"
             },
             {
               title: "状态",
@@ -263,14 +263,14 @@ export function AdminDashboardPage() {
               dataIndex: "status",
               render: (value: keyof typeof statusLabels) => {
                 const actions: Partial<Record<keyof typeof statusLabels, string>> = {
-                  information_missing: "补充任务信息",
-                  awaiting_admin_confirmation: "确认培训方案",
-                  awaiting_approval: "跟踪审批进度",
-                  awaiting_publish: "确认下发",
-                  executing: "跟踪学习进度",
-                  execution_failed: "处理异常",
-                  human_takeover: "继续人工处理",
-                  completed: "核对培训报告"
+                  "TB-NEED-INPUT": "补充任务信息",
+                  "TB-WAIT-CONFIRM": "确认培训方案",
+                  "TB-WAIT-APPROVAL": "跟踪审批进度",
+                  "TB-WAIT-PUBLISH": "确认下发",
+                  "TB-IN-PROGRESS": "跟踪学习进度",
+                  "TB-FAILED": "处理异常",
+                  "TB-MANUAL": "继续人工处理",
+                  "TB-COMPLETED": "核对培训报告"
                 };
                 return actions[value] ?? `查看${statusLabels[value]}`;
               }

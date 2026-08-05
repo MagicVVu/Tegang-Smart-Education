@@ -1,0 +1,34 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:field-error",
+  "additionalProperties": false,
+  "description": "Field-level validation problem safe for a caller to display.",
+  "properties": {
+    "code": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Code",
+      "type": "string"
+    },
+    "field": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Field",
+      "type": "string"
+    },
+    "message": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Message",
+      "type": "string"
+    }
+  },
+  "required": [
+    "field",
+    "code",
+    "message"
+  ],
+  "title": "FieldError",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.errors.FieldError"
+}

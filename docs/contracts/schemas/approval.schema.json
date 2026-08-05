@@ -1,0 +1,345 @@
+{
+  "$defs": {
+    "ApprovalDecision": {
+      "enum": [
+        "approved",
+        "approved_with_changes",
+        "rejected",
+        "returned_for_information"
+      ],
+      "title": "ApprovalDecision",
+      "type": "string"
+    },
+    "ApprovalStatus": {
+      "description": "Approval states from chapter 15.8.",
+      "enum": [
+        "AP-NOT-SUBMITTED",
+        "AP-WAITING",
+        "AP-EDITING",
+        "AP-APPROVED",
+        "AP-REJECTED",
+        "AP-WITHDRAWN",
+        "AP-EXPIRED",
+        "AP-CANCELLED"
+      ],
+      "title": "ApprovalStatus",
+      "type": "string"
+    },
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:approval",
+  "additionalProperties": false,
+  "description": "Human approval record for high-risk or otherwise gated writes.",
+  "properties": {
+    "confidence": {
+      "anyOf": [
+        {
+          "description": "Model or retrieval confidence in the closed interval [0, 1].",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confidence"
+    },
+    "created_at": {
+      "description": "Creation time with timezone; serialized as ISO 8601.",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "created_by": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Created By"
+    },
+    "decided_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decided At"
+    },
+    "decision": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ApprovalDecision"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "decision_comment": {
+      "anyOf": [
+        {
+          "maxLength": 4000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decision Comment"
+    },
+    "entity_version": {
+      "default": 1,
+      "description": "Optimistic entity revision, independent of schema_version.",
+      "minimum": 1,
+      "title": "Entity Version",
+      "type": "integer"
+    },
+    "id": {
+      "description": "Immutable external approval ID: approval_<ULID>.",
+      "examples": [
+        "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^approval_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "anyOf": [
+        {
+          "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+          "examples": [
+            "idem_training_create_20260804_001"
+          ],
+          "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Idempotency Key"
+    },
+    "impact_scope": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Impact Scope",
+      "type": "array"
+    },
+    "knowledge_citation_ids": {
+      "items": {
+        "description": "Immutable external knowledge citation ID: know_<ULID>.",
+        "examples": [
+          "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^know_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Knowledge Citation Ids",
+      "type": "array"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
+      "title": "Metadata",
+      "type": "object"
+    },
+    "plan_id": {
+      "description": "Immutable external training plan ID: plan_<ULID>.",
+      "examples": [
+        "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Plan Id",
+      "type": "string"
+    },
+    "request_id": {
+      "anyOf": [
+        {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Request Id"
+    },
+    "requested_by": {
+      "description": "Immutable external user ID: usr_<ULID>.",
+      "examples": [
+        "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Requested By",
+      "type": "string"
+    },
+    "requested_changes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Requested Changes",
+      "type": "array"
+    },
+    "reviewer_id": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reviewer Id"
+    },
+    "reviewer_role_id": {
+      "description": "Immutable external role ID: role_<ULID>.",
+      "examples": [
+        "role_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^role_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Reviewer Role Id",
+      "type": "string"
+    },
+    "risk_level": {
+      "$ref": "#/$defs/RiskLevel",
+      "default": "low"
+    },
+    "risk_summary": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Risk Summary",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ApprovalStatus"
+    },
+    "submitted_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Submitted At"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "trace_id": {
+      "anyOf": [
+        {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Trace Id"
+    },
+    "updated_at": {
+      "description": "Last update time with timezone; serialized as ISO 8601.",
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "updated_by": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Updated By"
+    }
+  },
+  "required": [
+    "created_at",
+    "updated_at",
+    "id",
+    "status",
+    "task_id",
+    "plan_id",
+    "requested_by",
+    "reviewer_role_id",
+    "risk_summary",
+    "impact_scope"
+  ],
+  "title": "Approval",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.approval.Approval"
+}

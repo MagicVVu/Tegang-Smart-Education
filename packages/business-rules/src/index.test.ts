@@ -10,16 +10,16 @@ import {
 
 describe("permission and deterministic business rules", () => {
   it("does not let an employee reach approval or developer trace routes", () => {
-    expect(canAccessPath("employee", "/approvals/AP-01")).toBe(false);
+    expect(canAccessPath("employee", "/approvals/approval_01ARZ3NDEKTSV4RRFFQ69G5FAV")).toBe(false);
     expect(can("employee", "view_developer_trace")).toBe(false);
   });
 
   it("requires approval before high-risk publishing", () => {
-    expect(nextStatusAfterRisk("high")).toBe("awaiting_approval");
+    expect(nextStatusAfterRisk("high")).toBe("TB-WAIT-APPROVAL");
     expect(
       mayPublish(
         "training_admin",
-        "awaiting_publish",
+        "TB-WAIT-PUBLISH",
         "high",
         false,
       ),
@@ -27,7 +27,7 @@ describe("permission and deterministic business rules", () => {
     expect(
       mayPublish(
         "training_admin",
-        "awaiting_publish",
+        "TB-WAIT-PUBLISH",
         "high",
         true,
       ),
@@ -35,14 +35,14 @@ describe("permission and deterministic business rules", () => {
   });
 
   it("prevents unbounded retries", () => {
-    expect(mayRetry("execution_failed", 0)).toBe(true);
-    expect(mayRetry("execution_failed", 2)).toBe(false);
+    expect(mayRetry("AR-FAILED", 0)).toBe(true);
+    expect(mayRetry("AR-FAILED", 2)).toBe(false);
   });
 
   it("routes failed high-risk assessment to remedial then human takeover", () => {
     expect(assessmentNextStatus(false, false, 0)).toBe(
-      "remedial_learning",
+      "LR-REMEDIAL",
     );
-    expect(assessmentNextStatus(false, false, 2)).toBe("human_takeover");
+    expect(assessmentNextStatus(false, false, 2)).toBe("LR-PAUSED");
   });
 });

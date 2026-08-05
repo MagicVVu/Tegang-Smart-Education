@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { mobileServices, type TrainingRecord } from "../services";
+import { mobileServices, type ContractTrainingRecordView } from "../services";
 
 export function useTrainingRecords() {
-  const [records, setRecords] = useState<TrainingRecord[]>([]);
+  const [records, setRecords] = useState<ContractTrainingRecordView[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
