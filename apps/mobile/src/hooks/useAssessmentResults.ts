@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { mobileServices, type MobileAssessmentResult } from "../services";
+import { mobileServices, type ContractAssessmentResultView } from "../services";
 
 export function useAssessmentResults() {
-  const [results, setResults] = useState<MobileAssessmentResult[]>([]);
+  const [results, setResults] = useState<ContractAssessmentResultView[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

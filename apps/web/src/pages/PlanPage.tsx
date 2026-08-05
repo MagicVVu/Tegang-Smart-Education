@@ -55,8 +55,8 @@ export function PlanPage() {
   const [replanOpen, setReplanOpen] = useState(false);
   const [replanReason, setReplanReason] = useState("");
   const [replanning, setReplanning] = useState(false);
-  const taskStatus = usePrototypeStore((state) => state.taskStatus);
-  const selectedPlanId = usePrototypeStore((state) => state.selectedPlanId);
+  const taskStatus = usePrototypeStore((state) => state.task_status);
+  const selectedPlanId = usePrototypeStore((state) => state.selected_plan_id);
   const selectPlan = usePrototypeStore((state) => state.selectPlan);
   const confirmPlan = usePrototypeStore((state) => state.confirmPlan);
   const completeApprovalModification = usePrototypeStore(
@@ -75,8 +75,8 @@ export function PlanPage() {
 
   const handleRiskCheck = () => {
     confirmPlan();
-    const newStatus = usePrototypeStore.getState().taskStatus;
-    if (newStatus === "awaiting_approval") {
+      const newStatus = usePrototypeStore.getState().task_status;
+      if (newStatus === "TB-WAIT-APPROVAL") {
       message.warning("高风险规则命中，审批单已创建并暂停正式写入。");
     } else {
       message.success("低风险校验通过，方案已进入待下发。");
@@ -121,7 +121,7 @@ export function PlanPage() {
           </Flex>
         }
       />
-      {taskStatus === "awaiting_approval" ? (
+      {taskStatus === "TB-WAIT-APPROVAL" ? (
         <Alert
           type="warning"
           showIcon
@@ -138,7 +138,7 @@ export function PlanPage() {
           style={{ marginBottom: 20 }}
         />
       ) : null}
-      {taskStatus === "approval_rejected" ? (
+      {taskStatus === "TB-APPROVAL-REJECTED" ? (
         <Alert
           type="error"
           showIcon
@@ -158,7 +158,7 @@ export function PlanPage() {
           style={{ marginBottom: 20 }}
         />
       ) : null}
-      {taskStatus === "approval_modification" ? (
+      {taskStatus === "TB-APPROVAL-EDIT" ? (
         <Alert
           type="info"
           showIcon
@@ -214,7 +214,7 @@ export function PlanPage() {
                   <Flex justify="space-between" align="flex-start" gap={16}>
                     <div>
                       <Radio value={plan.id}>
-                        <strong>{plan.candidateLabel}</strong>
+                        <strong>{plan.candidate_label}</strong>
                       </Radio>
                       <Typography.Title level={4}>
                         {plan.title}
@@ -223,7 +223,7 @@ export function PlanPage() {
                         {plan.summary}
                       </Typography.Paragraph>
                     </div>
-                    {plan.id === "PLAN-02" ? (
+                    {plan.id === candidatePlans[1]?.id ? (
                       <Tag color="purple">Agent建议</Tag>
                     ) : (
                       <Tag>备选</Tag>
@@ -231,7 +231,7 @@ export function PlanPage() {
                   </Flex>
                   <div className="selection-reason">
                     <RobotOutlined />
-                    <span>选择理由摘要：{plan.selectionReason}</span>
+                    <span>选择理由摘要：{plan.selection_reason}</span>
                   </div>
                 </Card>
               ))}
@@ -244,13 +244,13 @@ export function PlanPage() {
                 {
                   key: "audience",
                   label: "适用人员",
-                  children: trainingTask.audience.join("、")
+                  children: (trainingTask.audience_labels ?? []).join("、")
                 },
                 {
                   key: "duration",
                   label: "预计学习时长",
-                  children: `${selectedPlan.modules.reduce(
-                    (total, module) => total + module.durationMinutes,
+                  children: `${selectedPlan.courses.reduce(
+                    (total, module) => total + module.duration_minutes,
                     0,
                   )} 分钟`
                 },
@@ -285,22 +285,22 @@ export function PlanPage() {
             }
           >
             <Timeline
-              items={selectedPlan.modules.map((module) => ({
-                color: module.riskLevel === "high" ? "red" : "blue",
+              items={selectedPlan.courses.map((module) => ({
+                color: module.risk_level === "high" ? "red" : "blue",
                 children: (
                   <div className="module-timeline">
                     <Flex justify="space-between">
                       <strong>{module.title}</strong>
                       <Space>
-                        <Tag>{module.department}</Tag>
-                        {module.riskLevel === "high" ? (
+                        <Tag>{module.department_name}</Tag>
+                        {module.risk_level === "high" ? (
                           <Tag color="red">高风险</Tag>
                         ) : null}
                       </Space>
                     </Flex>
                     <Typography.Text type="secondary">
-                      预计 {module.durationMinutes} 分钟 ·
-                      知识点 {module.knowledgePointIds.join("、")}
+                      预计 {module.duration_minutes} 分钟 ·
+                      知识点 {(module.knowledge_point_ids ?? []).join("、")}
                     </Typography.Text>
                   </div>
                 )
@@ -309,12 +309,12 @@ export function PlanPage() {
           </Card>
           <Card title="确定性规则校验" style={{ marginTop: 20 }}>
             <List
-              dataSource={selectedPlan.ruleChecks}
+              dataSource={selectedPlan.rule_checks}
               renderItem={(rule) => (
                 <List.Item>
                   <List.Item.Meta
                     avatar={
-                      rule.result === "passed" ? (
+                      rule.status === "passed" ? (
                         <CheckCircleOutlined className="icon-success" />
                       ) : (
                         <ExperimentOutlined className="icon-warning" />
@@ -323,7 +323,7 @@ export function PlanPage() {
                     title={
                       <Flex gap={8}>
                         <span>{rule.label}</span>
-                        <Tag color={rule.result === "passed" ? "green" : "orange"}>
+                        <Tag color={rule.status === "passed" ? "green" : "orange"}>
                           确定性规则
                         </Tag>
                       </Flex>
@@ -372,7 +372,7 @@ export function PlanPage() {
                   key: "write",
                   label: "正式写入",
                   children:
-                    taskStatus === "executing" ? "已执行" : "尚未执行"
+              taskStatus === "TB-IN-PROGRESS" ? "已执行" : "尚未执行"
                 }
               ]}
             />
@@ -380,8 +380,8 @@ export function PlanPage() {
           <Card title="当前可执行操作" style={{ marginTop: 20 }}>
             <Flex vertical gap={10}>
               {[
-                "awaiting_admin_confirmation",
-                "plan_generated"
+              "TB-WAIT-CONFIRM",
+              "TB-PLAN-READY"
               ].includes(taskStatus) ? (
                 <>
                   <Button
@@ -405,7 +405,7 @@ export function PlanPage() {
                   </Button>
                 </>
               ) : null}
-              {taskStatus === "awaiting_publish" ? (
+        {taskStatus === "TB-WAIT-PUBLISH" ? (
                 <Button
                   type="primary"
                   icon={<SendOutlined />}
@@ -415,7 +415,7 @@ export function PlanPage() {
                   下发培训任务
                 </Button>
               ) : null}
-              {taskStatus === "awaiting_approval" ? (
+        {taskStatus === "TB-WAIT-APPROVAL" ? (
                 <Button
                   icon={<AuditOutlined />}
                   onClick={() => navigate("/approvals")}
@@ -423,7 +423,7 @@ export function PlanPage() {
                   查看审批状态
                 </Button>
               ) : null}
-              {taskStatus === "executing" ? (
+        {taskStatus === "TB-IN-PROGRESS" ? (
                 <>
                   <Button
                     type="primary"
@@ -527,7 +527,7 @@ export function PlanPage() {
             await services.trainingPlan.requestReplan(
               trainingTask.id,
               replanReason,
-              `replan-${trainingTask.id}-${selectedPlan.version}`,
+        `idem_replan_${trainingTask.id}_${selectedPlan.entity_version ?? 1}`,
             );
             message.success("重新规划已受理，原方案与修改原因已保留。");
             setReplanOpen(false);

@@ -1,0 +1,70 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:submit-approval-input",
+  "additionalProperties": false,
+  "properties": {
+    "impact_scope": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Impact Scope",
+      "type": "array"
+    },
+    "knowledge_citation_ids": {
+      "items": {
+        "description": "Immutable external knowledge citation ID: know_<ULID>.",
+        "examples": [
+          "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^know_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Knowledge Citation Ids",
+      "type": "array"
+    },
+    "plan_id": {
+      "description": "Immutable external training plan ID: plan_<ULID>.",
+      "examples": [
+        "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Plan Id",
+      "type": "string"
+    },
+    "reviewer_role_id": {
+      "description": "Immutable external role ID: role_<ULID>.",
+      "examples": [
+        "role_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^role_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Reviewer Role Id",
+      "type": "string"
+    },
+    "risk_summary": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Risk Summary",
+      "type": "string"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "plan_id",
+    "reviewer_role_id",
+    "risk_summary",
+    "impact_scope"
+  ],
+  "title": "SubmitApprovalInput",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.api.SubmitApprovalInput"
+}

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { mobileServices, type RemedialPlan } from "../services";
+import { mobileServices, type ContractRemedialPlanView } from "../services";
 
 export function useRemedialPlan(taskId: string) {
-  const [plan, setPlan] = useState<RemedialPlan | null>(null);
+  const [plan, setPlan] = useState<ContractRemedialPlanView | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

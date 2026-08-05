@@ -14,7 +14,7 @@ import {
   Steps,
   Typography
 } from "antd";
-import type { TrainingStatus } from "@tegang/types";
+import type { ContractTrainingTaskStatus } from "@tegang/types";
 
 const stages = [
   "理解目标与约束",
@@ -26,7 +26,7 @@ const stages = [
 ];
 
 interface AgentExecutionPanelProps {
-  status: TrainingStatus;
+  status: ContractTrainingTaskStatus;
   onComplete: () => void;
   onPause: () => void;
   onTakeover: () => void;
@@ -38,9 +38,9 @@ export function AgentExecutionPanel({
   onPause,
   onTakeover
 }: AgentExecutionPanelProps) {
-  const isFailed = status === "execution_failed";
-  const isPaused = status === "paused";
-  const isTakeover = status === "human_takeover";
+  const isFailed = status === "TB-FAILED";
+  const isPaused = status === "TB-PAUSED";
+  const isTakeover = status === "TB-MANUAL";
   const current = isFailed || isPaused || isTakeover ? 3 : 2;
 
   return (
@@ -76,7 +76,7 @@ export function AgentExecutionPanel({
           showIcon
           icon={<ExclamationCircleOutlined />}
           message="SKILL_TIMEOUT：授权知识检索超过等待时间"
-          description="已完成 1 次有限重试，未执行正式业务写入。可以重试、回退到 CP-02 或请求人工接管。"
+          description="已完成 1 次有限重试，未执行正式业务写入。可以重试、回退到最近稳定检查点或请求人工接管。"
           style={{ marginBottom: 20 }}
         />
       ) : null}

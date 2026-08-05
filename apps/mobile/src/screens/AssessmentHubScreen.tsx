@@ -26,20 +26,20 @@ export function AssessmentHubScreen() {
 
   const openCurrent = () => {
     if (!task) return;
-    if (task.status === "awaiting_assessment") {
+    if (task.learning_status === "LR-WAIT-ASSESSMENT") {
       navigation.navigate("Assessment", { taskId: task.id });
     } else if (
-      task.status === "assessment_failed" ||
-      task.status === "remedial_learning"
+      task.learning_status === "LR-NOT-MET" ||
+      task.learning_status === "LR-REMEDIAL"
     ) {
       navigation.navigate("Remedial", { taskId: task.id });
-    } else if (task.status === "reassessment") {
+    } else if (task.learning_status === "LR-RETESTING") {
       navigation.navigate("Assessment", {
         taskId: task.id,
         reassessment: true
       });
     } else {
-      const currentResult = results.find((item) => item.taskId === task.id);
+      const currentResult = results.find((item) => item.task_id === task.id);
       if (currentResult) {
         navigation.navigate("AssessmentResult", { taskId: task.id });
       } else {
@@ -51,11 +51,11 @@ export function AssessmentHubScreen() {
   const hasAssessmentAction =
     task &&
     [
-      "awaiting_assessment",
-      "assessment_failed",
-      "remedial_learning",
-      "reassessment"
-    ].includes(task.status);
+      "LR-WAIT-ASSESSMENT",
+      "LR-NOT-MET",
+      "LR-REMEDIAL",
+      "LR-RETESTING"
+    ].includes(task.learning_status);
 
   return (
     <Screen safeTop>
@@ -75,9 +75,9 @@ export function AssessmentHubScreen() {
               <View style={styles.actionIcon}>
                 <Icon
                   source={
-                    task.status === "reassessment"
+                    task.learning_status === "LR-RETESTING"
                       ? "clipboard-text-clock-outline"
-                      : task.status === "awaiting_assessment"
+                      : task.learning_status === "LR-WAIT-ASSESSMENT"
                         ? "clipboard-text-outline"
                         : "target-account"
                   }
@@ -90,7 +90,7 @@ export function AssessmentHubScreen() {
                   当前待办
                 </Text>
                 <Text variant="titleMedium" style={styles.actionTitle}>
-                  {task.nextActionLabel}
+                  {task.next_action_label}
                 </Text>
                 <Text
                   variant="bodySmall"
@@ -102,7 +102,7 @@ export function AssessmentHubScreen() {
               </View>
             </View>
             <Button mode="contained" onPress={openCurrent}>
-              {task.nextActionLabel}
+              {task.next_action_label}
             </Button>
           </Card.Content>
         </Card>
@@ -153,15 +153,15 @@ export function AssessmentHubScreen() {
       ) : (
         <Card mode="outlined">
           {results.map((result) => {
-            const fullyPassed = result.passed && result.highRiskPassed;
+            const fullyPassed = result.passed && result.high_risk_passed;
             return (
               <List.Item
                 key={result.id}
-                title={result.taskId === task?.id ? task.name : "生产区域基础制度与行为规范"}
-                description={`第 ${result.attempt} 次 · ${result.score} 分 · ${
+                title={result.task_id === task?.id ? task.name : "生产区域基础制度与行为规范"}
+                description={`第 ${result.attempt} 次 · ${result.score_percent} 分 · ${
                   fullyPassed
                     ? "已达标"
-                    : result.nextAction === "human_review"
+                    : result.next_action === "human_review"
                       ? "人工处理中"
                       : "需补充学习"
                 }`}
@@ -182,7 +182,7 @@ export function AssessmentHubScreen() {
                 )}
                 onPress={() =>
                   navigation.navigate("AssessmentResult", {
-                    taskId: result.taskId
+                    taskId: result.task_id
                   })
                 }
               />

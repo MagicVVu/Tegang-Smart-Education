@@ -1,0 +1,53 @@
+{
+  "$defs": {
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:weak-knowledge-point",
+  "additionalProperties": false,
+  "properties": {
+    "knowledge_point_id": {
+      "description": "Immutable external knowledge point ID: kp_<ULID>.",
+      "examples": [
+        "kp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^kp_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Knowledge Point Id",
+      "type": "string"
+    },
+    "knowledge_point_name": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Knowledge Point Name",
+      "type": "string"
+    },
+    "reason": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    },
+    "risk_level": {
+      "$ref": "#/$defs/RiskLevel"
+    }
+  },
+  "required": [
+    "knowledge_point_id",
+    "knowledge_point_name",
+    "reason",
+    "risk_level"
+  ],
+  "title": "WeakKnowledgePoint",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.experience.WeakKnowledgePoint"
+}

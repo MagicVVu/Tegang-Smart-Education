@@ -1,0 +1,49 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:wrong-answer-reason",
+  "additionalProperties": false,
+  "properties": {
+    "knowledge_point_id": {
+      "description": "Immutable external knowledge point ID: kp_<ULID>.",
+      "examples": [
+        "kp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^kp_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Knowledge Point Id",
+      "type": "string"
+    },
+    "knowledge_point_name": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Knowledge Point Name",
+      "type": "string"
+    },
+    "question_id": {
+      "pattern": "^question_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Question Id",
+      "type": "string"
+    },
+    "reason": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    },
+    "recommendation": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Recommendation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "question_id",
+    "knowledge_point_id",
+    "knowledge_point_name",
+    "reason",
+    "recommendation"
+  ],
+  "title": "WrongAnswerReason",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.experience.WrongAnswerReason"
+}

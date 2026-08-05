@@ -35,7 +35,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { formatDuration } from "@tegang/shared-utils";
-import type { DemoScenario, TrainingStatus } from "@tegang/types";
+import type { ContractTrainingTaskStatus } from "@tegang/types";
 import { PageHeader } from "../components/PageHeader";
 import { StatusTag } from "../components/StatusTag";
 import { services } from "../services";
@@ -44,14 +44,14 @@ import {
   knowledgeCitations,
   trainingTask
 } from "../services/workspace-data";
-import { usePrototypeStore } from "../stores/prototype-store";
+import { usePrototypeStore, type DemoScenario } from "../stores/prototype-store";
 
 export function AgentRunPage() {
   const navigate = useNavigate();
   const role = usePrototypeStore((state) => state.role);
-  const taskStatus = usePrototypeStore((state) => state.taskStatus);
+  const taskStatus = usePrototypeStore((state) => state.task_status);
   const run = usePrototypeStore((state) => state.agent);
-  const retryCount = usePrototypeStore((state) => state.retryCount);
+  const retryCount = usePrototypeStore((state) => state.retry_count);
   const setScenario = usePrototypeStore((state) => state.setScenario);
   const pause = usePrototypeStore((state) => state.pause);
   const resume = usePrototypeStore((state) => state.resume);
@@ -80,19 +80,19 @@ export function AgentRunPage() {
 
   const nodes = useMemo(
     () =>
-      taskStatus === "execution_failed"
-        ? run.nodes.map((node, index) =>
-            index === run.nodes.length - 1
+      taskStatus === "TB-FAILED"
+        ? (run.steps ?? []).map((node, index, all) =>
+            index === all.length - 1
               ? {
                   ...node,
                   status: "failed" as const,
-                  errorCode: "SKILL_TIMEOUT",
-                  retryCount
+                  error_code: "SKILL_TIMEOUT",
+                  retry_count: retryCount
                 }
               : node,
           )
-        : run.nodes,
-    [run.nodes, retryCount, taskStatus],
+        : (run.steps ?? []),
+    [run.steps, retryCount, taskStatus],
   );
 
   const handleRecovery = async (
@@ -102,10 +102,10 @@ export function AgentRunPage() {
     try {
       if (action === "retry") {
         await services.agentTrace.retry(run.id);
-        message.success("已从 CP-05 发起有限重试。");
+        message.success("已从当前正式检查点发起有限重试。");
       } else if (action === "rollback") {
         await services.agentTrace.rollback(run.id);
-        message.success("已回退到稳定检查点 CP-04。");
+        message.success("已回退到最近稳定检查点。");
       } else {
         await services.agentTrace.requestHumanTakeover(run.id);
         message.success("已记录人工接管人、时间和恢复位置。");
@@ -149,9 +149,9 @@ export function AgentRunPage() {
             <Statistic
               title="当前阶段"
               value={
-                taskStatus === "execution_failed"
+                taskStatus === "TB-FAILED"
                   ? "Skill 调用失败"
-                  : run.currentStage
+                  : run.current_stage
               }
               valueStyle={{ fontSize: 18 }}
             />
@@ -162,7 +162,7 @@ export function AgentRunPage() {
           <Col span={5}>
             <Statistic
               title="等待角色"
-              value={run.waitingFor ?? "系统执行"}
+              value={run.state.waiting_for ?? "系统执行"}
             />
           </Col>
           <Col span={7}>
@@ -172,8 +172,7 @@ export function AgentRunPage() {
               }
               value={
                 permittedView === "开发者视图"
-                  ? run.traceId
-                      .replace("trace-demo-", "trace-")
+                  ? (run.trace_id ?? "未记录")
                   : "管理员确认或异常处理"
               }
               valueStyle={{ fontSize: 16 }}
@@ -183,7 +182,7 @@ export function AgentRunPage() {
                     type="text"
                     icon={<CopyOutlined />}
                     onClick={() => {
-                      void navigator.clipboard?.writeText(run.traceId);
+                      void navigator.clipboard?.writeText(run.trace_id ?? "");
                       message.success("Trace ID 已复制。");
                     }}
                   />
@@ -193,7 +192,7 @@ export function AgentRunPage() {
           </Col>
         </Row>
       </Card>
-      {taskStatus === "execution_failed" ? (
+      {taskStatus === "TB-FAILED" ? (
         <Alert
           type="error"
           showIcon
@@ -228,7 +227,7 @@ export function AgentRunPage() {
           style={{ marginTop: 20 }}
         />
       ) : null}
-      {taskStatus === "paused" ? (
+      {taskStatus === "TB-PAUSED" ? (
         <Alert
           type="warning"
           showIcon
@@ -262,15 +261,15 @@ function BusinessTrace({
   onPause,
   onNavigate
 }: {
-  nodes: typeof agentRun.nodes;
-  taskStatus: TrainingStatus;
+  nodes: NonNullable<typeof agentRun.steps>;
+  taskStatus: ContractTrainingTaskStatus;
   onPause: () => void;
   onNavigate: (path: string) => void;
 }) {
   const run = usePrototypeStore((state) => state.agent);
   return (
     <>
-      <RunActionSummary taskStatus={taskStatus} waitingFor={run.waitingFor} />
+      <RunActionSummary taskStatus={taskStatus} waitingFor={run.state.waiting_for ?? undefined} />
       <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
       <Col span={7}>
         <Card title="培训阶段">
@@ -293,9 +292,9 @@ function BusinessTrace({
                   ? "已完成并留痕"
                   : index === 3
                     ? [
-                        "execution_failed",
-                        "paused",
-                        "human_takeover"
+                        "TB-FAILED",
+                        "TB-PAUSED",
+                        "TB-MANUAL"
                       ].includes(taskStatus)
                       ? "异常处理中"
                       : "当前或最近处理阶段"
@@ -334,11 +333,11 @@ function BusinessTrace({
                     </Tag>
                   </Flex>
                   <Typography.Paragraph type="secondary">
-                    {node.outputSummary}
+                    {node.output_summary}
                   </Typography.Paragraph>
-                  {node.decisionReason ? (
+                  {node.decision_reason ? (
                     <Typography.Text>
-                      决策摘要：{node.decisionReason}
+                      决策摘要：{node.decision_reason}
                     </Typography.Text>
                   ) : null}
                 </div>
@@ -348,7 +347,7 @@ function BusinessTrace({
         </Card>
         <Card title="关键决定" style={{ marginTop: 20 }}>
           <List
-            dataSource={run.decisions}
+            dataSource={run.decisions ?? []}
             renderItem={(decision) => (
               <List.Item>
                 <List.Item.Meta
@@ -391,8 +390,8 @@ function BusinessTrace({
               <List.Item>
                 <List.Item.Meta
                   avatar={<FileSearchOutlined />}
-                  title={`${item.documentName} ${item.version}`}
-                  description={item.department}
+                  title={`${item.document_name} ${item.document_version}`}
+                  description={(item.authorized_scopes ?? []).join("、")}
                 />
                 <Tag color="green">有效</Tag>
               </List.Item>
@@ -434,23 +433,23 @@ function RunActionSummary({
   taskStatus,
   waitingFor
 }: {
-  taskStatus: TrainingStatus;
+  taskStatus: ContractTrainingTaskStatus;
   waitingFor?: string;
 }) {
   const isException = [
-    "execution_failed",
-    "paused",
-    "human_takeover"
+    "TB-FAILED",
+    "TB-PAUSED",
+    "TB-MANUAL"
   ].includes(taskStatus);
   const facts = [
     {
       label: "发生了什么",
       value:
-        taskStatus === "execution_failed"
+        taskStatus === "TB-FAILED"
           ? "知识检索调用超时"
-          : taskStatus === "human_takeover"
+          : taskStatus === "TB-MANUAL"
             ? "自动恢复已转人工"
-            : taskStatus === "paused"
+            : taskStatus === "TB-PAUSED"
               ? "流程等待恢复条件"
               : "候选方案与规则校验已完成"
     },
@@ -498,10 +497,11 @@ const nodeStatusLabels = {
   running: "执行中",
   succeeded: "已完成",
   failed: "失败",
-  paused: "已暂停"
+  waiting: "等待",
+  skipped: "已跳过"
 } as const;
 
-function DeveloperTrace({ nodes }: { nodes: typeof agentRun.nodes }) {
+function DeveloperTrace({ nodes }: { nodes: NonNullable<typeof agentRun.steps> }) {
   return (
     <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
       <Col span={8}>
@@ -524,7 +524,7 @@ function DeveloperTrace({ nodes }: { nodes: typeof agentRun.nodes }) {
                     )
                   }
                   title={node.label}
-                  description={`${node.capability} · ${node.checkpointId ?? "无检查点"}`}
+                  description={`${node.capability} · ${node.checkpoint_id ?? "无检查点"}`}
                 />
                 <Tag>{nodeStatusLabels[node.status]}</Tag>
               </List.Item>
@@ -545,8 +545,8 @@ function DeveloperTrace({ nodes }: { nodes: typeof agentRun.nodes }) {
                 <Flex justify="space-between" style={{ width: "100%" }}>
                   <span>{node.label}</span>
                   <Space>
-                    {node.latencyMs ? (
-                      <Tag>{formatDuration(node.latencyMs)}</Tag>
+                    {node.latency_ms ? (
+                      <Tag>{formatDuration(node.latency_ms)}</Tag>
                     ) : null}
                     <Tag color={node.status === "failed" ? "red" : "green"}>
                       {nodeStatusLabels[node.status]}
@@ -564,55 +564,55 @@ function DeveloperTrace({ nodes }: { nodes: typeof agentRun.nodes }) {
                       key: "input",
                       label: "输入摘要",
                       span: 2,
-                      children: node.inputSummary
+                      children: node.input_summary
                     },
                     {
                       key: "output",
                       label: "输出摘要",
                       span: 2,
-                      children: node.outputSummary
+                      children: node.output_summary
                     },
                     {
                       key: "model",
                       label: "模型",
-                      children: node.model?.replace("demo-", "") ?? "未调用模型"
+                      children: node.model_name?.replace("demo-", "") ?? "未调用模型"
                     },
                     {
                       key: "prompt",
                       label: "Prompt版本",
-                      children: node.promptVersion ?? "不适用"
+                      children: node.prompt_version ?? "不适用"
                     },
                     {
                       key: "tokens",
                       label: "Token",
-                      children: node.tokens ?? "不适用"
+                      children: node.token_count ?? "不适用"
                     },
                     {
                       key: "latency",
                       label: "延迟",
-                      children: node.latencyMs
-                        ? formatDuration(node.latencyMs)
+                      children: node.latency_ms
+                        ? formatDuration(node.latency_ms)
                         : "未记录"
                     },
                     {
                       key: "skill",
                       label: "Skill",
-                      children: node.skillName ?? "未调用"
+                      children: node.skill_name ?? "未调用"
                     },
                     {
                       key: "error",
                       label: "错误",
-                      children: node.errorCode ?? "无"
+                      children: node.error_code ?? "无"
                     },
                     {
                       key: "retry",
                       label: "重试次数",
-                      children: node.retryCount
+                      children: node.retry_count
                     },
                     {
                       key: "checkpoint",
                       label: "检查点",
-                      children: node.checkpointId ?? "无"
+                      children: node.checkpoint_id ?? "无"
                     }
                   ]}
                 />

@@ -28,10 +28,10 @@ import {
   homeRouteForRole
 } from "@tegang/business-rules";
 import { roleLabels } from "@tegang/shared-utils";
-import type { DemoUser, UserRole } from "@tegang/types";
+import type { ContractPrototypeUserProfile, ContractUserRole } from "@tegang/types";
 import { services } from "../services";
 
-const icons: Record<UserRole, React.ReactNode> = {
+const icons: Record<ContractUserRole, React.ReactNode> = {
   employee: <MobileOutlined />,
   training_admin: <BookOutlined />,
   reviewer: <AuditOutlined />,
@@ -46,7 +46,7 @@ interface LoginValue {
 export function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>();
-  const [developmentProfiles, setDevelopmentProfiles] = useState<DemoUser[]>([]);
+  const [developmentProfiles, setDevelopmentProfiles] = useState<ContractPrototypeUserProfile[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -57,7 +57,7 @@ export function LoginPage() {
       .then(setDevelopmentProfiles);
   }, []);
 
-  const finishLogin = (role: UserRole) => {
+  const finishLogin = (role: ContractUserRole) => {
     const requestedPath = (
       location.state as { from?: string } | null
     )?.from;
@@ -87,12 +87,14 @@ export function LoginPage() {
     }
   };
 
-  const handleDevelopmentLogin = async (role: UserRole) => {
+  const handleDevelopmentLogin = async (role: ContractUserRole) => {
     setSubmitting(true);
     setError(undefined);
     try {
-      const result = await services.auth.developmentLogin(role);
-      finishLogin(result.data.user.role);
+      await services.auth.developmentLogin(role);
+      // 开发快捷入口始终进入对应角色的首页，
+      // 不使用 location.state.from 避免跨角色残留跳转
+      navigate(homeRouteForRole(role), { replace: true });
     } catch (cause) {
       setError(
         cause instanceof Error
@@ -225,7 +227,7 @@ export function LoginPage() {
                     <div className="role-card__icon">{icons[user.role]}</div>
                     <strong>{roleLabels[user.role]}</strong>
                     <Typography.Text type="secondary">
-                      {user.displayName}
+                      {user.display_name}
                     </Typography.Text>
                   </Card>
                 </Col>

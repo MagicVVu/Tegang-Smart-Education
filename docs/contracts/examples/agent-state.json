@@ -1,0 +1,29 @@
+{
+  "data": {
+    "checkpoint_id": "checkpoint_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "created_at": "2026-08-04T08:00:00Z",
+    "created_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "current_approval_id": "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "current_plan_id": "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "current_step_id": "step_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "entity_version": 1,
+    "formal_write_occurred": false,
+    "id": "run_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "metadata": {},
+    "recoverable": true,
+    "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "retry_count": 0,
+    "risk_level": "high",
+    "schema_version": "2.0.0",
+    "status": "AR-WAIT-APPROVAL",
+    "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "updated_at": "2026-08-04T08:05:00Z",
+    "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "waiting_for": "authorized_reviewer"
+  },
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.0.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

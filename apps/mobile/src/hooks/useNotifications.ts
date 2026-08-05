@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { mobileServices, type NotificationItem } from "../services";
+import { mobileServices, type ContractNotificationItemView } from "../services";
 
 export function useNotifications() {
-  const [items, setItems] = useState<NotificationItem[]>([]);
+  const [items, setItems] = useState<ContractNotificationItemView[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

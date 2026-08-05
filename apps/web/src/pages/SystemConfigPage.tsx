@@ -95,7 +95,7 @@ function KnowledgeTab() {
         columns={[
           {
             title: "文档",
-            dataIndex: "documentName",
+      dataIndex: "document_name",
             render: (value) => (
               <Flex gap={8}>
                 <FileSearchOutlined />

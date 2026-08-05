@@ -25,7 +25,7 @@ export function RemedialScreen({ navigation, route }: Props) {
     if (starting) return;
     setStarting(true);
     try {
-      if (task?.status !== "remedial_learning") {
+      if (task?.learning_status !== "LR-REMEDIAL") {
         await startRemedial(route.params.taskId);
       }
       navigation.replace("Learning", {
@@ -77,7 +77,7 @@ export function RemedialScreen({ navigation, route }: Props) {
           contentStyle={styles.button}
           onPress={() => void begin()}
         >
-          {task?.status === "remedial_learning" ? "继续补训" : "开始补训"}
+          {task?.learning_status === "LR-REMEDIAL" ? "继续补训" : "开始补训"}
         </Button>
       }
     >
@@ -106,7 +106,7 @@ export function RemedialScreen({ navigation, route }: Props) {
         <Card.Content style={styles.nextStepContent}>
           <Icon source="arrow-right-circle" size={24} color={colors.brand} />
           <Text variant="bodyMedium" style={styles.nextStepText}>
-            {plan.nextStep}
+            {plan.next_step}
           </Text>
         </Card.Content>
       </Card>
@@ -116,32 +116,32 @@ export function RemedialScreen({ navigation, route }: Props) {
         description="依据本次测评结果和高风险独立达标规则"
       />
       <View style={styles.weakList}>
-        {plan.weakPoints.map((item) => (
+        {plan.weak_points.map((item) => (
           <Card
-            key={item.knowledgePoint}
+            key={item.knowledge_point_id}
             mode="outlined"
             style={
-              item.riskLevel === "high" ? styles.highRiskCard : undefined
+              item.risk_level === "high" ? styles.highRiskCard : undefined
             }
           >
             <Card.Content style={styles.weakContent}>
               <Icon
                 source={
-                  item.riskLevel === "high"
+                  item.risk_level === "high"
                     ? "shield-alert-outline"
                     : "alert-circle-outline"
                 }
                 size={25}
                 color={
-                  item.riskLevel === "high" ? colors.risk : colors.warning
+                  item.risk_level === "high" ? colors.risk : colors.warning
                 }
               />
               <View style={styles.weakCopy}>
                 <View style={styles.weakHeading}>
                   <Text variant="titleSmall" style={styles.weakTitle}>
-                    {item.knowledgePoint}
+                    {item.knowledge_point_name}
                   </Text>
-                  {item.riskLevel === "high" ? (
+                  {item.risk_level === "high" ? (
                     <Text variant="labelSmall" style={styles.highRiskLabel}>
                       高风险
                     </Text>

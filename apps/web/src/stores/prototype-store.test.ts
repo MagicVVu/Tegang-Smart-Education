@@ -10,38 +10,38 @@ describe("prototype flagship flow", () => {
     const store = usePrototypeStore.getState();
     store.login("training_admin");
     store.submitTraining();
-    expect(usePrototypeStore.getState().taskStatus).toBe("agent_analyzing");
+    expect(usePrototypeStore.getState().task_status).toBe("TB-ANALYZING");
     usePrototypeStore.getState().completeAnalysis();
     usePrototypeStore.getState().confirmPlan();
-    expect(usePrototypeStore.getState().taskStatus).toBe("awaiting_approval");
+    expect(usePrototypeStore.getState().task_status).toBe("TB-WAIT-APPROVAL");
 
     usePrototypeStore.getState().login("reviewer");
     usePrototypeStore.getState().decideApproval("approved");
-    expect(usePrototypeStore.getState().taskStatus).toBe("awaiting_publish");
+    expect(usePrototypeStore.getState().task_status).toBe("TB-WAIT-PUBLISH");
 
     usePrototypeStore.getState().login("training_admin");
     usePrototypeStore.getState().publish();
-    expect(usePrototypeStore.getState().taskStatus).toBe("executing");
+    expect(usePrototypeStore.getState().task_status).toBe("TB-IN-PROGRESS");
   });
 
   it("moves failed assessment into remedial learning then reassessment", () => {
     usePrototypeStore.getState().setScenario("assessment_failed");
     usePrototypeStore.getState().submitAssessment(false);
-    expect(usePrototypeStore.getState().taskStatus).toBe("remedial_learning");
+    expect(usePrototypeStore.getState().learning_status).toBe("LR-REMEDIAL");
     usePrototypeStore.getState().finishRemedial();
-    expect(usePrototypeStore.getState().taskStatus).toBe("reassessment");
+    expect(usePrototypeStore.getState().learning_status).toBe("LR-RETESTING");
     usePrototypeStore.getState().submitAssessment(true);
-    expect(usePrototypeStore.getState().taskStatus).toBe("completed");
+    expect(usePrototypeStore.getState().task_status).toBe("TB-COMPLETED");
   });
 
   it("supports retry, rollback and human takeover without infinite retry", () => {
     usePrototypeStore.getState().triggerAgentFailure();
     usePrototypeStore.getState().retryAgent();
     usePrototypeStore.getState().retryAgent();
-    expect(usePrototypeStore.getState().taskStatus).toBe("human_takeover");
+    expect(usePrototypeStore.getState().task_status).toBe("TB-MANUAL");
     usePrototypeStore.getState().rollbackAgent();
-    expect(usePrototypeStore.getState().taskStatus).toBe(
-      "awaiting_admin_confirmation",
+    expect(usePrototypeStore.getState().task_status).toBe(
+      "TB-WAIT-CONFIRM",
     );
   });
 });

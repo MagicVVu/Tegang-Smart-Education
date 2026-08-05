@@ -223,11 +223,11 @@ export function AssessmentScreen({ navigation, route }: Props) {
           <Card.Content style={styles.question}>
             <View style={styles.metaRow}>
               <Text variant="labelLarge" style={styles.knowledge}>
-                {current.knowledgePoint}
+                {current.knowledge_point_name}
               </Text>
               <View
                 style={
-                  current.riskLevel === "high"
+                  current.risk_level === "high"
                     ? styles.highRiskBadge
                     : styles.mediumRiskBadge
                 }
@@ -235,12 +235,12 @@ export function AssessmentScreen({ navigation, route }: Props) {
                 <Text
                   variant="labelSmall"
                   style={
-                    current.riskLevel === "high"
+                    current.risk_level === "high"
                       ? styles.highRisk
                       : styles.mediumRisk
                   }
                 >
-                  {current.riskLevel === "high"
+                  {current.risk_level === "high"
                     ? "高风险知识"
                     : "一般知识"}
                 </Text>
@@ -250,11 +250,11 @@ export function AssessmentScreen({ navigation, route }: Props) {
               {current.prompt}
             </Text>
             <Text variant="bodySmall" style={styles.muted}>
-              {current.type === "multiple" ? "可选择多个答案" : "请选择一个答案"}
+              {current.question_type === "multiple" ? "可选择多个答案" : "请选择一个答案"}
             </Text>
             <View style={styles.options}>
               {current.options.map((option, optionIndex) =>
-                current.type === "multiple" ? (
+                current.question_type === "multiple" ? (
                   <Checkbox.Item
                     key={option}
                     label={option}

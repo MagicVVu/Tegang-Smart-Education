@@ -1,7 +1,6 @@
 import { ReloadOutlined } from "@ant-design/icons";
 import { Button, Flex, Select, Tooltip, Typography } from "antd";
-import type { DemoScenario } from "@tegang/types";
-import { usePrototypeStore } from "../stores/prototype-store";
+import { usePrototypeStore, type DemoScenario } from "../stores/prototype-store";
 
 const options: Array<{ value: DemoScenario; label: string }> = [
   { value: "normal", label: "低风险正常流程" },

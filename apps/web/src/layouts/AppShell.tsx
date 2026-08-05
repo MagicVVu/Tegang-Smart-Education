@@ -26,47 +26,48 @@ import {
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { roleLabels } from "@tegang/shared-utils";
-import type { UserRole } from "@tegang/types";
+import { contractIds } from "@tegang/mock-data";
+import type { ContractUserRole } from "@tegang/types";
 import { usePrototypeStore } from "../stores/prototype-store";
 
 const { Header, Sider, Content } = Layout;
 
 const identityByRole: Record<
-  Exclude<UserRole, "employee">,
-  { displayName: string; department: string }
+  Exclude<ContractUserRole, "employee">,
+  { display_name: string; department_name: string }
 > = {
   training_admin: {
-    displayName: "培训管理员 A-001",
-    department: "培训管理中心"
+    display_name: "培训管理员 A-001",
+    department_name: "培训管理中心"
   },
   reviewer: {
-    displayName: "审核员 R-001",
-    department: "安全管理"
+    display_name: "审核员 R-001",
+    department_name: "安全管理"
   },
   system_admin: {
-    displayName: "系统管理员 S-001",
-    department: "智信部"
+    display_name: "系统管理员 S-001",
+    department_name: "智信部"
   }
 };
 
 const navByRole: Record<
-  Exclude<UserRole, "employee">,
+  Exclude<ContractUserRole, "employee">,
   Array<{ key: string; icon: React.ReactNode; label: string }>
 > = {
   training_admin: [
     { key: "/admin/dashboard", icon: <DashboardOutlined />, label: "工作台" },
     {
-      key: "/admin/plans/T-20260728-01",
+      key: `/admin/plans/${contractIds.task}`,
       icon: <FileSearchOutlined />,
       label: "培训任务"
     },
     {
-      key: "/admin/reports/T-20260728-01",
+      key: `/admin/reports/${contractIds.task}`,
       icon: <BarChartOutlined />,
       label: "培训报告"
     },
     {
-      key: "/agent-runs/T-20260728-01",
+      key: `/agent-runs/${contractIds.task}`,
       icon: <RobotOutlined />,
       label: "Agent运行中心"
     }
@@ -74,12 +75,12 @@ const navByRole: Record<
   reviewer: [
     { key: "/approvals", icon: <AuditOutlined />, label: "审批中心" },
     {
-      key: "/admin/reports/T-20260728-01",
+      key: `/admin/reports/${contractIds.task}`,
       icon: <BarChartOutlined />,
       label: "培训报告"
     },
     {
-      key: "/agent-runs/T-20260728-01",
+      key: `/agent-runs/${contractIds.task}`,
       icon: <RobotOutlined />,
       label: "Agent运行中心"
     }
@@ -91,7 +92,7 @@ const navByRole: Record<
       label: "知识与配置"
     },
     {
-      key: "/agent-runs/T-20260728-01",
+      key: `/agent-runs/${contractIds.task}`,
       icon: <RobotOutlined />,
       label: "Agent运行中心"
     }
@@ -178,8 +179,8 @@ export function AppShell({ children }: PropsWithChildren) {
               </Badge>
               <Avatar icon={<UserOutlined />} />
               <div className="current-user">
-                <strong>{user.displayName}</strong>
-                <span>{user.department}</span>
+                <strong>{user.display_name}</strong>
+                <span>{user.department_name}</span>
               </div>
               <Tooltip title="退出登录">
                 <Button
@@ -188,7 +189,7 @@ export function AppShell({ children }: PropsWithChildren) {
                   icon={<LogoutOutlined />}
                   onClick={() => {
                     logout();
-                    navigate("/login");
+                    navigate("/login", { replace: true });
                   }}
                 />
               </Tooltip>

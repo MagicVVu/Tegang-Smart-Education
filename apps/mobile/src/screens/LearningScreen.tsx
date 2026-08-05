@@ -41,7 +41,7 @@ export function LearningScreen({ navigation, route }: Props) {
 
   const goNext = async () => {
     if (!course) return;
-    const isLast = course.currentUnitIndex >= course.units.length - 1;
+    const isLast = course.current_unit_index >= course.units.length - 1;
     if (!isLast) {
       await completeCurrentUnit();
       return;
@@ -84,7 +84,7 @@ export function LearningScreen({ navigation, route }: Props) {
     );
   }
 
-  const currentUnit = course.units[course.currentUnitIndex];
+  const currentUnit = course.units[course.current_unit_index];
   if (!currentUnit) {
     return (
       <Screen>
@@ -99,12 +99,12 @@ export function LearningScreen({ navigation, route }: Props) {
     );
   }
 
-  const isLast = course.currentUnitIndex >= course.units.length - 1;
+  const isLast = course.current_unit_index >= course.units.length - 1;
   const progress =
     task?.id === route.params.taskId
-      ? task.progress
+      ? task.progress_percent
       : Math.round(
-          ((course.currentUnitIndex + 1) / course.units.length) * 100,
+        ((course.current_unit_index + 1) / course.units.length) * 100,
         );
 
   return (
@@ -152,7 +152,7 @@ export function LearningScreen({ navigation, route }: Props) {
               {isRemedial ? "补训进度" : "课程进度"}
             </Text>
             <Text variant="bodySmall" style={styles.muted}>
-              第 {course.currentUnitIndex + 1} / {course.units.length} 节
+            第 {course.current_unit_index + 1} / {course.units.length} 节
             </Text>
           </View>
           <Text variant="titleMedium" style={styles.progressValue}>
@@ -175,21 +175,21 @@ export function LearningScreen({ navigation, route }: Props) {
               <List.Item
                 key={unit.id}
                 title={`${index + 1}. ${unit.title}`}
-                description={`${unit.durationMinutes} 分钟${
-                  unit.riskLevel === "high" ? " · 高风险知识" : ""
+              description={`${unit.duration_minutes} 分钟${
+                unit.risk_level === "high" ? " · 高风险知识" : ""
                 }`}
                 left={(props) => (
                   <List.Icon
                     {...props}
                     icon={
-                      index < course.currentUnitIndex || unit.completed
+                  index < course.current_unit_index || unit.completed
                         ? "check-circle-outline"
-                        : index === course.currentUnitIndex
+                    : index === course.current_unit_index
                           ? "play-circle-outline"
                           : "circle-outline"
                     }
                     color={
-                      index === course.currentUnitIndex
+                index === course.current_unit_index
                         ? colors.brand
                         : undefined
                     }
@@ -216,7 +216,7 @@ export function LearningScreen({ navigation, route }: Props) {
 
         <SectionHeader
           title={currentUnit.title}
-          description={`${currentUnit.eyebrow} · 内容版本 ${course.contentVersion}`}
+        description={`${currentUnit.eyebrow} · 内容版本 ${course.content_version}`}
         />
         <Card mode="contained" style={styles.articleCard}>
           <Card.Content style={styles.article}>
@@ -233,7 +233,7 @@ export function LearningScreen({ navigation, route }: Props) {
               必须掌握
             </Text>
             <View style={styles.keyPoints}>
-              {currentUnit.keyPoints.map((point) => (
+        {currentUnit.key_points.map((point) => (
                 <View key={point} style={styles.keyPoint}>
                   <Icon
                     source="check-circle-outline"
@@ -249,7 +249,7 @@ export function LearningScreen({ navigation, route }: Props) {
           </Card.Content>
         </Card>
 
-        {currentUnit.riskLevel === "high" ? (
+      {currentUnit.risk_level === "high" ? (
           <Card style={styles.riskCard} mode="contained">
             <Card.Content style={styles.riskContent}>
               <Icon
@@ -275,7 +275,7 @@ export function LearningScreen({ navigation, route }: Props) {
               场景理解
             </Text>
             <Text variant="bodyMedium" style={styles.body}>
-              {currentUnit.scenarioQuestion}
+          {currentUnit.scenario_question}
             </Text>
             <View style={styles.answerRow}>
               <Icon
@@ -284,7 +284,7 @@ export function LearningScreen({ navigation, route }: Props) {
                 size={20}
               />
               <Text variant="bodyMedium" style={styles.answerText}>
-                {currentUnit.scenarioAnswer}
+            {currentUnit.scenario_answer}
               </Text>
             </View>
           </Card.Content>
@@ -314,7 +314,7 @@ export function LearningScreen({ navigation, route }: Props) {
       </Screen>
       <KnowledgeCitationModal
         visible={citationVisible}
-        citationIds={currentUnit.citationIds}
+        citationIds={currentUnit.knowledge_citation_ids}
         onDismiss={() => setCitationVisible(false)}
       />
       <Snackbar

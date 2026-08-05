@@ -1,7 +1,9 @@
 import type {
-  RiskLevel,
-  TrainingStatus,
-  UserRole
+  ContractAgentRunStatus,
+  ContractLearningRecordStatus,
+  ContractRiskLevel,
+  ContractTrainingTaskStatus,
+  ContractUserRole
 } from "@tegang/types";
 
 export type PermissionAction =
@@ -17,7 +19,7 @@ export type PermissionAction =
   | "manage_system_config"
   | "request_human_takeover";
 
-const actionRoles: Record<PermissionAction, UserRole[]> = {
+const actionRoles: Record<PermissionAction, ContractUserRole[]> = {
   create_training: ["training_admin"],
   edit_plan: ["training_admin"],
   submit_approval: ["training_admin"],
@@ -31,24 +33,20 @@ const actionRoles: Record<PermissionAction, UserRole[]> = {
   request_human_takeover: ["training_admin"]
 };
 
-export function can(role: UserRole, action: PermissionAction): boolean {
+export function can(role: ContractUserRole, action: PermissionAction): boolean {
   return actionRoles[action].includes(role);
 }
 
-export function homeRouteForRole(role: UserRole): string {
+export function homeRouteForRole(role: ContractUserRole): string {
   switch (role) {
-    case "employee":
-      return "/mobile-handoff";
-    case "training_admin":
-      return "/admin/dashboard";
-    case "reviewer":
-      return "/approvals";
-    case "system_admin":
-      return "/system/knowledge";
+    case "employee": return "/mobile-handoff";
+    case "training_admin": return "/admin/dashboard";
+    case "reviewer": return "/approvals";
+    case "system_admin": return "/system/knowledge";
   }
 }
 
-export function canAccessPath(role: UserRole, path: string): boolean {
+export function canAccessPath(role: ContractUserRole, path: string): boolean {
   if (path === "/login" || path === "/forbidden") return true;
   if (path.startsWith("/admin/reports/")) {
     return role === "training_admin" || role === "reviewer";
@@ -66,34 +64,32 @@ export function canAccessPath(role: UserRole, path: string): boolean {
 }
 
 export function nextStatusAfterRisk(
-  riskLevel: RiskLevel,
-): TrainingStatus {
-  return riskLevel === "high"
-    ? "awaiting_approval"
-    : "awaiting_publish";
+  riskLevel: ContractRiskLevel,
+): ContractTrainingTaskStatus {
+  return riskLevel === "high" ? "TB-WAIT-APPROVAL" : "TB-WAIT-PUBLISH";
 }
 
 export function mayPublish(
-  role: UserRole,
-  status: TrainingStatus,
-  riskLevel: RiskLevel,
+  role: ContractUserRole,
+  status: ContractTrainingTaskStatus,
+  riskLevel: ContractRiskLevel,
   approvalApproved: boolean,
 ): boolean {
   if (!can(role, "publish_training")) return false;
-  if (status !== "awaiting_publish") return false;
+  if (status !== "TB-WAIT-PUBLISH") return false;
   return riskLevel !== "high" || approvalApproved;
 }
 
-export function mayRetry(status: TrainingStatus, retryCount: number): boolean {
-  return status === "execution_failed" && retryCount < 2;
+export function mayRetry(status: ContractAgentRunStatus, retryCount: number): boolean {
+  return status === "AR-FAILED" && retryCount < 2;
 }
 
 export function assessmentNextStatus(
   passed: boolean,
   highRiskPassed: boolean,
   remedialAttempts: number,
-): TrainingStatus {
-  if (passed && highRiskPassed) return "completed";
-  if (remedialAttempts >= 2) return "human_takeover";
-  return "remedial_learning";
+): ContractLearningRecordStatus {
+  if (passed && highRiskPassed) return "LR-COMPLETED";
+  if (remedialAttempts >= 2) return "LR-PAUSED";
+  return "LR-REMEDIAL";
 }

@@ -27,7 +27,7 @@ export function AssessmentResultScreen({ navigation, route }: Props) {
   const [loadError, setLoadError] = useState("");
 
   useEffect(() => {
-    if (result?.taskId === route.params.taskId) {
+    if (result?.task_id === route.params.taskId) {
       return;
     }
     loadResult(route.params.taskId)
@@ -37,7 +37,7 @@ export function AssessmentResultScreen({ navigation, route }: Props) {
         ),
       )
       .finally(() => setLoading(false));
-  }, [loadResult, result?.taskId, route.params.taskId]);
+  }, [loadResult, result?.task_id, route.params.taskId]);
 
   if (loading) {
     return (
@@ -52,7 +52,7 @@ export function AssessmentResultScreen({ navigation, route }: Props) {
     );
   }
 
-  if (!result || result.taskId !== route.params.taskId) {
+  if (!result || result.task_id !== route.params.taskId) {
     return (
       <Screen>
         <StatePanel
@@ -71,10 +71,10 @@ export function AssessmentResultScreen({ navigation, route }: Props) {
     );
   }
 
-  const fullyPassed = result.passed && result.highRiskPassed;
-  const needsHuman = result.nextAction === "human_review";
+  const fullyPassed = result.passed && result.high_risk_passed;
+  const needsHuman = result.next_action === "human_review";
   const overallPassedButHighRiskFailed =
-    result.passed && !result.highRiskPassed;
+    result.passed && !result.high_risk_passed;
   const conclusion = fullyPassed
     ? {
         title: "本次测评已达标",
@@ -154,7 +154,7 @@ export function AssessmentResultScreen({ navigation, route }: Props) {
               {conclusion.description}
             </Text>
             <Text variant="labelMedium" style={styles.attempt}>
-              第 {result.attempt} 次测评 · {result.score} 分
+              第 {result.attempt} 次测评 · {result.score_percent} 分
             </Text>
           </View>
         </Card.Content>
@@ -205,24 +205,24 @@ export function AssessmentResultScreen({ navigation, route }: Props) {
             </Text>
             <Text
               variant="titleLarge"
-              style={result.highRiskPassed ? styles.success : styles.risk}
+              style={result.high_risk_passed ? styles.success : styles.risk}
             >
-              {result.highRiskPassed ? "通过" : "未通过"}
+              {result.high_risk_passed ? "通过" : "未通过"}
             </Text>
           </Card.Content>
         </Card>
       </View>
 
-      {result.scoreChange !== undefined ? (
+      {result.score_change_percent != null ? (
         <Card mode="contained" style={styles.changeCard}>
           <Card.Content style={styles.changeContent}>
             <Icon source="trending-up" size={24} color={colors.info} />
             <View style={styles.changeCopy}>
               <Text variant="titleSmall">与上次相比</Text>
               <Text variant="bodySmall" style={styles.muted}>
-                上次 {result.previousScore} 分，本次
-                {result.scoreChange >= 0 ? "提高" : "下降"}{" "}
-                {Math.abs(result.scoreChange)} 分。
+                上次 {result.previous_score_percent} 分，本次
+                {result.score_change_percent >= 0 ? "提高" : "下降"}{" "}
+                {Math.abs(result.score_change_percent)} 分。
               </Text>
             </View>
           </Card.Content>
@@ -234,10 +234,10 @@ export function AssessmentResultScreen({ navigation, route }: Props) {
         description="结果按知识点说明，不只展示总分"
       />
       <Card mode="outlined">
-        {result.knowledgeResults.map((item, itemIndex) => (
-          <View key={item.knowledgePoint}>
+        {(result.knowledge_point_performances ?? []).map((item, itemIndex) => (
+          <View key={item.knowledge_point_id}>
             <List.Item
-              title={item.knowledgePoint}
+              title={item.knowledge_point_name}
               description={item.reason}
               titleNumberOfLines={2}
               descriptionNumberOfLines={3}
@@ -247,7 +247,7 @@ export function AssessmentResultScreen({ navigation, route }: Props) {
                   icon={
                     item.passed
                       ? "check-circle-outline"
-                      : item.riskLevel === "high"
+                      : item.risk_level === "high"
                         ? "shield-alert-outline"
                         : "alert-circle-outline"
                   }
@@ -255,37 +255,37 @@ export function AssessmentResultScreen({ navigation, route }: Props) {
                 />
               )}
               right={() => (
-                <Text variant="labelLarge">{item.score} 分</Text>
+                <Text variant="labelLarge">{item.score_percent} 分</Text>
               )}
             />
             <ProgressBar
-              progress={item.score / 100}
+              progress={item.score_percent / 100}
               color={item.passed ? colors.success : colors.warning}
               style={styles.knowledgeBar}
             />
-            {itemIndex < result.knowledgeResults.length - 1 ? (
+            {itemIndex < (result.knowledge_point_performances ?? []).length - 1 ? (
               <Divider />
             ) : null}
           </View>
         ))}
       </Card>
 
-      {result.wrongAnswerReasons.length ? (
+      {(result.wrong_answer_reasons ?? []).length ? (
         <>
           <SectionHeader
             title="错因与补训建议"
             description="只补充本次未掌握的内容"
           />
           <View style={styles.reasonList}>
-            {result.wrongAnswerReasons.map((item) => (
+            {(result.wrong_answer_reasons ?? []).map((item) => (
               <Card
-                key={item.questionId}
+                key={item.question_id}
                 mode="contained"
                 style={styles.reasonCard}
               >
                 <Card.Content style={styles.reasonContent}>
                   <Text variant="titleSmall" style={styles.reasonTitle}>
-                    {item.knowledgePoint}
+                    {item.knowledge_point_name}
                   </Text>
                   <Text variant="bodySmall" style={styles.muted}>
                     错因：{item.reason}

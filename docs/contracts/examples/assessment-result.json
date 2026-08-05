@@ -1,0 +1,51 @@
+{
+  "data": {
+    "assessment_session_id": "assessment_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "created_at": "2026-08-04T08:00:00Z",
+    "created_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "disclaimer": "Assessment results support training decisions only and must not be used directly for performance, promotion, punishment, or HR conclusions.",
+    "employee_profile_id": "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "entity_version": 1,
+    "high_risk_passed": false,
+    "id": "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "knowledge_point_performances": [
+      {
+        "assessment_session_id": "assessment_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+        "created_at": "2026-08-04T08:00:00Z",
+        "created_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+        "entity_version": 1,
+        "id": "kperf_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+        "knowledge_point_id": "kp_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+        "knowledge_point_name": "Equipment interlock pre-check",
+        "metadata": {},
+        "passed": false,
+        "reason": "The equipment interlock pre-check was incomplete.",
+        "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+        "risk_level": "high",
+        "schema_version": "2.0.0",
+        "score_percent": 60.0,
+        "status": "LR-NOT-MET",
+        "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+        "updated_at": "2026-08-04T08:05:00Z",
+        "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      }
+    ],
+    "metadata": {},
+    "next_action": "remediation",
+    "passed": false,
+    "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "risk_level": "high",
+    "schema_version": "2.0.0",
+    "score_percent": 78.0,
+    "scored_at": "2026-08-04T08:05:00Z",
+    "status": "scored",
+    "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "updated_at": "2026-08-04T08:05:00Z",
+    "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+  },
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.0.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

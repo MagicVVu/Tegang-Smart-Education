@@ -1,0 +1,16 @@
+{
+  "category": "approval_required",
+  "code": "APPROVAL_REQUIRED",
+  "details": {
+    "approval_id": "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+  },
+  "error_id": "error_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "field_errors": [],
+  "message": "High-risk publication is waiting for an authorized reviewer.",
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "retryable": false,
+  "schema_version": "2.0.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "user_action": "Open the approval record and complete the authorized review."
+}

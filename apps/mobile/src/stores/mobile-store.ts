@@ -2,20 +2,20 @@ import { create } from "zustand";
 import { mobileServices } from "../services";
 import type {
   AuthCredentials,
-  EmployeeProfile,
   EmployeeTaskFilter,
-  EmployeeTrainingTask,
-  MobileAssessmentResult
+  ContractAssessmentResultView,
+  ContractPrototypeUserProfile,
+  ContractTrainingTaskView
 } from "../services";
 
 interface MobileState {
   authenticated: boolean;
-  employee: EmployeeProfile | null;
-  currentTask: EmployeeTrainingTask | null;
-  tasks: EmployeeTrainingTask[];
+  employee: ContractPrototypeUserProfile | null;
+  currentTask: ContractTrainingTaskView | null;
+  tasks: ContractTrainingTaskView[];
   taskFilter: EmployeeTaskFilter;
   assessmentAttempt: number;
-  result: MobileAssessmentResult | null;
+  result: ContractAssessmentResultView | null;
   authLoading: boolean;
   trainingLoading: boolean;
   authError: string | null;
@@ -28,7 +28,7 @@ interface MobileState {
   completeUnit: (taskId: string, unitId: string) => Promise<void>;
   completeCourse: (taskId: string, remedial?: boolean) => Promise<void>;
   recordAssessmentResult: (
-    result: MobileAssessmentResult,
+    result: ContractAssessmentResultView,
   ) => Promise<void>;
   loadAssessmentResult: (taskId: string) => Promise<void>;
   startRemedial: (taskId: string) => Promise<void>;
@@ -42,8 +42,8 @@ function errorMessage(error: unknown) {
 }
 
 function replaceTask(
-  tasks: EmployeeTrainingTask[],
-  nextTask: EmployeeTrainingTask,
+  tasks: ContractTrainingTaskView[],
+  nextTask: ContractTrainingTaskView,
 ) {
   return tasks.some((task) => task.id === nextTask.id)
     ? tasks.map((task) => (task.id === nextTask.id ? nextTask : task))
@@ -152,11 +152,11 @@ export const useMobileStore = create<MobileState>((set, get) => ({
     set((state) => ({
       currentTask: response.data.task,
       tasks: replaceTask(state.tasks, response.data.task),
-      assessmentAttempt: response.data.attempt
+      assessmentAttempt: response.data.attempt ?? state.assessmentAttempt
     }));
   },
   recordAssessmentResult: async (result) => {
-    const taskResponse = await mobileServices.training.getTask(result.taskId);
+    const taskResponse = await mobileServices.training.getTask(result.task_id);
     set((state) => ({
       result,
       currentTask: taskResponse.data,

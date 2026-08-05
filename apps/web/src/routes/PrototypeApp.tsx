@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import type { PropsWithChildren } from "react";
 import { Spin } from "antd";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import type { UserRole } from "@tegang/types";
+import type { ContractUserRole } from "@tegang/types";
 import { AppShell } from "../layouts/AppShell";
 import { usePrototypeStore } from "../stores/prototype-store";
 
@@ -65,7 +65,7 @@ const TrainingCreatePage = lazy(() =>
 function RoleGuard({
   allowed,
   children
-}: PropsWithChildren<{ allowed: UserRole[] }>) {
+}: PropsWithChildren<{ allowed: ContractUserRole[] }>) {
   const role = usePrototypeStore((state) => state.role);
   const location = useLocation();
 
@@ -81,7 +81,7 @@ function RoleGuard({
 function ShellRoute({
   allowed,
   children
-}: PropsWithChildren<{ allowed: UserRole[] }>) {
+}: PropsWithChildren<{ allowed: ContractUserRole[] }>) {
   return (
     <RoleGuard allowed={allowed}>
       <AppShell>{children}</AppShell>

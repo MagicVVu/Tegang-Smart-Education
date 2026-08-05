@@ -1,0 +1,532 @@
+{
+  "$defs": {
+    "AssessmentNextAction": {
+      "enum": [
+        "complete",
+        "remediation",
+        "human_review"
+      ],
+      "title": "AssessmentNextAction",
+      "type": "string"
+    },
+    "AssessmentResult": {
+      "additionalProperties": false,
+      "description": "Scored assessment result; never a direct performance or HR conclusion.",
+      "properties": {
+        "assessment_session_id": {
+          "description": "Immutable assessment session ID: assessment_<ULID>.",
+          "examples": [
+            "assessment_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^assessment_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Assessment Session Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "description": "Model or retrieval confidence in the closed interval [0, 1].",
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "created_at": {
+          "description": "Creation time with timezone; serialized as ISO 8601.",
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "created_by": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Created By"
+        },
+        "disclaimer": {
+          "default": "Assessment results support training decisions only and must not be used directly for performance, promotion, punishment, or HR conclusions.",
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Disclaimer",
+          "type": "string"
+        },
+        "employee_profile_id": {
+          "description": "Immutable external employee profile ID: emp_<ULID>.",
+          "examples": [
+            "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Employee Profile Id",
+          "type": "string"
+        },
+        "entity_version": {
+          "default": 1,
+          "description": "Optimistic entity revision, independent of schema_version.",
+          "minimum": 1,
+          "title": "Entity Version",
+          "type": "integer"
+        },
+        "high_risk_passed": {
+          "title": "High Risk Passed",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "Immutable assessment result ID: assessment_result_<ULID>.",
+          "examples": [
+            "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^assessment_result_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "idempotency_key": {
+          "anyOf": [
+            {
+              "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+              "examples": [
+                "idem_training_create_20260804_001"
+              ],
+              "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idempotency Key"
+        },
+        "knowledge_point_performances": {
+          "items": {
+            "$ref": "#/$defs/KnowledgePointPerformance"
+          },
+          "title": "Knowledge Point Performances",
+          "type": "array"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
+          "title": "Metadata",
+          "type": "object"
+        },
+        "next_action": {
+          "$ref": "#/$defs/AssessmentNextAction"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "description": "Single request ID: req_<ULID>.",
+              "examples": [
+                "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Id"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/RiskLevel",
+          "default": "low"
+        },
+        "schema_version": {
+          "default": "2.0.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "score_percent": {
+          "description": "Percentage value in the closed interval [0, 100].",
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Score Percent",
+          "type": "number"
+        },
+        "scored_at": {
+          "format": "date-time",
+          "title": "Scored At",
+          "type": "string"
+        },
+        "status": {
+          "const": "scored",
+          "title": "Status",
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        },
+        "trace_id": {
+          "anyOf": [
+            {
+              "description": "Cross-service trace ID: trc_<ULID>.",
+              "examples": [
+                "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trace Id"
+        },
+        "updated_at": {
+          "description": "Last update time with timezone; serialized as ISO 8601.",
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "updated_by": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Updated By"
+        }
+      },
+      "required": [
+        "created_at",
+        "updated_at",
+        "id",
+        "status",
+        "assessment_session_id",
+        "task_id",
+        "employee_profile_id",
+        "score_percent",
+        "passed",
+        "high_risk_passed",
+        "next_action",
+        "scored_at"
+      ],
+      "title": "AssessmentResult",
+      "type": "object"
+    },
+    "KnowledgePointPerformance": {
+      "additionalProperties": false,
+      "description": "Assessment performance for one knowledge point.",
+      "properties": {
+        "assessment_session_id": {
+          "description": "Immutable assessment session ID: assessment_<ULID>.",
+          "examples": [
+            "assessment_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^assessment_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Assessment Session Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "description": "Model or retrieval confidence in the closed interval [0, 1].",
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "created_at": {
+          "description": "Creation time with timezone; serialized as ISO 8601.",
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "created_by": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Created By"
+        },
+        "entity_version": {
+          "default": 1,
+          "description": "Optimistic entity revision, independent of schema_version.",
+          "minimum": 1,
+          "title": "Entity Version",
+          "type": "integer"
+        },
+        "id": {
+          "description": "Immutable knowledge-point performance ID: kperf_<ULID>.",
+          "examples": [
+            "kperf_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^kperf_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "idempotency_key": {
+          "anyOf": [
+            {
+              "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+              "examples": [
+                "idem_training_create_20260804_001"
+              ],
+              "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idempotency Key"
+        },
+        "knowledge_point_id": {
+          "description": "Immutable external knowledge point ID: kp_<ULID>.",
+          "examples": [
+            "kp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^kp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Knowledge Point Id",
+          "type": "string"
+        },
+        "knowledge_point_name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Knowledge Point Name",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
+          "title": "Metadata",
+          "type": "object"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "description": "Single request ID: req_<ULID>.",
+              "examples": [
+                "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Id"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/RiskLevel"
+        },
+        "schema_version": {
+          "default": "2.0.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "score_percent": {
+          "description": "Percentage value in the closed interval [0, 100].",
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Score Percent",
+          "type": "number"
+        },
+        "status": {
+          "$ref": "#/$defs/LearningRecordStatus"
+        },
+        "trace_id": {
+          "anyOf": [
+            {
+              "description": "Cross-service trace ID: trc_<ULID>.",
+              "examples": [
+                "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trace Id"
+        },
+        "updated_at": {
+          "description": "Last update time with timezone; serialized as ISO 8601.",
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "updated_by": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Updated By"
+        }
+      },
+      "required": [
+        "created_at",
+        "updated_at",
+        "risk_level",
+        "id",
+        "status",
+        "assessment_session_id",
+        "knowledge_point_id",
+        "knowledge_point_name",
+        "score_percent",
+        "passed",
+        "reason"
+      ],
+      "title": "KnowledgePointPerformance",
+      "type": "object"
+    },
+    "LearningRecordStatus": {
+      "description": "Employee learning states from chapter 15.8.",
+      "enum": [
+        "LR-PENDING",
+        "LR-LEARNING",
+        "LR-WAIT-ASSESSMENT",
+        "LR-NOT-MET",
+        "LR-REMEDIAL",
+        "LR-WAIT-RETEST",
+        "LR-RETESTING",
+        "LR-COMPLETED",
+        "LR-PAUSED"
+      ],
+      "title": "LearningRecordStatus",
+      "type": "string"
+    },
+    "RiskLevel": {
+      "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
+      "enum": [
+        "read_only",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:assessment-result-response",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/AssessmentResult"
+    },
+    "occurred_at": {
+      "format": "date-time",
+      "title": "Occurred At",
+      "type": "string"
+    },
+    "request_id": {
+      "description": "Single request ID: req_<ULID>.",
+      "examples": [
+        "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "trace_id": {
+      "description": "Cross-service trace ID: trc_<ULID>.",
+      "examples": [
+        "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Trace Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "trace_id",
+    "occurred_at",
+    "data"
+  ],
+  "title": "AssessmentResultResponse",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.api.AssessmentResultResponse"
+}

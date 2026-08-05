@@ -1,0 +1,213 @@
+{
+  "$defs": {
+    "ErrorCategory": {
+      "enum": [
+        "validation",
+        "permission_scope",
+        "state_conflict",
+        "knowledge_version",
+        "approval_required",
+        "agent_failure",
+        "skill_failure",
+        "external_failure",
+        "retry_exhausted",
+        "manual_takeover",
+        "internal"
+      ],
+      "title": "ErrorCategory",
+      "type": "string"
+    },
+    "ErrorCode": {
+      "enum": [
+        "INVALID_INPUT",
+        "MISSING_INFORMATION",
+        "UNAUTHORIZED",
+        "FORBIDDEN_SCOPE",
+        "STATE_CONFLICT",
+        "APPROVAL_REQUIRED",
+        "APPROVAL_REJECTED",
+        "APPROVAL_EXPIRED",
+        "KNOWLEDGE_NOT_FOUND",
+        "KNOWLEDGE_VERSION_CONFLICT",
+        "IDEMPOTENCY_CONFLICT",
+        "AGENT_FAILED",
+        "SKILL_FAILED",
+        "CONNECTOR_TIMEOUT",
+        "CONNECTOR_UNAVAILABLE",
+        "EXTERNAL_RESULT_UNKNOWN",
+        "RETRY_LIMIT_REACHED",
+        "MANUAL_TAKEOVER_REQUIRED",
+        "INTERNAL_ERROR"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "FieldError": {
+      "additionalProperties": false,
+      "description": "Field-level validation problem safe for a caller to display.",
+      "properties": {
+        "code": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "field": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "code",
+        "message"
+      ],
+      "title": "FieldError",
+      "type": "object"
+    },
+    "UnifiedError": {
+      "additionalProperties": false,
+      "description": "Unified external error object with no secret, stack, prompt, or unauthorized data.",
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/ErrorCategory"
+        },
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "details": {
+          "additionalProperties": true,
+          "description": "Permission-safe details only; never include stack traces, prompts, secrets, or unauthorized data.",
+          "title": "Details",
+          "type": "object"
+        },
+        "error_id": {
+          "description": "Immutable error occurrence ID: error_<ULID>.",
+          "examples": [
+            "error_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^error_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Error Id",
+          "type": "string"
+        },
+        "field_errors": {
+          "items": {
+            "$ref": "#/$defs/FieldError"
+          },
+          "title": "Field Errors",
+          "type": "array"
+        },
+        "message": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "default": "2.0.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "trace_id": {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Trace Id",
+          "type": "string"
+        },
+        "user_action": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "User Action"
+        }
+      },
+      "required": [
+        "error_id",
+        "code",
+        "message",
+        "category",
+        "retryable",
+        "trace_id",
+        "occurred_at"
+      ],
+      "title": "UnifiedError",
+      "type": "object"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:error-response",
+  "additionalProperties": false,
+  "properties": {
+    "error": {
+      "$ref": "#/$defs/UnifiedError"
+    },
+    "occurred_at": {
+      "format": "date-time",
+      "title": "Occurred At",
+      "type": "string"
+    },
+    "request_id": {
+      "description": "Single request ID: req_<ULID>.",
+      "examples": [
+        "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "trace_id": {
+      "description": "Cross-service trace ID: trc_<ULID>.",
+      "examples": [
+        "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Trace Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "trace_id",
+    "occurred_at",
+    "error"
+  ],
+  "title": "ErrorResponse",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.api.ErrorResponse"
+}

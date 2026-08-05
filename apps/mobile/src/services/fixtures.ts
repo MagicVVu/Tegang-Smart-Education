@@ -1,152 +1,135 @@
 import {
   assessmentQuestions,
   candidatePlans,
+  contractIds,
   demoUsers,
   knowledgeCitations,
   trainingTask
 } from "@tegang/mock-data";
 import type {
-  EmployeeProfile,
-  EmployeeTrainingTask,
-  NotificationItem,
-  TrainingRecord
-} from "./contracts";
+  ContractNotificationItemView,
+  ContractPrototypeUserProfile,
+  ContractTrainingRecordView,
+  ContractTrainingTaskView
+} from "@tegang/types";
 
-export const employeeProfile: EmployeeProfile = {
-  id: demoUsers.find((item) => item.role === "employee")?.id ?? "EMP-E0231",
-  displayName:
-    demoUsers.find((item) => item.role === "employee")?.displayName ??
-    "员工 E-0231",
-  department:
-    demoUsers.find((item) => item.role === "employee")?.department ??
-    "炼钢生产部",
-  title:
-    demoUsers.find((item) => item.role === "employee")?.title ?? "新员工",
-  accountLabel: "E-0231"
-};
+export const employeeProfile: ContractPrototypeUserProfile =
+  demoUsers.find((item) => item.role === "employee")!;
 
 export const primaryTaskBase: Omit<
-  EmployeeTrainingTask,
-  "status" | "progress" | "nextActionLabel" | "availabilityReason"
+  ContractTrainingTaskView,
+  "task_status" | "learning_status" | "progress_percent" | "next_action_label" | "availability_reason"
 > = {
-  id: trainingTask.id,
-  name: trainingTask.name,
-  objective: trainingTask.objective,
-  department: employeeProfile.department,
-  audienceLabel: `${employeeProfile.department}${employeeProfile.title}`,
-  deadline: trainingTask.deadline,
-  riskLevel: trainingTask.riskLevel,
-  estimatedMinutes: 90
+  ...trainingTask,
+  department_name: employeeProfile.department_name,
+  audience_label: `${employeeProfile.department_name}${employeeProfile.job_title}`,
+  estimated_minutes: 90
 };
 
-export const completedTask: EmployeeTrainingTask = {
-  id: "T-20260618-02",
+export const completedTask: ContractTrainingTaskView = {
+  ...trainingTask,
+  id: contractIds.completedTask,
   name: "生产区域基础制度与行为规范",
   objective: "掌握生产区域基础制度、通行要求和异常报告流程。",
-  department: employeeProfile.department,
-  audienceLabel: `${employeeProfile.department}员工`,
+  department_name: employeeProfile.department_name,
+  audience_label: `${employeeProfile.department_name}员工`,
   deadline: "2026-06-30",
-  status: "completed",
-  progress: 100,
-  riskLevel: "medium",
-  estimatedMinutes: 55,
-  nextActionLabel: "查看完成记录"
+  task_status: "TB-COMPLETED",
+  learning_status: "LR-COMPLETED",
+  progress_percent: 100,
+  risk_level: "medium",
+  estimated_minutes: 55,
+  next_action_label: "查看完成记录",
+  created_at: "2026-06-18T01:00:00Z"
 };
 
-export const employeeCourseModules = candidatePlans[1]!.modules.filter(
-  (module) =>
-    module.department === "全员" ||
-    module.department === employeeProfile.department,
+export const employeeCourseModules = candidatePlans[1]!.courses.filter(
+  (course) => course.department_name === "全员" || course.department_name === employeeProfile.department_name,
 );
 
-export const courseCopy = {
-  "M-BASE": {
+export const courseCopy: Record<string, {
+  eyebrow: string;
+  heading: string;
+  paragraphs: string[];
+  key_points: string[];
+  scenario_question: string;
+  scenario_answer: string;
+  knowledge_citation_ids: string[];
+}> = {
+  [contractIds.courseBase]: {
     eyebrow: "基础制度 · 必修",
     heading: "进入生产区域前的身份与安全确认",
     paragraphs: [
-      "进入生产区域前，应完成规定的安全培训和身份确认，并确认本人了解当日作业区域、通行边界和异常报告方式。",
-      "遇到制度内容与现场要求不一致时，应暂停相关操作，向现场授权人员确认，不依据个人经验自行处理。"
+      "进入生产区域前，应完成规定的安全培训和身份确认，并了解当日作业区域、通行边界和异常报告方式。",
+      "制度内容与现场要求不一致时，应暂停相关操作，向现场授权人员确认。"
     ],
-    keyPoints: ["完成身份确认", "了解通行边界", "异常时停止并报告"],
-    scenarioQuestion: "现场要求与培训资料描述不一致时，应先做什么？",
-    scenarioAnswer: "暂停相关操作，并向现场授权人员确认。",
-    citationIds: ["K-BASE-032"]
+    key_points: ["完成身份确认", "了解通行边界", "异常时停止并报告"],
+    scenario_question: "现场要求与培训资料不一致时，应先做什么？",
+    scenario_answer: "暂停相关操作，并向现场授权人员确认。",
+    knowledge_citation_ids: [contractIds.knowBase]
   },
-  "M-STEEL": {
+  [contractIds.courseSteel]: {
     eyebrow: "高风险知识 · 独立达标",
     heading: "进入高温区域前的联锁、隔离与监护",
     paragraphs: [
-      "进入高温作业区域前，应确认设备联锁状态、隔离边界和监护要求。任何一项无法确认时，应停止继续操作并转人工确认。",
-      "该知识点影响现场安全，必须在测评中单独达标。其他知识点得分不能替代本项要求。"
+      "进入高温作业区域前，应确认设备联锁状态、隔离边界和监护要求。任何一项无法确认时必须停止。",
+      "该知识点影响现场安全，必须在测评中单独达标。"
     ],
-    keyPoints: ["确认设备联锁", "确认隔离边界", "确认监护要求"],
-    scenarioQuestion: "如果设备联锁状态无法确认，应如何处理？",
-    scenarioAnswer: "停止操作并请求现场授权人员确认。",
-    citationIds: ["K-STEEL-051"]
+    key_points: ["确认设备联锁", "确认隔离边界", "确认监护要求"],
+    scenario_question: "设备联锁状态无法确认时应如何处理？",
+    scenario_answer: "停止操作并请求现场授权人员确认。",
+    knowledge_citation_ids: [contractIds.knowSteel]
   }
-} as const;
+};
 
 export const remedialCopy = {
   eyebrow: "定向补训 · 高风险知识",
   heading: "高温作业前置条件强化",
-  paragraphs: [
-    "本次只补充未达标的高风险知识点，不会重新开始全部课程。",
-    "请再次核对联锁状态、隔离边界和监护要求。任一条件不明确时，必须停止操作并转人工确认。"
-  ],
-  keyPoints: ["三项条件缺一不可", "资料冲突时停止操作", "完成后进入复测"],
-  scenarioQuestion: "三项前置条件中有一项无法确认，能否继续进入作业区域？",
-  scenarioAnswer: "不能。应停止操作并转人工确认。",
-  citationIds: ["K-STEEL-051"]
+  paragraphs: ["本次只补充未达标的高风险知识点。", "请再次核对联锁状态、隔离边界和监护要求。"],
+  key_points: ["三项条件缺一不可", "资料冲突时停止操作", "完成后进入复测"],
+  scenario_question: "有一项前置条件无法确认，能否继续进入作业区域？",
+  scenario_answer: "不能，应停止操作并转人工确认。",
+  knowledge_citation_ids: [contractIds.knowSteel]
 };
 
 export const questions = assessmentQuestions;
 export const citations = knowledgeCitations;
 
-export const notificationFixtures: NotificationItem[] = [
+export const notificationFixtures: ContractNotificationItemView[] = [
   {
-    id: "MSG-01",
+    id: "notification_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     title: "当前培训待继续",
     description: "高风险安全规范培训还有学习内容未完成",
-    createdAt: "今天 09:20",
+    created_at: "2026-08-04T01:20:00Z",
     icon: "book-open-page-variant-outline",
     unread: true,
-    taskId: trainingTask.id,
+    task_id: trainingTask.id,
     destination: "task"
   },
   {
-    id: "MSG-02",
+    id: "notification_01ARZ3NDEKTSV4RRFFQ69G5FAW",
     title: "培训任务即将到期",
     description: "请在 2026-08-15 前完成学习与测评",
-    createdAt: "昨天 16:40",
+    created_at: "2026-08-03T08:40:00Z",
     icon: "clock-alert-outline",
     unread: true,
-    taskId: trainingTask.id,
-    destination: "task"
-  },
-  {
-    id: "MSG-03",
-    title: "知识资料版本已确认",
-    description: "《炼钢生产部安全操作规范》V5.1 现行有效",
-    createdAt: "07-28 11:05",
-    icon: "book-check-outline",
-    unread: false,
-    taskId: trainingTask.id,
+    task_id: trainingTask.id,
     destination: "task"
   }
 ];
 
-export const trainingRecordFixtures: TrainingRecord[] = [
+export const trainingRecordFixtures: ContractTrainingRecordView[] = [
   {
-    id: completedTask.id,
-    taskName: completedTask.name,
-    status: "completed",
-    completedAt: "2026-06-28 15:42",
-    resultSummary: "测评达标 · 高风险知识无单独要求"
+    task_id: completedTask.id,
+    task_name: completedTask.name,
+    learning_status: "LR-COMPLETED",
+    completed_at: "2026-06-28T07:42:00Z",
+    result_summary: "测评达标 · 高风险知识无单独要求"
   },
   {
-    id: trainingTask.id,
-    taskName: trainingTask.name,
-    status: "in_progress",
-    resultSummary: "学习进行中"
+    task_id: trainingTask.id,
+    task_name: trainingTask.name,
+    learning_status: "LR-LEARNING",
+    result_summary: "学习进行中"
   }
 ];

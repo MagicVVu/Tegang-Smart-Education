@@ -1,0 +1,66 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:create-training-task-input",
+  "additionalProperties": false,
+  "properties": {
+    "deadline": {
+      "format": "date",
+      "title": "Deadline",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "objective": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Objective",
+      "type": "string"
+    },
+    "target_department_ids": {
+      "items": {
+        "description": "Immutable external department ID: dept_<ULID>.",
+        "examples": [
+          "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Target Department Ids",
+      "type": "array"
+    },
+    "target_employee_profile_ids": {
+      "items": {
+        "description": "Immutable external employee profile ID: emp_<ULID>.",
+        "examples": [
+          "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Target Employee Profile Ids",
+      "type": "array"
+    },
+    "training_goal_id": {
+      "description": "Immutable external training goal ID: goal_<ULID>.",
+      "examples": [
+        "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^goal_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Training Goal Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "training_goal_id",
+    "name",
+    "objective",
+    "deadline"
+  ],
+  "title": "CreateTrainingTaskInput",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.api.CreateTrainingTaskInput"
+}

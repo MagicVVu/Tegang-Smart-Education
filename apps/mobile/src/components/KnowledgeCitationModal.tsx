@@ -71,14 +71,14 @@ export function KnowledgeCitationModal({
                 <View key={item.id}>
                   <View style={styles.citation}>
                     <Text variant="titleMedium" style={styles.documentName}>
-                      {item.documentName}
+                      {item.document_name}
                     </Text>
                     <View style={styles.metaRow}>
                       <Text variant="labelMedium" style={styles.effective}>
                         现行有效
                       </Text>
                       <Text variant="bodySmall" style={styles.help}>
-                        {item.version} · {item.department}
+                        {item.document_version} · {(item.authorized_scopes ?? []).join("、")}
                       </Text>
                     </View>
                     <Text variant="bodyMedium" style={styles.section}>

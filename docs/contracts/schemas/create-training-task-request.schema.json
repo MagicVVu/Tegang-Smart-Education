@@ -1,0 +1,118 @@
+{
+  "$defs": {
+    "CreateTrainingTaskInput": {
+      "additionalProperties": false,
+      "properties": {
+        "deadline": {
+          "format": "date",
+          "title": "Deadline",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "objective": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Objective",
+          "type": "string"
+        },
+        "target_department_ids": {
+          "items": {
+            "description": "Immutable external department ID: dept_<ULID>.",
+            "examples": [
+              "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+            ],
+            "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "title": "Target Department Ids",
+          "type": "array"
+        },
+        "target_employee_profile_ids": {
+          "items": {
+            "description": "Immutable external employee profile ID: emp_<ULID>.",
+            "examples": [
+              "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+            ],
+            "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "title": "Target Employee Profile Ids",
+          "type": "array"
+        },
+        "training_goal_id": {
+          "description": "Immutable external training goal ID: goal_<ULID>.",
+          "examples": [
+            "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^goal_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Training Goal Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "training_goal_id",
+        "name",
+        "objective",
+        "deadline"
+      ],
+      "title": "CreateTrainingTaskInput",
+      "type": "object"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.0.0:create-training-task-request",
+  "additionalProperties": false,
+  "properties": {
+    "actor_id": {
+      "description": "Immutable external user ID: usr_<ULID>.",
+      "examples": [
+        "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Actor Id",
+      "type": "string"
+    },
+    "data": {
+      "$ref": "#/$defs/CreateTrainingTaskInput"
+    },
+    "idempotency_key": {
+      "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+      "examples": [
+        "idem_training_create_20260804_001"
+      ],
+      "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "request_id": {
+      "description": "Single request ID: req_<ULID>.",
+      "examples": [
+        "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "2.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "idempotency_key",
+    "actor_id",
+    "data"
+  ],
+  "title": "CreateTrainingTaskRequest",
+  "type": "object",
+  "x-contract-schema-version": "2.0.0",
+  "x-contract-source": "backend.app.schemas.api.CreateTrainingTaskRequest"
+}
