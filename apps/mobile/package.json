@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.ts",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --port 8084",
     "android": "expo run:android",
     "prebuild:android": "expo prebuild --platform android",
     "typecheck": "tsc --noEmit",
