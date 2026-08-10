@@ -31,7 +31,7 @@
       "type": "string"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:role",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:role",
   "additionalProperties": false,
   "description": "Role and permission-scope reference; it does not replace the permission engine.",
   "properties": {
@@ -150,7 +150,7 @@
       "$ref": "#/$defs/UserRole"
     },
     "schema_version": {
-      "default": "2.0.0",
+      "default": "2.1.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
@@ -210,6 +210,6 @@
   ],
   "title": "Role",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.identity.Role"
 }

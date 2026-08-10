@@ -3,6 +3,8 @@
     "ErrorCategory": {
       "enum": [
         "validation",
+        "not_found",
+        "contract_version",
         "permission_scope",
         "state_conflict",
         "knowledge_version",
@@ -21,6 +23,8 @@
       "enum": [
         "INVALID_INPUT",
         "MISSING_INFORMATION",
+        "RESOURCE_NOT_FOUND",
+        "UNSUPPORTED_CONTRACT_VERSION",
         "UNAUTHORIZED",
         "FORBIDDEN_SCOPE",
         "STATE_CONFLICT",
@@ -74,7 +78,7 @@
       "type": "object"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:unified-error",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:unified-error",
   "additionalProperties": false,
   "description": "Unified external error object with no secret, stack, prompt, or unauthorized data.",
   "properties": {
@@ -122,7 +126,7 @@
       "type": "boolean"
     },
     "schema_version": {
-      "default": "2.0.0",
+      "default": "2.1.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
@@ -162,6 +166,6 @@
   ],
   "title": "UnifiedError",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.errors.UnifiedError"
 }

@@ -10,6 +10,7 @@ import {
   trainingTask
 } from "@tegang/mock-data";
 import { makeRequestId, traceIdForRequest, wait } from "@tegang/shared-utils";
+import { CONTRACT_SCHEMA_VERSION } from "@tegang/types";
 import type {
   ContractApproval,
   ContractAssessmentResultView,
@@ -35,6 +36,7 @@ function response<T>(data: T): ServiceResponse<T> {
   const request_id = makeRequestId();
   return {
     data,
+    schema_version: CONTRACT_SCHEMA_VERSION,
     request_id,
     trace_id: traceIdForRequest(request_id),
     occurred_at: new Date().toISOString()

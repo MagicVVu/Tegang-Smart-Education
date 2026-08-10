@@ -26,7 +26,7 @@ describe("mobile mock services", () => {
         password: "123456"
       }),
     ).rejects.toMatchObject({
-      code: "FORBIDDEN"
+      code: "FORBIDDEN_SCOPE"
     });
   });
 
@@ -137,7 +137,7 @@ describe("mobile mock services", () => {
         1,
       ),
     ).rejects.toMatchObject({
-      code: "DUPLICATE_SUBMISSION"
+      code: "IDEMPOTENCY_CONFLICT"
     });
   });
 
@@ -147,7 +147,7 @@ describe("mobile mock services", () => {
     await expect(
       mobileServices.training.getCurrentTask(),
     ).rejects.toMatchObject({
-      code: "NETWORK_ERROR",
+      code: "CONNECTOR_UNAVAILABLE",
       retryable: true
     });
     expect(__mobileMockControl.getSnapshot().progress_percent).toBe(36);

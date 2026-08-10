@@ -1,0 +1,38 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:page-number-pagination-meta",
+  "additionalProperties": false,
+  "description": "Page-number metadata used only by list endpoints that select this strategy.",
+  "properties": {
+    "kind": {
+      "const": "page",
+      "default": "page",
+      "title": "Kind",
+      "type": "string"
+    },
+    "page": {
+      "minimum": 1,
+      "title": "Page",
+      "type": "integer"
+    },
+    "page_size": {
+      "maximum": 500,
+      "minimum": 1,
+      "title": "Page Size",
+      "type": "integer"
+    },
+    "total": {
+      "minimum": 0,
+      "title": "Total",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "page",
+    "page_size",
+    "total"
+  ],
+  "title": "PageNumberPaginationMeta",
+  "type": "object",
+  "x-contract-schema-version": "2.1.0",
+  "x-contract-source": "backend.app.schemas.common.PageNumberPaginationMeta"
+}

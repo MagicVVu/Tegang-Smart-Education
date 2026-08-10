@@ -1,0 +1,89 @@
+{
+  "$defs": {
+    "UserRole": {
+      "enum": [
+        "employee",
+        "training_admin",
+        "reviewer",
+        "system_admin"
+      ],
+      "title": "UserRole",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:human-takeover-requested-event-payload",
+  "additionalProperties": false,
+  "properties": {
+    "checkpoint_id": {
+      "anyOf": [
+        {
+          "description": "Agent checkpoint ID: checkpoint_<ULID>.",
+          "examples": [
+            "checkpoint_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^checkpoint_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Checkpoint Id"
+    },
+    "error_id": {
+      "anyOf": [
+        {
+          "description": "Immutable error occurrence ID: error_<ULID>.",
+          "examples": [
+            "error_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^error_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error Id"
+    },
+    "reason": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    },
+    "requested_role": {
+      "$ref": "#/$defs/UserRole"
+    },
+    "run_id": {
+      "description": "Immutable Agent run ID: run_<ULID>.",
+      "examples": [
+        "run_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^run_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "task_id",
+    "reason",
+    "requested_role"
+  ],
+  "title": "HumanTakeoverRequestedEventPayload",
+  "type": "object",
+  "x-contract-schema-version": "2.1.0",
+  "x-contract-source": "backend.app.schemas.events.HumanTakeoverRequestedEventPayload"
+}

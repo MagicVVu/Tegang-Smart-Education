@@ -1,5 +1,6 @@
 {
   "actor_id": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "actor_role": "training_admin",
   "data": {
     "deadline": "2026-08-15",
     "name": "New employee high-risk safety training",
@@ -12,7 +13,10 @@
     ],
     "training_goal_id": "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
   },
+  "department_id": "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV",
   "idempotency_key": "idem_training_create_20260804_001",
   "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-  "schema_version": "2.0.0"
+  "requested_at": "2026-08-04T08:00:00Z",
+  "schema_version": "2.1.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
 }

@@ -1,0 +1,951 @@
+{
+  "$defs": {
+    "AgentStepBusinessEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "checkpoint_id": {
+          "anyOf": [
+            {
+              "description": "Agent checkpoint ID: checkpoint_<ULID>.",
+              "examples": [
+                "checkpoint_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^checkpoint_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checkpoint Id"
+        },
+        "error_id": {
+          "anyOf": [
+            {
+              "description": "Immutable error occurrence ID: error_<ULID>.",
+              "examples": [
+                "error_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^error_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Id"
+        },
+        "run_id": {
+          "description": "Immutable Agent run ID: run_<ULID>.",
+          "examples": [
+            "run_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^run_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/AgentStepStatus"
+        },
+        "step_id": {
+          "description": "Immutable Agent step ID: step_<ULID>.",
+          "examples": [
+            "step_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^step_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Step Id",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "step_id",
+        "status",
+        "summary"
+      ],
+      "title": "AgentStepBusinessEventPayload",
+      "type": "object"
+    },
+    "AgentStepStatus": {
+      "enum": [
+        "pending",
+        "running",
+        "waiting",
+        "succeeded",
+        "failed",
+        "skipped"
+      ],
+      "title": "AgentStepStatus",
+      "type": "string"
+    },
+    "AggregateType": {
+      "enum": [
+        "training_task",
+        "training_plan",
+        "approval",
+        "learning_record",
+        "assessment_result",
+        "remediation",
+        "retest",
+        "agent_run"
+      ],
+      "title": "AggregateType",
+      "type": "string"
+    },
+    "ApprovalBusinessEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "approval_id": {
+          "description": "Immutable external approval ID: approval_<ULID>.",
+          "examples": [
+            "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^approval_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Approval Id",
+          "type": "string"
+        },
+        "decision": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApprovalDecision"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "plan_id": {
+          "description": "Immutable external training plan ID: plan_<ULID>.",
+          "examples": [
+            "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ApprovalStatus"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "approval_id",
+        "task_id",
+        "plan_id",
+        "status",
+        "summary"
+      ],
+      "title": "ApprovalBusinessEventPayload",
+      "type": "object"
+    },
+    "ApprovalDecision": {
+      "enum": [
+        "approved",
+        "approved_with_changes",
+        "rejected",
+        "returned_for_information"
+      ],
+      "title": "ApprovalDecision",
+      "type": "string"
+    },
+    "ApprovalStatus": {
+      "description": "Approval states from chapter 15.8.",
+      "enum": [
+        "AP-NOT-SUBMITTED",
+        "AP-WAITING",
+        "AP-EDITING",
+        "AP-APPROVED",
+        "AP-REJECTED",
+        "AP-WITHDRAWN",
+        "AP-EXPIRED",
+        "AP-CANCELLED"
+      ],
+      "title": "ApprovalStatus",
+      "type": "string"
+    },
+    "AssessmentCompletedEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "assessment_result_id": {
+          "description": "Immutable assessment result ID: assessment_result_<ULID>.",
+          "examples": [
+            "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^assessment_result_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Assessment Result Id",
+          "type": "string"
+        },
+        "assessment_session_id": {
+          "description": "Immutable assessment session ID: assessment_<ULID>.",
+          "examples": [
+            "assessment_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^assessment_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Assessment Session Id",
+          "type": "string"
+        },
+        "employee_profile_id": {
+          "description": "Immutable external employee profile ID: emp_<ULID>.",
+          "examples": [
+            "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Employee Profile Id",
+          "type": "string"
+        },
+        "high_risk_passed": {
+          "title": "High Risk Passed",
+          "type": "boolean"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "assessment_result_id",
+        "assessment_session_id",
+        "task_id",
+        "employee_profile_id",
+        "passed",
+        "high_risk_passed"
+      ],
+      "title": "AssessmentCompletedEventPayload",
+      "type": "object"
+    },
+    "BusinessEventType": {
+      "enum": [
+        "training_task.created",
+        "training_plan.generated",
+        "approval.requested",
+        "approval.approved",
+        "approval.returned",
+        "approval.rejected",
+        "training_task.published",
+        "learning.started",
+        "learning.completed",
+        "assessment.completed",
+        "remediation.created",
+        "retest.completed",
+        "agent_step.started",
+        "agent_step.completed",
+        "agent_step.failed",
+        "human_takeover.requested"
+      ],
+      "title": "BusinessEventType",
+      "type": "string"
+    },
+    "EventActor": {
+      "additionalProperties": false,
+      "description": "Minimal verified actor context; it never grants authority by itself.",
+      "properties": {
+        "actor_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Actor Id"
+        },
+        "actor_role": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UserRole"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "department_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external department ID: dept_<ULID>.",
+              "examples": [
+                "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Department Id"
+        },
+        "source": {
+          "$ref": "#/$defs/EventActorSource"
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "title": "EventActor",
+      "type": "object"
+    },
+    "EventActorSource": {
+      "enum": [
+        "user",
+        "system",
+        "agent",
+        "rule",
+        "external"
+      ],
+      "title": "EventActorSource",
+      "type": "string"
+    },
+    "EventProducer": {
+      "enum": [
+        "business_api",
+        "agent_orchestrator",
+        "rag",
+        "skill_adapter",
+        "approval",
+        "assessment",
+        "background_task",
+        "system"
+      ],
+      "title": "EventProducer",
+      "type": "string"
+    },
+    "HumanTakeoverRequestedEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "checkpoint_id": {
+          "anyOf": [
+            {
+              "description": "Agent checkpoint ID: checkpoint_<ULID>.",
+              "examples": [
+                "checkpoint_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^checkpoint_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checkpoint Id"
+        },
+        "error_id": {
+          "anyOf": [
+            {
+              "description": "Immutable error occurrence ID: error_<ULID>.",
+              "examples": [
+                "error_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^error_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Id"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "requested_role": {
+          "$ref": "#/$defs/UserRole"
+        },
+        "run_id": {
+          "description": "Immutable Agent run ID: run_<ULID>.",
+          "examples": [
+            "run_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^run_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "task_id",
+        "reason",
+        "requested_role"
+      ],
+      "title": "HumanTakeoverRequestedEventPayload",
+      "type": "object"
+    },
+    "LearningBusinessEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "employee_profile_id": {
+          "description": "Immutable external employee profile ID: emp_<ULID>.",
+          "examples": [
+            "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Employee Profile Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/LearningRecordStatus"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "employee_profile_id",
+        "status",
+        "summary"
+      ],
+      "title": "LearningBusinessEventPayload",
+      "type": "object"
+    },
+    "LearningRecordStatus": {
+      "description": "Employee learning states from chapter 15.8.",
+      "enum": [
+        "LR-PENDING",
+        "LR-LEARNING",
+        "LR-WAIT-ASSESSMENT",
+        "LR-NOT-MET",
+        "LR-REMEDIAL",
+        "LR-WAIT-RETEST",
+        "LR-RETESTING",
+        "LR-COMPLETED",
+        "LR-PAUSED"
+      ],
+      "title": "LearningRecordStatus",
+      "type": "string"
+    },
+    "PlanStatus": {
+      "enum": [
+        "draft",
+        "candidate",
+        "confirmed",
+        "superseded"
+      ],
+      "title": "PlanStatus",
+      "type": "string"
+    },
+    "RemediationCreatedEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "minimum": 1,
+          "title": "Attempt",
+          "type": "integer"
+        },
+        "employee_profile_id": {
+          "description": "Immutable external employee profile ID: emp_<ULID>.",
+          "examples": [
+            "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Employee Profile Id",
+          "type": "string"
+        },
+        "remediation_id": {
+          "description": "Immutable remediation intervention ID: intervention_<ULID>.",
+          "examples": [
+            "intervention_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^intervention_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Remediation Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/RemediationStatus"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "remediation_id",
+        "task_id",
+        "employee_profile_id",
+        "status",
+        "attempt"
+      ],
+      "title": "RemediationCreatedEventPayload",
+      "type": "object"
+    },
+    "RemediationStatus": {
+      "enum": [
+        "planned",
+        "in_progress",
+        "completed",
+        "manual",
+        "cancelled"
+      ],
+      "title": "RemediationStatus",
+      "type": "string"
+    },
+    "RetestCompletedEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "assessment_result_id": {
+          "anyOf": [
+            {
+              "description": "Immutable assessment result ID: assessment_result_<ULID>.",
+              "examples": [
+                "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^assessment_result_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Assessment Result Id"
+        },
+        "employee_profile_id": {
+          "description": "Immutable external employee profile ID: emp_<ULID>.",
+          "examples": [
+            "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Employee Profile Id",
+          "type": "string"
+        },
+        "retest_id": {
+          "description": "Immutable retest ID: retest_<ULID>.",
+          "examples": [
+            "retest_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^retest_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Retest Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/RetestStatus"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "retest_id",
+        "task_id",
+        "employee_profile_id",
+        "status"
+      ],
+      "title": "RetestCompletedEventPayload",
+      "type": "object"
+    },
+    "RetestStatus": {
+      "enum": [
+        "waiting",
+        "in_progress",
+        "completed",
+        "manual",
+        "cancelled"
+      ],
+      "title": "RetestStatus",
+      "type": "string"
+    },
+    "TrainingPlanEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "knowledge_citation_ids": {
+          "items": {
+            "description": "Immutable external knowledge citation ID: know_<ULID>.",
+            "examples": [
+              "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+            ],
+            "pattern": "^know_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "title": "Knowledge Citation Ids",
+          "type": "array"
+        },
+        "plan_id": {
+          "description": "Immutable external training plan ID: plan_<ULID>.",
+          "examples": [
+            "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/PlanStatus"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "plan_id",
+        "task_id",
+        "status",
+        "summary"
+      ],
+      "title": "TrainingPlanEventPayload",
+      "type": "object"
+    },
+    "TrainingTaskEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "approval_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external approval ID: approval_<ULID>.",
+              "examples": [
+                "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^approval_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approval Id"
+        },
+        "plan_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external training plan ID: plan_<ULID>.",
+              "examples": [
+                "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Plan Id"
+        },
+        "status": {
+          "$ref": "#/$defs/TrainingTaskStatus"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "status",
+        "summary"
+      ],
+      "title": "TrainingTaskEventPayload",
+      "type": "object"
+    },
+    "TrainingTaskStatus": {
+      "description": "Training business states from chapter 15.8.",
+      "enum": [
+        "TB-DRAFT",
+        "TB-NEED-INPUT",
+        "TB-ANALYZING",
+        "TB-PLAN-READY",
+        "TB-WAIT-CONFIRM",
+        "TB-WAIT-APPROVAL",
+        "TB-APPROVAL-EDIT",
+        "TB-APPROVAL-REJECTED",
+        "TB-WAIT-PUBLISH",
+        "TB-IN-PROGRESS",
+        "TB-COMPLETED",
+        "TB-FAILED",
+        "TB-PAUSED",
+        "TB-MANUAL",
+        "TB-CANCELLED"
+      ],
+      "title": "TrainingTaskStatus",
+      "type": "string"
+    },
+    "UserRole": {
+      "enum": [
+        "employee",
+        "training_admin",
+        "reviewer",
+        "system_admin"
+      ],
+      "title": "UserRole",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:event-envelope",
+  "additionalProperties": false,
+  "description": "Immutable business event; transport and message-broker implementation are out of scope.",
+  "properties": {
+    "actor": {
+      "$ref": "#/$defs/EventActor"
+    },
+    "aggregate_id": {
+      "description": "Reference to a C-03 external entity ID; the owning schema defines the allowed prefix.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^[a-z][a-z0-9_]*_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Aggregate Id",
+      "type": "string"
+    },
+    "aggregate_type": {
+      "$ref": "#/$defs/AggregateType"
+    },
+    "causation_id": {
+      "anyOf": [
+        {
+          "description": "Reference to a C-03 external entity ID; the owning schema defines the allowed prefix.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^[a-z][a-z0-9_]*_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Causation Id"
+    },
+    "correlation_id": {
+      "description": "Cross-service trace ID: trc_<ULID>.",
+      "examples": [
+        "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Correlation Id",
+      "type": "string"
+    },
+    "deduplication_key": {
+      "anyOf": [
+        {
+          "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+          "examples": [
+            "idem_training_create_20260804_001"
+          ],
+          "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Deduplication Key"
+    },
+    "event_id": {
+      "description": "Immutable realtime event ID: event_<ULID>.",
+      "examples": [
+        "event_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^event_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "event_type": {
+      "$ref": "#/$defs/BusinessEventType"
+    },
+    "event_version": {
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Event Version",
+      "type": "string"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "description": "Non-sensitive transport metadata only; prompts, credentials, stacks, and unauthorized data are forbidden.",
+      "title": "Metadata",
+      "type": "object"
+    },
+    "occurred_at": {
+      "format": "date-time",
+      "title": "Occurred At",
+      "type": "string"
+    },
+    "payload": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TrainingTaskEventPayload"
+        },
+        {
+          "$ref": "#/$defs/TrainingPlanEventPayload"
+        },
+        {
+          "$ref": "#/$defs/ApprovalBusinessEventPayload"
+        },
+        {
+          "$ref": "#/$defs/LearningBusinessEventPayload"
+        },
+        {
+          "$ref": "#/$defs/AssessmentCompletedEventPayload"
+        },
+        {
+          "$ref": "#/$defs/RemediationCreatedEventPayload"
+        },
+        {
+          "$ref": "#/$defs/RetestCompletedEventPayload"
+        },
+        {
+          "$ref": "#/$defs/AgentStepBusinessEventPayload"
+        },
+        {
+          "$ref": "#/$defs/HumanTakeoverRequestedEventPayload"
+        }
+      ],
+      "title": "Payload"
+    },
+    "producer": {
+      "$ref": "#/$defs/EventProducer"
+    },
+    "request_id": {
+      "anyOf": [
+        {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Request Id"
+    },
+    "sequence": {
+      "minimum": 1,
+      "title": "Sequence",
+      "type": "integer"
+    },
+    "trace_id": {
+      "description": "Cross-service trace ID: trc_<ULID>.",
+      "examples": [
+        "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Trace Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "event_type",
+    "event_version",
+    "occurred_at",
+    "producer",
+    "aggregate_type",
+    "aggregate_id",
+    "sequence",
+    "trace_id",
+    "correlation_id",
+    "actor",
+    "payload",
+    "metadata"
+  ],
+  "title": "EventEnvelope",
+  "type": "object",
+  "x-contract-schema-version": "2.1.0",
+  "x-contract-source": "backend.app.schemas.events.EventEnvelope"
+}

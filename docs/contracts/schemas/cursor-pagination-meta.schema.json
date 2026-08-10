@@ -1,0 +1,40 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:cursor-pagination-meta",
+  "additionalProperties": false,
+  "description": "Cursor metadata used only by list endpoints that select this strategy.",
+  "properties": {
+    "kind": {
+      "const": "cursor",
+      "default": "cursor",
+      "title": "Kind",
+      "type": "string"
+    },
+    "next_cursor": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Next Cursor"
+    },
+    "page_size": {
+      "maximum": 500,
+      "minimum": 1,
+      "title": "Page Size",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "page_size"
+  ],
+  "title": "CursorPaginationMeta",
+  "type": "object",
+  "x-contract-schema-version": "2.1.0",
+  "x-contract-source": "backend.app.schemas.common.CursorPaginationMeta"
+}

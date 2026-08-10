@@ -1,5 +1,5 @@
 {
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:create-training-task-input",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:create-training-task-input",
   "additionalProperties": false,
   "properties": {
     "deadline": {
@@ -61,6 +61,6 @@
   ],
   "title": "CreateTrainingTaskInput",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.api.CreateTrainingTaskInput"
 }

@@ -1,9 +1,9 @@
 {
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:tutor-session-view",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:tutor-session-view",
   "additionalProperties": false,
   "properties": {
     "schema_version": {
-      "default": "2.0.0",
+      "default": "2.1.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
@@ -28,6 +28,6 @@
   ],
   "title": "TutorSessionView",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.experience.TutorSessionView"
 }

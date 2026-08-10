@@ -46,7 +46,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -213,7 +213,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -464,7 +464,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -527,7 +527,7 @@
       "type": "object"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:training-plan-detail",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:training-plan-detail",
   "additionalProperties": false,
   "description": "Training-plan read model with its already-authorized embedded resources.",
   "properties": {
@@ -700,7 +700,7 @@
       "type": "array"
     },
     "schema_version": {
-      "default": "2.0.0",
+      "default": "2.1.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
@@ -799,6 +799,6 @@
   ],
   "title": "TrainingPlanDetail",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.experience.TrainingPlanDetail"
 }

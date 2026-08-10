@@ -1,0 +1,62 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:assessment-completed-event-payload",
+  "additionalProperties": false,
+  "properties": {
+    "assessment_result_id": {
+      "description": "Immutable assessment result ID: assessment_result_<ULID>.",
+      "examples": [
+        "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^assessment_result_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Assessment Result Id",
+      "type": "string"
+    },
+    "assessment_session_id": {
+      "description": "Immutable assessment session ID: assessment_<ULID>.",
+      "examples": [
+        "assessment_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^assessment_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Assessment Session Id",
+      "type": "string"
+    },
+    "employee_profile_id": {
+      "description": "Immutable external employee profile ID: emp_<ULID>.",
+      "examples": [
+        "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Employee Profile Id",
+      "type": "string"
+    },
+    "high_risk_passed": {
+      "title": "High Risk Passed",
+      "type": "boolean"
+    },
+    "passed": {
+      "title": "Passed",
+      "type": "boolean"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "assessment_result_id",
+    "assessment_session_id",
+    "task_id",
+    "employee_profile_id",
+    "passed",
+    "high_risk_passed"
+  ],
+  "title": "AssessmentCompletedEventPayload",
+  "type": "object",
+  "x-contract-schema-version": "2.1.0",
+  "x-contract-source": "backend.app.schemas.events.AssessmentCompletedEventPayload"
+}

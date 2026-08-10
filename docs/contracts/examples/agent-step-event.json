@@ -1,0 +1,24 @@
+{
+  "actor": {
+    "source": "agent"
+  },
+  "aggregate_id": "run_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "aggregate_type": "agent_run",
+  "causation_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "correlation_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "event_id": "event_01ARZ3NDEKTSV4RRFFQ69G5FAX",
+  "event_type": "agent_step.started",
+  "event_version": "1.0.0",
+  "metadata": {},
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "payload": {
+    "checkpoint_id": "checkpoint_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "run_id": "run_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "status": "running",
+    "step_id": "step_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "summary": "The approval-wait control step started."
+  },
+  "producer": "agent_orchestrator",
+  "sequence": 7,
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

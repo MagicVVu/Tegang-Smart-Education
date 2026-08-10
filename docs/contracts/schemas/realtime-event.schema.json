@@ -19,6 +19,21 @@
       "title": "AgentEventType",
       "type": "string"
     },
+    "AgentNextAction": {
+      "enum": [
+        "continue",
+        "provide_input",
+        "request_approval",
+        "retry",
+        "rollback",
+        "replan",
+        "request_human_takeover",
+        "cancel",
+        "complete"
+      ],
+      "title": "AgentNextAction",
+      "type": "string"
+    },
     "AgentProgressPayload": {
       "additionalProperties": false,
       "description": "Typed payload for Agent progress events.",
@@ -167,7 +182,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -244,6 +259,26 @@
       ],
       "title": "AgentProgressPayload",
       "type": "object"
+    },
+    "AgentRunStatus": {
+      "description": "Agent execution states from chapter 15.8.",
+      "enum": [
+        "AR-PENDING",
+        "AR-RUNNING",
+        "AR-WAIT-INPUT",
+        "AR-WAIT-APPROVAL",
+        "AR-WAIT-EXTERNAL",
+        "AR-RETRYING",
+        "AR-ROLLING-BACK",
+        "AR-REPLANNING",
+        "AR-PAUSED",
+        "AR-MANUAL",
+        "AR-SUCCEEDED",
+        "AR-FAILED",
+        "AR-CANCELLED"
+      ],
+      "title": "AgentRunStatus",
+      "type": "string"
     },
     "AgentStepStatus": {
       "enum": [
@@ -378,7 +413,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -592,7 +627,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -664,6 +699,14 @@
       "title": "ErrorEventPayload",
       "type": "object"
     },
+    "ProgressVisibility": {
+      "enum": [
+        "business",
+        "developer"
+      ],
+      "title": "ProgressVisibility",
+      "type": "string"
+    },
     "RiskLevel": {
       "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
       "enum": [
@@ -676,7 +719,7 @@
       "type": "string"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:realtime-event",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:realtime-event",
   "additionalProperties": false,
   "description": "Ordered realtime event envelope for Web/Android progress updates.",
   "properties": {
@@ -718,6 +761,19 @@
       "default": null,
       "title": "Created By"
     },
+    "current_stage": {
+      "anyOf": [
+        {
+          "maxLength": 240,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Current Stage"
+    },
     "entity_version": {
       "default": 1,
       "description": "Optimistic entity revision, independent of schema_version.",
@@ -725,8 +781,28 @@
       "title": "Entity Version",
       "type": "integer"
     },
+    "error_summary": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error Summary"
+    },
     "event_type": {
       "$ref": "#/$defs/AgentEventType"
+    },
+    "event_version": {
+      "default": "1.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Event Version",
+      "type": "string"
     },
     "id": {
       "description": "Immutable realtime event ID: event_<ULID>.",
@@ -760,6 +836,17 @@
       "title": "Metadata",
       "type": "object"
     },
+    "next_action": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AgentNextAction"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
     "occurred_at": {
       "format": "date-time",
       "title": "Occurred At",
@@ -779,6 +866,19 @@
       ],
       "title": "Payload"
     },
+    "progress_summary": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Progress Summary"
+    },
     "request_id": {
       "anyOf": [
         {
@@ -796,6 +896,11 @@
       "default": null,
       "title": "Request Id"
     },
+    "requires_user_action": {
+      "default": false,
+      "title": "Requires User Action",
+      "type": "boolean"
+    },
     "risk_level": {
       "$ref": "#/$defs/RiskLevel",
       "default": "low"
@@ -810,7 +915,7 @@
       "type": "string"
     },
     "schema_version": {
-      "default": "2.0.0",
+      "default": "2.1.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
@@ -875,6 +980,21 @@
       ],
       "default": null,
       "title": "Updated By"
+    },
+    "visibility": {
+      "$ref": "#/$defs/ProgressVisibility",
+      "default": "business"
+    },
+    "workflow_status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AgentRunStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     }
   },
   "required": [
@@ -890,6 +1010,6 @@
   ],
   "title": "RealtimeEvent",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.agent.RealtimeEvent"
 }

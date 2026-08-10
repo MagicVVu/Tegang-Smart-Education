@@ -6,6 +6,7 @@ from .approval import *
 from .assessment import *
 from .common import *
 from .errors import *
+from .events import *
 from .experience import *
 from .identity import *
 from .knowledge import *

@@ -4,6 +4,7 @@ import type {
   ContractAssessmentQuestion,
   ContractAssessmentResultView,
   ContractCourseDetailView,
+  ContractErrorCode,
   ContractKnowledgeCitation,
   ContractLearningProgressView,
   ContractNotificationItemView,
@@ -15,15 +16,7 @@ import type {
   ContractTutorSessionView
 } from "@tegang/types";
 
-export type MobileServiceErrorCode =
-  | "UNAUTHORIZED"
-  | "FORBIDDEN"
-  | "NOT_FOUND"
-  | "VALIDATION_ERROR"
-  | "NETWORK_ERROR"
-  | "CONTENT_UNAVAILABLE"
-  | "VERSION_CONFLICT"
-  | "DUPLICATE_SUBMISSION";
+export type MobileServiceErrorCode = ContractErrorCode;
 
 export class MobileServiceError extends Error {
   constructor(

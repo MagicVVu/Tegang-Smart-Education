@@ -3,6 +3,8 @@
     "ErrorCategory": {
       "enum": [
         "validation",
+        "not_found",
+        "contract_version",
         "permission_scope",
         "state_conflict",
         "knowledge_version",
@@ -21,6 +23,8 @@
       "enum": [
         "INVALID_INPUT",
         "MISSING_INFORMATION",
+        "RESOURCE_NOT_FOUND",
+        "UNSUPPORTED_CONTRACT_VERSION",
         "UNAUTHORIZED",
         "FORBIDDEN_SCOPE",
         "STATE_CONFLICT",
@@ -121,7 +125,7 @@
           "type": "boolean"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -163,7 +167,7 @@
       "type": "object"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:error-response",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:error-response",
   "additionalProperties": false,
   "properties": {
     "error": {
@@ -184,7 +188,7 @@
       "type": "string"
     },
     "schema_version": {
-      "default": "2.0.0",
+      "default": "2.1.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
@@ -208,6 +212,6 @@
   ],
   "title": "ErrorResponse",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.api.ErrorResponse"
 }

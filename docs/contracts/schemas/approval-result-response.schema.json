@@ -1,5 +1,35 @@
 {
   "$defs": {
+    "ApiResponseMeta": {
+      "additionalProperties": false,
+      "description": "Optional response metadata; non-list responses do not emit empty pagination.",
+      "properties": {
+        "pagination": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PageNumberPaginationMeta"
+            },
+            {
+              "$ref": "#/$defs/CursorPaginationMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pagination"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "title": "ApiResponseMeta",
+      "type": "object"
+    },
     "ApprovalDecision": {
       "enum": [
         "approved",
@@ -152,7 +182,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -240,6 +270,78 @@
       "title": "ApprovalStatus",
       "type": "string"
     },
+    "CursorPaginationMeta": {
+      "additionalProperties": false,
+      "description": "Cursor metadata used only by list endpoints that select this strategy.",
+      "properties": {
+        "kind": {
+          "const": "cursor",
+          "default": "cursor",
+          "title": "Kind",
+          "type": "string"
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Cursor"
+        },
+        "page_size": {
+          "maximum": 500,
+          "minimum": 1,
+          "title": "Page Size",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "page_size"
+      ],
+      "title": "CursorPaginationMeta",
+      "type": "object"
+    },
+    "PageNumberPaginationMeta": {
+      "additionalProperties": false,
+      "description": "Page-number metadata used only by list endpoints that select this strategy.",
+      "properties": {
+        "kind": {
+          "const": "page",
+          "default": "page",
+          "title": "Kind",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "page_size": {
+          "maximum": 500,
+          "minimum": 1,
+          "title": "Page Size",
+          "type": "integer"
+        },
+        "total": {
+          "minimum": 0,
+          "title": "Total",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "page",
+        "page_size",
+        "total"
+      ],
+      "title": "PageNumberPaginationMeta",
+      "type": "object"
+    },
     "RiskLevel": {
       "description": "Risk grading aligned with the document's read-only/low/medium/high levels.",
       "enum": [
@@ -252,11 +354,22 @@
       "type": "string"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:approval-result-response",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:approval-result-response",
   "additionalProperties": false,
   "properties": {
     "data": {
       "$ref": "#/$defs/ApprovalResult"
+    },
+    "meta": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ApiResponseMeta"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "occurred_at": {
       "format": "date-time",
@@ -273,7 +386,7 @@
       "type": "string"
     },
     "schema_version": {
-      "default": "2.0.0",
+      "default": "2.1.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
@@ -297,6 +410,6 @@
   ],
   "title": "ApprovalResultResponse",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.api.ApprovalResultResponse"
 }

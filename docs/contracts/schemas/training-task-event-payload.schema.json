@@ -1,0 +1,91 @@
+{
+  "$defs": {
+    "TrainingTaskStatus": {
+      "description": "Training business states from chapter 15.8.",
+      "enum": [
+        "TB-DRAFT",
+        "TB-NEED-INPUT",
+        "TB-ANALYZING",
+        "TB-PLAN-READY",
+        "TB-WAIT-CONFIRM",
+        "TB-WAIT-APPROVAL",
+        "TB-APPROVAL-EDIT",
+        "TB-APPROVAL-REJECTED",
+        "TB-WAIT-PUBLISH",
+        "TB-IN-PROGRESS",
+        "TB-COMPLETED",
+        "TB-FAILED",
+        "TB-PAUSED",
+        "TB-MANUAL",
+        "TB-CANCELLED"
+      ],
+      "title": "TrainingTaskStatus",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:training-task-event-payload",
+  "additionalProperties": false,
+  "properties": {
+    "approval_id": {
+      "anyOf": [
+        {
+          "description": "Immutable external approval ID: approval_<ULID>.",
+          "examples": [
+            "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^approval_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approval Id"
+    },
+    "plan_id": {
+      "anyOf": [
+        {
+          "description": "Immutable external training plan ID: plan_<ULID>.",
+          "examples": [
+            "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Plan Id"
+    },
+    "status": {
+      "$ref": "#/$defs/TrainingTaskStatus"
+    },
+    "summary": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "status",
+    "summary"
+  ],
+  "title": "TrainingTaskEventPayload",
+  "type": "object",
+  "x-contract-schema-version": "2.1.0",
+  "x-contract-source": "backend.app.schemas.events.TrainingTaskEventPayload"
+}

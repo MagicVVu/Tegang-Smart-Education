@@ -11,10 +11,14 @@
 | Public TypeScript entry | `packages/types/src/index.ts` |
 | Formal shared Mock data | `packages/mock-data/src/index.ts` |
 | Request/response examples | `docs/contracts/examples` |
-| Agent State and event contracts | `backend/app/schemas/agent.py` |
+| API request context and envelopes | `backend/app/schemas/common.py`, `backend/app/schemas/api.py` |
+| Agent State and realtime progress | `backend/app/schemas/agent.py` |
+| Internal business-event envelope | `backend/app/schemas/events.py` |
 | Unified error contract | `backend/app/schemas/errors.py` |
 | Generator and drift check | `backend/scripts/export_contracts.py` |
 | Contract tests | `backend/tests/contracts/test_contracts.py` |
 | Version and compatibility | `docs/contracts/VERSION`, `docs/contracts/compatibility.md`, `docs/contracts/CHANGELOG.md` |
 
-This index mirrors chapter 19 of the Feishu document. Repository paths are the implementation references; the Feishu chapter explains the business rationale and governance boundary.
+| Cross-module interface ownership/status | `docs/contracts/cross-module-interfaces.md` |
+
+This index mirrors chapters 19 and 22 of the Feishu document. Repository paths are the implementation references; the Feishu chapters explain the business rationale and governance boundary.

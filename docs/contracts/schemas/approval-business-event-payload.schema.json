@@ -1,0 +1,91 @@
+{
+  "$defs": {
+    "ApprovalDecision": {
+      "enum": [
+        "approved",
+        "approved_with_changes",
+        "rejected",
+        "returned_for_information"
+      ],
+      "title": "ApprovalDecision",
+      "type": "string"
+    },
+    "ApprovalStatus": {
+      "description": "Approval states from chapter 15.8.",
+      "enum": [
+        "AP-NOT-SUBMITTED",
+        "AP-WAITING",
+        "AP-EDITING",
+        "AP-APPROVED",
+        "AP-REJECTED",
+        "AP-WITHDRAWN",
+        "AP-EXPIRED",
+        "AP-CANCELLED"
+      ],
+      "title": "ApprovalStatus",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:approval-business-event-payload",
+  "additionalProperties": false,
+  "properties": {
+    "approval_id": {
+      "description": "Immutable external approval ID: approval_<ULID>.",
+      "examples": [
+        "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^approval_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Approval Id",
+      "type": "string"
+    },
+    "decision": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ApprovalDecision"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "plan_id": {
+      "description": "Immutable external training plan ID: plan_<ULID>.",
+      "examples": [
+        "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Plan Id",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ApprovalStatus"
+    },
+    "summary": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "approval_id",
+    "task_id",
+    "plan_id",
+    "status",
+    "summary"
+  ],
+  "title": "ApprovalBusinessEventPayload",
+  "type": "object",
+  "x-contract-schema-version": "2.1.0",
+  "x-contract-source": "backend.app.schemas.events.ApprovalBusinessEventPayload"
+}

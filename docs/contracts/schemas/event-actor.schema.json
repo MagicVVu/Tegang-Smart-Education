@@ -1,0 +1,85 @@
+{
+  "$defs": {
+    "EventActorSource": {
+      "enum": [
+        "user",
+        "system",
+        "agent",
+        "rule",
+        "external"
+      ],
+      "title": "EventActorSource",
+      "type": "string"
+    },
+    "UserRole": {
+      "enum": [
+        "employee",
+        "training_admin",
+        "reviewer",
+        "system_admin"
+      ],
+      "title": "UserRole",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:event-actor",
+  "additionalProperties": false,
+  "description": "Minimal verified actor context; it never grants authority by itself.",
+  "properties": {
+    "actor_id": {
+      "anyOf": [
+        {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Actor Id"
+    },
+    "actor_role": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UserRole"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "department_id": {
+      "anyOf": [
+        {
+          "description": "Immutable external department ID: dept_<ULID>.",
+          "examples": [
+            "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Department Id"
+    },
+    "source": {
+      "$ref": "#/$defs/EventActorSource"
+    }
+  },
+  "required": [
+    "source"
+  ],
+  "title": "EventActor",
+  "type": "object",
+  "x-contract-schema-version": "2.1.0",
+  "x-contract-source": "backend.app.schemas.events.EventActor"
+}

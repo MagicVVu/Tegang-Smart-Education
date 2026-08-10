@@ -143,7 +143,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -240,6 +240,21 @@
         "run_failed"
       ],
       "title": "AgentEventType",
+      "type": "string"
+    },
+    "AgentNextAction": {
+      "enum": [
+        "continue",
+        "provide_input",
+        "request_approval",
+        "retry",
+        "rollback",
+        "replan",
+        "request_human_takeover",
+        "cancel",
+        "complete"
+      ],
+      "title": "AgentNextAction",
       "type": "string"
     },
     "AgentProgressPayload": {
@@ -390,7 +405,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -584,7 +599,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -706,6 +721,37 @@
           "default": null,
           "title": "Checkpoint Id"
         },
+        "checkpoint_sequence": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Checkpoint Sequence",
+          "type": "integer"
+        },
+        "checkpointed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checkpointed At"
+        },
+        "completed_step_ids": {
+          "items": {
+            "description": "Immutable Agent step ID: step_<ULID>.",
+            "examples": [
+              "step_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+            ],
+            "pattern": "^step_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "title": "Completed Step Ids",
+          "type": "array"
+        },
         "confidence": {
           "anyOf": [
             {
@@ -720,6 +766,13 @@
           ],
           "default": null,
           "title": "Confidence"
+        },
+        "constraints": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Constraints",
+          "type": "array"
         },
         "created_at": {
           "description": "Creation time with timezone; serialized as ISO 8601.",
@@ -761,6 +814,48 @@
           "default": null,
           "title": "Current Approval Id"
         },
+        "current_assessment_result_id": {
+          "anyOf": [
+            {
+              "description": "Immutable assessment result ID: assessment_result_<ULID>.",
+              "examples": [
+                "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^assessment_result_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Current Assessment Result Id"
+        },
+        "current_knowledge_citation_ids": {
+          "items": {
+            "description": "Immutable external knowledge citation ID: know_<ULID>.",
+            "examples": [
+              "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+            ],
+            "pattern": "^know_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "title": "Current Knowledge Citation Ids",
+          "type": "array"
+        },
+        "current_node": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Current Node"
+        },
         "current_plan_id": {
           "anyOf": [
             {
@@ -778,6 +873,19 @@
           "default": null,
           "title": "Current Plan Id"
         },
+        "current_stage": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Current Stage"
+        },
         "current_step_id": {
           "anyOf": [
             {
@@ -794,6 +902,19 @@
           ],
           "default": null,
           "title": "Current Step Id"
+        },
+        "deadline": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Deadline"
         },
         "entity_version": {
           "default": 1,
@@ -833,11 +954,60 @@
           "default": null,
           "title": "Idempotency Key"
         },
+        "last_error_code": {
+          "anyOf": [
+            {
+              "maxLength": 120,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Error Code"
+        },
+        "last_error_id": {
+          "anyOf": [
+            {
+              "description": "Immutable error occurrence ID: error_<ULID>.",
+              "examples": [
+                "error_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^error_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Error Id"
+        },
         "metadata": {
           "additionalProperties": true,
           "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
           "title": "Metadata",
           "type": "object"
+        },
+        "next_allowed_actions": {
+          "items": {
+            "$ref": "#/$defs/AgentNextAction"
+          },
+          "title": "Next Allowed Actions",
+          "type": "array"
+        },
+        "pending_step_ids": {
+          "items": {
+            "description": "Immutable Agent step ID: step_<ULID>.",
+            "examples": [
+              "step_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+            ],
+            "pattern": "^step_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "title": "Pending Step Ids",
+          "type": "array"
         },
         "recoverable": {
           "default": true,
@@ -873,14 +1043,46 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
           "type": "string"
         },
+        "started_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Started At"
+        },
+        "state_version": {
+          "default": "1.0.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "State Version",
+          "type": "string"
+        },
         "status": {
           "$ref": "#/$defs/AgentRunStatus"
+        },
+        "target_employee_profile_ids": {
+          "items": {
+            "description": "Immutable external employee profile ID: emp_<ULID>.",
+            "examples": [
+              "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+            ],
+            "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "title": "Target Employee Profile Ids",
+          "type": "array"
         },
         "task_id": {
           "description": "Immutable external training task ID: task_<ULID>.",
@@ -907,6 +1109,23 @@
           ],
           "default": null,
           "title": "Trace Id"
+        },
+        "training_goal_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external training goal ID: goal_<ULID>.",
+              "examples": [
+                "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^goal_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Training Goal Id"
         },
         "updated_at": {
           "description": "Last update time with timezone; serialized as ISO 8601.",
@@ -943,6 +1162,19 @@
           ],
           "default": null,
           "title": "Waiting For"
+        },
+        "waiting_human_action": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Waiting Human Action"
         }
       },
       "required": [
@@ -961,6 +1193,17 @@
         "data": {
           "$ref": "#/$defs/AgentState"
         },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "occurred_at": {
           "format": "date-time",
           "title": "Occurred At",
@@ -976,7 +1219,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -999,6 +1242,80 @@
         "data"
       ],
       "title": "AgentStateResponse",
+      "type": "object"
+    },
+    "AgentStepBusinessEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "checkpoint_id": {
+          "anyOf": [
+            {
+              "description": "Agent checkpoint ID: checkpoint_<ULID>.",
+              "examples": [
+                "checkpoint_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^checkpoint_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checkpoint Id"
+        },
+        "error_id": {
+          "anyOf": [
+            {
+              "description": "Immutable error occurrence ID: error_<ULID>.",
+              "examples": [
+                "error_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^error_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Id"
+        },
+        "run_id": {
+          "description": "Immutable Agent run ID: run_<ULID>.",
+          "examples": [
+            "run_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^run_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/AgentStepStatus"
+        },
+        "step_id": {
+          "description": "Immutable Agent step ID: step_<ULID>.",
+          "examples": [
+            "step_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^step_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Step Id",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "step_id",
+        "status",
+        "summary"
+      ],
+      "title": "AgentStepBusinessEventPayload",
       "type": "object"
     },
     "AgentStepStatus": {
@@ -1248,7 +1565,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -1355,10 +1672,35 @@
       "title": "AgentStepSummary",
       "type": "object"
     },
+    "AggregateType": {
+      "enum": [
+        "training_task",
+        "training_plan",
+        "approval",
+        "learning_record",
+        "assessment_result",
+        "remediation",
+        "retest",
+        "agent_run"
+      ],
+      "title": "AggregateType",
+      "type": "string"
+    },
     "ApiEnvelope": {
       "additionalProperties": false,
       "description": "Common response envelope fields; concrete responses add a typed data field.",
       "properties": {
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "occurred_at": {
           "format": "date-time",
           "title": "Occurred At",
@@ -1374,7 +1716,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -1396,6 +1738,148 @@
         "occurred_at"
       ],
       "title": "ApiEnvelope",
+      "type": "object"
+    },
+    "ApiRequestContext": {
+      "additionalProperties": false,
+      "description": "Common API request context; role and department remain server-verified assertions.",
+      "properties": {
+        "actor_id": {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "actor_role": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UserRole"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "department_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external department ID: dept_<ULID>.",
+              "examples": [
+                "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Department Id"
+        },
+        "idempotency_key": {
+          "anyOf": [
+            {
+              "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+              "examples": [
+                "idem_training_create_20260804_001"
+              ],
+              "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idempotency Key"
+        },
+        "request_id": {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "requested_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requested At"
+        },
+        "schema_version": {
+          "default": "2.1.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "trace_id": {
+          "anyOf": [
+            {
+              "description": "Cross-service trace ID: trc_<ULID>.",
+              "examples": [
+                "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trace Id"
+        }
+      },
+      "required": [
+        "request_id",
+        "actor_id"
+      ],
+      "title": "ApiRequestContext",
+      "type": "object"
+    },
+    "ApiResponseMeta": {
+      "additionalProperties": false,
+      "description": "Optional response metadata; non-list responses do not emit empty pagination.",
+      "properties": {
+        "pagination": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PageNumberPaginationMeta"
+            },
+            {
+              "$ref": "#/$defs/CursorPaginationMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pagination"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "title": "ApiResponseMeta",
       "type": "object"
     },
     "Approval": {
@@ -1615,7 +2099,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -1700,6 +2184,67 @@
         "impact_scope"
       ],
       "title": "Approval",
+      "type": "object"
+    },
+    "ApprovalBusinessEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "approval_id": {
+          "description": "Immutable external approval ID: approval_<ULID>.",
+          "examples": [
+            "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^approval_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Approval Id",
+          "type": "string"
+        },
+        "decision": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApprovalDecision"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "plan_id": {
+          "description": "Immutable external training plan ID: plan_<ULID>.",
+          "examples": [
+            "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ApprovalStatus"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "approval_id",
+        "task_id",
+        "plan_id",
+        "status",
+        "summary"
+      ],
+      "title": "ApprovalBusinessEventPayload",
       "type": "object"
     },
     "ApprovalDecision": {
@@ -1833,7 +2378,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2043,7 +2588,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2122,6 +2667,17 @@
         "data": {
           "$ref": "#/$defs/ApprovalResult"
         },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "occurred_at": {
           "format": "date-time",
           "title": "Occurred At",
@@ -2137,7 +2693,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2177,6 +2733,65 @@
       "title": "ApprovalStatus",
       "type": "string"
     },
+    "AssessmentCompletedEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "assessment_result_id": {
+          "description": "Immutable assessment result ID: assessment_result_<ULID>.",
+          "examples": [
+            "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^assessment_result_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Assessment Result Id",
+          "type": "string"
+        },
+        "assessment_session_id": {
+          "description": "Immutable assessment session ID: assessment_<ULID>.",
+          "examples": [
+            "assessment_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^assessment_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Assessment Session Id",
+          "type": "string"
+        },
+        "employee_profile_id": {
+          "description": "Immutable external employee profile ID: emp_<ULID>.",
+          "examples": [
+            "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Employee Profile Id",
+          "type": "string"
+        },
+        "high_risk_passed": {
+          "title": "High Risk Passed",
+          "type": "boolean"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "assessment_result_id",
+        "assessment_session_id",
+        "task_id",
+        "employee_profile_id",
+        "passed",
+        "high_risk_passed"
+      ],
+      "title": "AssessmentCompletedEventPayload",
+      "type": "object"
+    },
     "AssessmentDraftView": {
       "additionalProperties": false,
       "properties": {
@@ -2201,7 +2816,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2386,7 +3001,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2609,7 +3224,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2705,6 +3320,17 @@
         "data": {
           "$ref": "#/$defs/AssessmentResult"
         },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "occurred_at": {
           "format": "date-time",
           "title": "Occurred At",
@@ -2720,7 +3346,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2820,7 +3446,7 @@
           "title": "Previous Score Percent"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3003,7 +3629,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3109,6 +3735,28 @@
         "cancelled"
       ],
       "title": "AssessmentSessionStatus",
+      "type": "string"
+    },
+    "BusinessEventType": {
+      "enum": [
+        "training_task.created",
+        "training_plan.generated",
+        "approval.requested",
+        "approval.approved",
+        "approval.returned",
+        "approval.rejected",
+        "training_task.published",
+        "learning.started",
+        "learning.completed",
+        "assessment.completed",
+        "remediation.created",
+        "retest.completed",
+        "agent_step.started",
+        "agent_step.completed",
+        "agent_step.failed",
+        "human_takeover.requested"
+      ],
+      "title": "BusinessEventType",
       "type": "string"
     },
     "Course": {
@@ -3249,7 +3897,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3336,7 +3984,7 @@
           "type": "boolean"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3422,7 +4070,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3533,7 +4181,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3636,8 +4284,36 @@
           "title": "Actor Id",
           "type": "string"
         },
+        "actor_role": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UserRole"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "data": {
           "$ref": "#/$defs/CreateTrainingTaskInput"
+        },
+        "department_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external department ID: dept_<ULID>.",
+              "examples": [
+                "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Department Id"
         },
         "idempotency_key": {
           "description": "Caller-generated idempotency key. It is not a domain entity ID.",
@@ -3657,18 +4333,48 @@
           "title": "Request Id",
           "type": "string"
         },
+        "requested_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requested At"
+        },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
           "type": "string"
+        },
+        "trace_id": {
+          "anyOf": [
+            {
+              "description": "Cross-service trace ID: trc_<ULID>.",
+              "examples": [
+                "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trace Id"
         }
       },
       "required": [
         "request_id",
-        "idempotency_key",
         "actor_id",
+        "idempotency_key",
         "data"
       ],
       "title": "CreateTrainingTaskRequest",
@@ -3679,6 +4385,17 @@
       "properties": {
         "data": {
           "$ref": "#/$defs/TrainingTask"
+        },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "occurred_at": {
           "format": "date-time",
@@ -3695,7 +4412,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3718,6 +4435,43 @@
         "data"
       ],
       "title": "CreateTrainingTaskResponse",
+      "type": "object"
+    },
+    "CursorPaginationMeta": {
+      "additionalProperties": false,
+      "description": "Cursor metadata used only by list endpoints that select this strategy.",
+      "properties": {
+        "kind": {
+          "const": "cursor",
+          "default": "cursor",
+          "title": "Kind",
+          "type": "string"
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Cursor"
+        },
+        "page_size": {
+          "maximum": 500,
+          "minimum": 1,
+          "title": "Page Size",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "page_size"
+      ],
+      "title": "CursorPaginationMeta",
       "type": "object"
     },
     "Department": {
@@ -3846,7 +4600,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3959,7 +4713,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4139,7 +4893,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4229,6 +4983,8 @@
     "ErrorCategory": {
       "enum": [
         "validation",
+        "not_found",
+        "contract_version",
         "permission_scope",
         "state_conflict",
         "knowledge_version",
@@ -4247,6 +5003,8 @@
       "enum": [
         "INVALID_INPUT",
         "MISSING_INFORMATION",
+        "RESOURCE_NOT_FOUND",
+        "UNSUPPORTED_CONTRACT_VERSION",
         "UNAUTHORIZED",
         "FORBIDDEN_SCOPE",
         "STATE_CONFLICT",
@@ -4399,7 +5157,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4492,7 +5250,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4516,6 +5274,266 @@
       ],
       "title": "ErrorResponse",
       "type": "object"
+    },
+    "EventActor": {
+      "additionalProperties": false,
+      "description": "Minimal verified actor context; it never grants authority by itself.",
+      "properties": {
+        "actor_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Actor Id"
+        },
+        "actor_role": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UserRole"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "department_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external department ID: dept_<ULID>.",
+              "examples": [
+                "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Department Id"
+        },
+        "source": {
+          "$ref": "#/$defs/EventActorSource"
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "title": "EventActor",
+      "type": "object"
+    },
+    "EventActorSource": {
+      "enum": [
+        "user",
+        "system",
+        "agent",
+        "rule",
+        "external"
+      ],
+      "title": "EventActorSource",
+      "type": "string"
+    },
+    "EventEnvelope": {
+      "additionalProperties": false,
+      "description": "Immutable business event; transport and message-broker implementation are out of scope.",
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/EventActor"
+        },
+        "aggregate_id": {
+          "description": "Reference to a C-03 external entity ID; the owning schema defines the allowed prefix.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^[a-z][a-z0-9_]*_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Aggregate Id",
+          "type": "string"
+        },
+        "aggregate_type": {
+          "$ref": "#/$defs/AggregateType"
+        },
+        "causation_id": {
+          "anyOf": [
+            {
+              "description": "Reference to a C-03 external entity ID; the owning schema defines the allowed prefix.",
+              "examples": [
+                "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^[a-z][a-z0-9_]*_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Causation Id"
+        },
+        "correlation_id": {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Correlation Id",
+          "type": "string"
+        },
+        "deduplication_key": {
+          "anyOf": [
+            {
+              "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+              "examples": [
+                "idem_training_create_20260804_001"
+              ],
+              "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Deduplication Key"
+        },
+        "event_id": {
+          "description": "Immutable realtime event ID: event_<ULID>.",
+          "examples": [
+            "event_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^event_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "event_type": {
+          "$ref": "#/$defs/BusinessEventType"
+        },
+        "event_version": {
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Event Version",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "description": "Non-sensitive transport metadata only; prompts, credentials, stacks, and unauthorized data are forbidden.",
+          "title": "Metadata",
+          "type": "object"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "payload": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TrainingTaskEventPayload"
+            },
+            {
+              "$ref": "#/$defs/TrainingPlanEventPayload"
+            },
+            {
+              "$ref": "#/$defs/ApprovalBusinessEventPayload"
+            },
+            {
+              "$ref": "#/$defs/LearningBusinessEventPayload"
+            },
+            {
+              "$ref": "#/$defs/AssessmentCompletedEventPayload"
+            },
+            {
+              "$ref": "#/$defs/RemediationCreatedEventPayload"
+            },
+            {
+              "$ref": "#/$defs/RetestCompletedEventPayload"
+            },
+            {
+              "$ref": "#/$defs/AgentStepBusinessEventPayload"
+            },
+            {
+              "$ref": "#/$defs/HumanTakeoverRequestedEventPayload"
+            }
+          ],
+          "title": "Payload"
+        },
+        "producer": {
+          "$ref": "#/$defs/EventProducer"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "description": "Single request ID: req_<ULID>.",
+              "examples": [
+                "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Id"
+        },
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "trace_id": {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Trace Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "event_type",
+        "event_version",
+        "occurred_at",
+        "producer",
+        "aggregate_type",
+        "aggregate_id",
+        "sequence",
+        "trace_id",
+        "correlation_id",
+        "actor",
+        "payload",
+        "metadata"
+      ],
+      "title": "EventEnvelope",
+      "type": "object"
+    },
+    "EventProducer": {
+      "enum": [
+        "business_api",
+        "agent_orchestrator",
+        "rag",
+        "skill_adapter",
+        "approval",
+        "assessment",
+        "background_task",
+        "system"
+      ],
+      "title": "EventProducer",
+      "type": "string"
     },
     "FieldError": {
       "additionalProperties": false,
@@ -4557,6 +5575,80 @@
       ],
       "title": "GoalStatus",
       "type": "string"
+    },
+    "HumanTakeoverRequestedEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "checkpoint_id": {
+          "anyOf": [
+            {
+              "description": "Agent checkpoint ID: checkpoint_<ULID>.",
+              "examples": [
+                "checkpoint_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^checkpoint_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checkpoint Id"
+        },
+        "error_id": {
+          "anyOf": [
+            {
+              "description": "Immutable error occurrence ID: error_<ULID>.",
+              "examples": [
+                "error_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^error_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Id"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "requested_role": {
+          "$ref": "#/$defs/UserRole"
+        },
+        "run_id": {
+          "description": "Immutable Agent run ID: run_<ULID>.",
+          "examples": [
+            "run_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^run_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "task_id",
+        "reason",
+        "requested_role"
+      ],
+      "title": "HumanTakeoverRequestedEventPayload",
+      "type": "object"
     },
     "KnowledgeCitation": {
       "additionalProperties": false,
@@ -4702,7 +5794,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4927,7 +6019,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5010,6 +6102,46 @@
       "title": "KnowledgeValidity",
       "type": "string"
     },
+    "LearningBusinessEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "employee_profile_id": {
+          "description": "Immutable external employee profile ID: emp_<ULID>.",
+          "examples": [
+            "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Employee Profile Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/LearningRecordStatus"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "employee_profile_id",
+        "status",
+        "summary"
+      ],
+      "title": "LearningBusinessEventPayload",
+      "type": "object"
+    },
     "LearningProgressView": {
       "additionalProperties": false,
       "properties": {
@@ -5037,7 +6169,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5121,7 +6253,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5164,6 +6296,41 @@
         "unread"
       ],
       "title": "NotificationItemView",
+      "type": "object"
+    },
+    "PageNumberPaginationMeta": {
+      "additionalProperties": false,
+      "description": "Page-number metadata used only by list endpoints that select this strategy.",
+      "properties": {
+        "kind": {
+          "const": "page",
+          "default": "page",
+          "title": "Kind",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "page_size": {
+          "maximum": 500,
+          "minimum": 1,
+          "title": "Page Size",
+          "type": "integer"
+        },
+        "total": {
+          "minimum": 0,
+          "title": "Total",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "page",
+        "page_size",
+        "total"
+      ],
+      "title": "PageNumberPaginationMeta",
       "type": "object"
     },
     "PlanGenerationInput": {
@@ -5233,8 +6400,36 @@
           "title": "Actor Id",
           "type": "string"
         },
+        "actor_role": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UserRole"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "data": {
           "$ref": "#/$defs/PlanGenerationInput"
+        },
+        "department_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external department ID: dept_<ULID>.",
+              "examples": [
+                "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Department Id"
         },
         "idempotency_key": {
           "description": "Caller-generated idempotency key. It is not a domain entity ID.",
@@ -5254,8 +6449,21 @@
           "title": "Request Id",
           "type": "string"
         },
+        "requested_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requested At"
+        },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5274,8 +6482,8 @@
       "required": [
         "request_id",
         "trace_id",
-        "idempotency_key",
         "actor_id",
+        "idempotency_key",
         "data"
       ],
       "title": "PlanGenerationRequest",
@@ -5290,6 +6498,17 @@
           },
           "title": "Data",
           "type": "array"
+        },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "occurred_at": {
           "format": "date-time",
@@ -5315,7 +6534,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5349,6 +6568,14 @@
         "superseded"
       ],
       "title": "PlanStatus",
+      "type": "string"
+    },
+    "ProgressVisibility": {
+      "enum": [
+        "business",
+        "developer"
+      ],
+      "title": "ProgressVisibility",
       "type": "string"
     },
     "PrototypeUserProfile": {
@@ -5408,7 +6635,7 @@
           "$ref": "#/$defs/UserRole"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5476,6 +6703,19 @@
           "default": null,
           "title": "Created By"
         },
+        "current_stage": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Current Stage"
+        },
         "entity_version": {
           "default": 1,
           "description": "Optimistic entity revision, independent of schema_version.",
@@ -5483,8 +6723,28 @@
           "title": "Entity Version",
           "type": "integer"
         },
+        "error_summary": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Summary"
+        },
         "event_type": {
           "$ref": "#/$defs/AgentEventType"
+        },
+        "event_version": {
+          "default": "1.0.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Event Version",
+          "type": "string"
         },
         "id": {
           "description": "Immutable realtime event ID: event_<ULID>.",
@@ -5518,6 +6778,17 @@
           "title": "Metadata",
           "type": "object"
         },
+        "next_action": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AgentNextAction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "occurred_at": {
           "format": "date-time",
           "title": "Occurred At",
@@ -5537,6 +6808,19 @@
           ],
           "title": "Payload"
         },
+        "progress_summary": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Progress Summary"
+        },
         "request_id": {
           "anyOf": [
             {
@@ -5554,6 +6838,11 @@
           "default": null,
           "title": "Request Id"
         },
+        "requires_user_action": {
+          "default": false,
+          "title": "Requires User Action",
+          "type": "boolean"
+        },
         "risk_level": {
           "$ref": "#/$defs/RiskLevel",
           "default": "low"
@@ -5568,7 +6857,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5633,6 +6922,21 @@
           ],
           "default": null,
           "title": "Updated By"
+        },
+        "visibility": {
+          "$ref": "#/$defs/ProgressVisibility",
+          "default": "business"
+        },
+        "workflow_status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AgentRunStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
       "required": [
@@ -5655,6 +6959,17 @@
         "data": {
           "$ref": "#/$defs/RealtimeEvent"
         },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "occurred_at": {
           "format": "date-time",
           "title": "Occurred At",
@@ -5670,7 +6985,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5728,7 +7043,7 @@
           "type": "array"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5768,6 +7083,55 @@
         "current_step"
       ],
       "title": "RemedialPlanView",
+      "type": "object"
+    },
+    "RemediationCreatedEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "minimum": 1,
+          "title": "Attempt",
+          "type": "integer"
+        },
+        "employee_profile_id": {
+          "description": "Immutable external employee profile ID: emp_<ULID>.",
+          "examples": [
+            "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Employee Profile Id",
+          "type": "string"
+        },
+        "remediation_id": {
+          "description": "Immutable remediation intervention ID: intervention_<ULID>.",
+          "examples": [
+            "intervention_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^intervention_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Remediation Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/RemediationStatus"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "remediation_id",
+        "task_id",
+        "employee_profile_id",
+        "status",
+        "attempt"
+      ],
+      "title": "RemediationCreatedEventPayload",
       "type": "object"
     },
     "RemediationIntervention": {
@@ -5928,7 +7292,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6021,6 +7385,17 @@
         "data": {
           "$ref": "#/$defs/RemediationIntervention"
         },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "occurred_at": {
           "format": "date-time",
           "title": "Occurred At",
@@ -6036,7 +7411,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6120,7 +7495,7 @@
           "type": "integer"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6333,7 +7708,7 @@
           "title": "Scheduled At"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6404,11 +7779,82 @@
       "title": "Retest",
       "type": "object"
     },
+    "RetestCompletedEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "assessment_result_id": {
+          "anyOf": [
+            {
+              "description": "Immutable assessment result ID: assessment_result_<ULID>.",
+              "examples": [
+                "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^assessment_result_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Assessment Result Id"
+        },
+        "employee_profile_id": {
+          "description": "Immutable external employee profile ID: emp_<ULID>.",
+          "examples": [
+            "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Employee Profile Id",
+          "type": "string"
+        },
+        "retest_id": {
+          "description": "Immutable retest ID: retest_<ULID>.",
+          "examples": [
+            "retest_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^retest_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Retest Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/RetestStatus"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "retest_id",
+        "task_id",
+        "employee_profile_id",
+        "status"
+      ],
+      "title": "RetestCompletedEventPayload",
+      "type": "object"
+    },
     "RetestResultResponse": {
       "additionalProperties": false,
       "properties": {
         "data": {
           "$ref": "#/$defs/Retest"
+        },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "occurred_at": {
           "format": "date-time",
@@ -6425,7 +7871,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6591,7 +8037,7 @@
           "$ref": "#/$defs/UserRole"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6783,7 +8229,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6924,8 +8370,36 @@
           "title": "Actor Id",
           "type": "string"
         },
+        "actor_role": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UserRole"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "data": {
           "$ref": "#/$defs/SubmitApprovalInput"
+        },
+        "department_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external department ID: dept_<ULID>.",
+              "examples": [
+                "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Department Id"
         },
         "idempotency_key": {
           "description": "Caller-generated idempotency key. It is not a domain entity ID.",
@@ -6945,18 +8419,48 @@
           "title": "Request Id",
           "type": "string"
         },
+        "requested_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requested At"
+        },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
           "type": "string"
+        },
+        "trace_id": {
+          "anyOf": [
+            {
+              "description": "Cross-service trace ID: trc_<ULID>.",
+              "examples": [
+                "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trace Id"
         }
       },
       "required": [
         "request_id",
-        "idempotency_key",
         "actor_id",
+        "idempotency_key",
         "data"
       ],
       "title": "SubmitApprovalRequest",
@@ -7098,7 +8602,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -7347,7 +8851,7 @@
           "type": "array"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -7612,7 +9116,7 @@
           "type": "array"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -7712,6 +9216,58 @@
       "title": "TrainingPlanDetail",
       "type": "object"
     },
+    "TrainingPlanEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "knowledge_citation_ids": {
+          "items": {
+            "description": "Immutable external knowledge citation ID: know_<ULID>.",
+            "examples": [
+              "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+            ],
+            "pattern": "^know_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "title": "Knowledge Citation Ids",
+          "type": "array"
+        },
+        "plan_id": {
+          "description": "Immutable external training plan ID: plan_<ULID>.",
+          "examples": [
+            "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/PlanStatus"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "plan_id",
+        "task_id",
+        "status",
+        "summary"
+      ],
+      "title": "TrainingPlanEventPayload",
+      "type": "object"
+    },
     "TrainingRecordView": {
       "additionalProperties": false,
       "properties": {
@@ -7738,7 +9294,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -7931,7 +9487,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -8025,6 +9581,70 @@
         "deadline"
       ],
       "title": "TrainingTask",
+      "type": "object"
+    },
+    "TrainingTaskEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "approval_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external approval ID: approval_<ULID>.",
+              "examples": [
+                "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^approval_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approval Id"
+        },
+        "plan_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external training plan ID: plan_<ULID>.",
+              "examples": [
+                "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^plan_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Plan Id"
+        },
+        "status": {
+          "$ref": "#/$defs/TrainingTaskStatus"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Immutable external training task ID: task_<ULID>.",
+          "examples": [
+            "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "status",
+        "summary"
+      ],
+      "title": "TrainingTaskEventPayload",
       "type": "object"
     },
     "TrainingTaskStatus": {
@@ -8197,7 +9817,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -8291,7 +9911,7 @@
           "type": "array"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -8310,7 +9930,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -8384,7 +10004,7 @@
           "type": "boolean"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -8559,7 +10179,7 @@
           "type": "array"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -8714,7 +10334,7 @@
       "type": "object"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:catalog",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:catalog",
   "description": "Combined Pydantic-derived schema catalog. Database schema is explicitly out of scope.",
   "properties": {
     "agent_decision_summary": {
@@ -8732,14 +10352,26 @@
     "agent_state_response": {
       "$ref": "#/$defs/AgentStateResponse"
     },
+    "agent_step_business_event_payload": {
+      "$ref": "#/$defs/AgentStepBusinessEventPayload"
+    },
     "agent_step_summary": {
       "$ref": "#/$defs/AgentStepSummary"
     },
     "api_envelope": {
       "$ref": "#/$defs/ApiEnvelope"
     },
+    "api_request_context": {
+      "$ref": "#/$defs/ApiRequestContext"
+    },
+    "api_response_meta": {
+      "$ref": "#/$defs/ApiResponseMeta"
+    },
     "approval": {
       "$ref": "#/$defs/Approval"
+    },
+    "approval_business_event_payload": {
+      "$ref": "#/$defs/ApprovalBusinessEventPayload"
     },
     "approval_event_payload": {
       "$ref": "#/$defs/ApprovalEventPayload"
@@ -8749,6 +10381,9 @@
     },
     "approval_result_response": {
       "$ref": "#/$defs/ApprovalResultResponse"
+    },
+    "assessment_completed_event_payload": {
+      "$ref": "#/$defs/AssessmentCompletedEventPayload"
     },
     "assessment_draft_view": {
       "$ref": "#/$defs/AssessmentDraftView"
@@ -8789,6 +10424,9 @@
     "create_training_task_response": {
       "$ref": "#/$defs/CreateTrainingTaskResponse"
     },
+    "cursor_pagination_meta": {
+      "$ref": "#/$defs/CursorPaginationMeta"
+    },
     "department": {
       "$ref": "#/$defs/Department"
     },
@@ -8804,8 +10442,17 @@
     "error_response": {
       "$ref": "#/$defs/ErrorResponse"
     },
+    "event_actor": {
+      "$ref": "#/$defs/EventActor"
+    },
+    "event_envelope": {
+      "$ref": "#/$defs/EventEnvelope"
+    },
     "field_error": {
       "$ref": "#/$defs/FieldError"
+    },
+    "human_takeover_requested_event_payload": {
+      "$ref": "#/$defs/HumanTakeoverRequestedEventPayload"
     },
     "knowledge_citation": {
       "$ref": "#/$defs/KnowledgeCitation"
@@ -8813,11 +10460,17 @@
     "knowledge_point_performance": {
       "$ref": "#/$defs/KnowledgePointPerformance"
     },
+    "learning_business_event_payload": {
+      "$ref": "#/$defs/LearningBusinessEventPayload"
+    },
     "learning_progress_view": {
       "$ref": "#/$defs/LearningProgressView"
     },
     "notification_item_view": {
       "$ref": "#/$defs/NotificationItemView"
+    },
+    "page_number_pagination_meta": {
+      "$ref": "#/$defs/PageNumberPaginationMeta"
     },
     "plan_generation_input": {
       "$ref": "#/$defs/PlanGenerationInput"
@@ -8840,6 +10493,9 @@
     "remedial_plan_view": {
       "$ref": "#/$defs/RemedialPlanView"
     },
+    "remediation_created_event_payload": {
+      "$ref": "#/$defs/RemediationCreatedEventPayload"
+    },
     "remediation_intervention": {
       "$ref": "#/$defs/RemediationIntervention"
     },
@@ -8851,6 +10507,9 @@
     },
     "retest": {
       "$ref": "#/$defs/Retest"
+    },
+    "retest_completed_event_payload": {
+      "$ref": "#/$defs/RetestCompletedEventPayload"
     },
     "retest_result_response": {
       "$ref": "#/$defs/RetestResultResponse"
@@ -8876,11 +10535,17 @@
     "training_plan_detail": {
       "$ref": "#/$defs/TrainingPlanDetail"
     },
+    "training_plan_event_payload": {
+      "$ref": "#/$defs/TrainingPlanEventPayload"
+    },
     "training_record_view": {
       "$ref": "#/$defs/TrainingRecordView"
     },
     "training_task": {
       "$ref": "#/$defs/TrainingTask"
+    },
+    "training_task_event_payload": {
+      "$ref": "#/$defs/TrainingTaskEventPayload"
     },
     "training_task_view": {
       "$ref": "#/$defs/TrainingTaskView"
@@ -8906,6 +10571,10 @@
   },
   "required": [
     "api_envelope",
+    "api_request_context",
+    "api_response_meta",
+    "page_number_pagination_meta",
+    "cursor_pagination_meta",
     "user",
     "role",
     "department",
@@ -8934,6 +10603,17 @@
     "realtime_event",
     "field_error",
     "unified_error",
+    "event_actor",
+    "training_task_event_payload",
+    "training_plan_event_payload",
+    "approval_business_event_payload",
+    "learning_business_event_payload",
+    "assessment_completed_event_payload",
+    "remediation_created_event_payload",
+    "retest_completed_event_payload",
+    "agent_step_business_event_payload",
+    "human_takeover_requested_event_payload",
+    "event_envelope",
     "create_training_task_input",
     "create_training_task_request",
     "create_training_task_response",
@@ -8970,6 +10650,6 @@
   ],
   "title": "Special Steel Education Contract Catalog",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.registry.CONTRACT_MODELS"
 }

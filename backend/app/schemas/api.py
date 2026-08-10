@@ -13,6 +13,7 @@ from .common import (
     CONTRACT_SCHEMA_VERSION,
     AgentRunId,
     ApiEnvelope,
+    ApiRequestContext,
     CourseId,
     DepartmentId,
     EmployeeProfileId,
@@ -43,11 +44,8 @@ class CreateTrainingTaskInput(ContractModel):
     deadline: date
 
 
-class CreateTrainingTaskRequest(ContractModel):
-    schema_version: SchemaVersion = CONTRACT_SCHEMA_VERSION
-    request_id: RequestId
+class CreateTrainingTaskRequest(ApiRequestContext):
     idempotency_key: IdempotencyKey
-    actor_id: UserId
     data: CreateTrainingTaskInput
 
 
@@ -63,12 +61,9 @@ class PlanGenerationInput(ContractModel):
     candidate_count: int = Field(default=2, ge=1, le=5)
 
 
-class PlanGenerationRequest(ContractModel):
-    schema_version: SchemaVersion = CONTRACT_SCHEMA_VERSION
-    request_id: RequestId
+class PlanGenerationRequest(ApiRequestContext):
     trace_id: TraceId
     idempotency_key: IdempotencyKey
-    actor_id: UserId
     data: PlanGenerationInput
 
 
@@ -86,11 +81,8 @@ class SubmitApprovalInput(ContractModel):
     knowledge_citation_ids: list[KnowledgeCitationId] = Field(default_factory=list)
 
 
-class SubmitApprovalRequest(ContractModel):
-    schema_version: SchemaVersion = CONTRACT_SCHEMA_VERSION
-    request_id: RequestId
+class SubmitApprovalRequest(ApiRequestContext):
     idempotency_key: IdempotencyKey
-    actor_id: UserId
     data: SubmitApprovalInput
 
 
