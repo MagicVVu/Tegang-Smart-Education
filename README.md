@@ -1,6 +1,6 @@
 # 特钢智教 AI Agent
 
-面向特钢企业员工培训的受控自主 Agent。仓库包含可运行的 Web 管理端与 React Native Android 员工端代码型高保真原型，并保留后续接入 FastAPI 的服务边界。
+面向特钢企业员工培训的受控自主 Agent。仓库包含可运行的 Web 管理端、React Native Android 员工端，以及用于 Windows/Docker 复现的 C-02 最小 FastAPI 健康入口。
 
 > 所有员工、制度、任务、测评和报告数据均为模拟数据，只用于验证页面、流程、权限和异常处理，不代表真实企业效果。
 
@@ -58,23 +58,27 @@ docs/
 
 ## 环境要求
 
-- Node.js 20.19 或更高版本（已验证 Node 24）
+- Node.js 24.18 LTS
 - pnpm 11.9
+- Python 3.12（默认 `.python-version` 为 3.12.13；Windows 3.12.10 为最低兼容版本）
+- Docker Engine 27+ 与 Docker Compose 2.20+；Windows 推荐 Docker Desktop Linux containers
 - Web 截图/E2E：Playwright Chromium
-- Android：JDK 17、Android SDK、Android Studio 或命令行工具
-- 推荐 Android SDK Platform 35 与对应 Build Tools
+- Android：JDK 17、Android SDK Platform 36、Android Studio 或命令行工具
 
 不要把 `local.properties`、`.env`、签名文件、Token 或本机 SDK 绝对路径提交到 Git。
 
 ## 安装与启动
 
 ```powershell
-Set-Location "D:\TGZJ\agent"
-pnpm install
+Set-Location .\Tegang-Smart-Education
+Copy-Item -LiteralPath .env.example -Destination .env
+pnpm bootstrap
 pnpm dev:web
 ```
 
 Web 地址：`http://127.0.0.1:5173`。
+
+完整 Docker Compose Quickstart、模型配置、健康检查和安全清理见 [C-02 Quickstart](docs/development/quickstart.md)；环境与版本决策见 [Windows 开发与 Docker 复现基线](docs/development/windows-docker-baseline.md)。
 
 移动端：
 
@@ -147,7 +151,7 @@ pnpm test:e2e
 一次执行 Web 静态检查、单元测试和生产构建：
 
 ```powershell
-pnpm check
+pnpm run check
 ```
 
 Android 命令行构建：
@@ -160,7 +164,7 @@ $env:JAVA_HOME = "你的 JDK 17 安装目录"
 
 当前实际验证记录见 [prototype-validation.md](docs/test-reports/prototype-validation.md)。
 
-## Mock 数据与 FastAPI 接入
+## Mock 数据与正式 API 边界
 
 页面通过服务接口访问数据，Mock 没有散落在页面组件中：
 
@@ -169,18 +173,20 @@ $env:JAVA_HOME = "你的 JDK 17 安装目录"
 - 共享类型：`packages/types`
 - 模拟数据：`packages/mock-data`
 
-复制 `.env.example` 为本地 `.env` 后，可配置：
+复制 `.env.example` 为本地 `.env` 后，可配置公开 API 地址：
 
 ```dotenv
 VITE_API_BASE_URL=
 EXPO_PUBLIC_API_BASE_URL=
 ```
 
-接入 FastAPI 时主要新增 HTTP 服务实现并在 `services/index.ts` 切换，不需要重写页面核心逻辑。详细边界见 [frontend-monorepo.md](docs/architecture/frontend-monorepo.md)。
+当前 Web/Android 的既有 Mock 适配器只用于原型与自动化测试，不是正式产品运行的模型 Mock 模式。C-02 最小 FastAPI 只提供 `/health/*`；C-04 后续新增正式 HTTP 服务实现并在 `services/index.ts` 切换，不需要重写页面核心逻辑。详细边界见 [frontend-monorepo.md](docs/architecture/frontend-monorepo.md)。
+
+模型 API 只由后端通过 `MODEL_PROVIDER`、`MODEL_BASE_URL`、`MODEL_NAME`、`MODEL_API_KEY` 读取。禁止把模型 Key 放入 `VITE_*`、`EXPO_PUBLIC_*`、Android 包、Git、日志或飞书。真实模型连通性只通过显式 `pnpm model:check` 执行。
 
 ## 已知限制
 
-- 当前没有正式 FastAPI 后端、企业身份源、LMS 或知识库连接。
+- 当前只有 C-02 最小 FastAPI 健康入口，没有正式业务后端、企业身份源、LMS 或知识库连接。
 - 状态保存在本地演示会话，刷新页面会回到初始 Mock 状态。
 - 模拟测评和报告不能证明真实培训效率或掌握度提升。
 - Android 首次 Gradle 构建依赖外部下载；离线环境需要预先准备缓存。

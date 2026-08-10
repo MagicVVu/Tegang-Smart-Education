@@ -57,10 +57,10 @@ Database primary keys are out of scope and may differ from external IDs. A later
 
 ## Generate, validate, and detect drift
 
-Use Python 3.11+ with Pydantic v2. The minimal dependency is recorded in `backend/requirements-contracts.txt`.
+Use the repository Python 3.12 baseline with locked Pydantic v2 dependencies. The compatibility entry `backend/requirements-contracts.txt` delegates to the root hash-locked file.
 
 ```powershell
-python -m pip install -r backend/requirements-contracts.txt
+python -m pip install --require-hashes -r requirements.lock
 python backend/scripts/export_contracts.py
 python backend/scripts/export_contracts.py --check
 python -m unittest discover -s backend/tests/contracts -p "test_*.py"

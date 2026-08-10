@@ -8,6 +8,8 @@
 4. [Agent 设计材料](agent-design/README.md)
 5. [评测材料](evaluation/README.md)
 6. [本地开发](development/local-development.md)
+7. [C-02 Windows 与 Docker 基线](development/windows-docker-baseline.md)
+8. [C-02 Quickstart](development/quickstart.md)
 
 ## 治理与可追溯
 

@@ -2,17 +2,29 @@
   "name": "tegang-smart-education",
   "version": "0.2.0",
   "private": true,
-  "description": "特钢智教 AI Agent Web 与 Android 代码型高保真交互原型",
+  "description": "特钢智教 AI Agent Monorepo",
   "packageManager": "pnpm@11.9.0",
   "engines": {
-    "node": ">=20.19.0",
-    "pnpm": ">=10.0.0"
+    "node": ">=24.18.0 <25",
+    "pnpm": ">=11.9.0 <12"
   },
   "scripts": {
+    "bootstrap": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev.ps1 -Target install",
     "dev:web": "pnpm --filter @tegang/web dev",
     "dev:mobile": "pnpm --filter @tegang/mobile start",
+    "dev:backend": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev.ps1 -Target backend",
     "android": "pnpm --filter @tegang/mobile android",
     "android:studio": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-android-studio.ps1",
+    "compose:infra": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/compose.ps1 -Action infra",
+    "compose:up": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/compose.ps1 -Action up",
+    "compose:down": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/compose.ps1 -Action down",
+    "compose:logs": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/compose.ps1 -Action logs",
+    "compose:clean": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/compose.ps1 -Action clean",
+    "compose:reset": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/compose.ps1 -Action reset",
+    "doctor": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/doctor.ps1",
+    "health": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/health-check.ps1",
+    "model:check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev.ps1 -Target model-check",
+    "test:backend": "python -m pytest backend/tests",
     "build:web": "pnpm --filter @tegang/web build",
     "typecheck": "pnpm -r --if-present typecheck",
     "lint": "eslint apps packages tests/e2e playwright.config.ts --max-warnings 0",
@@ -20,7 +32,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "capture:web": "playwright test --grep @screenshots",
-    "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build:web"
+    "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build:web",
+    "check:all": "pnpm run check && pnpm run test:backend"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

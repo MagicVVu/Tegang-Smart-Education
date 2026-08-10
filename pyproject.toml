@@ -1,0 +1,26 @@
+[project]
+name = "tegang-smart-education-backend-baseline"
+version = "0.1.0"
+description = "C-02 minimal runtime and health-check baseline; not the C-04 business service."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi==0.139.2",
+  "httpx==0.28.1",
+  "psycopg[binary]==3.3.4",
+  "pydantic==2.13.4",
+  "redis==8.0.1",
+  "uvicorn[standard]==0.51.0",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest==9.1.1",
+]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["backend/tests"]
+
+[tool.pip-tools]
+generate-hashes = true
+strip-extras = false
