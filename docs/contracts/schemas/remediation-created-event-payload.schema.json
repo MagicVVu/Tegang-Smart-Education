@@ -1,0 +1,65 @@
+{
+  "$defs": {
+    "RemediationStatus": {
+      "enum": [
+        "planned",
+        "in_progress",
+        "completed",
+        "manual",
+        "cancelled"
+      ],
+      "title": "RemediationStatus",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:remediation-created-event-payload",
+  "additionalProperties": false,
+  "properties": {
+    "attempt": {
+      "minimum": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "employee_profile_id": {
+      "description": "Immutable external employee profile ID: emp_<ULID>.",
+      "examples": [
+        "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Employee Profile Id",
+      "type": "string"
+    },
+    "remediation_id": {
+      "description": "Immutable remediation intervention ID: intervention_<ULID>.",
+      "examples": [
+        "intervention_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^intervention_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Remediation Id",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/RemediationStatus"
+    },
+    "task_id": {
+      "description": "Immutable external training task ID: task_<ULID>.",
+      "examples": [
+        "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^task_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "remediation_id",
+    "task_id",
+    "employee_profile_id",
+    "status",
+    "attempt"
+  ],
+  "title": "RemediationCreatedEventPayload",
+  "type": "object",
+  "x-contract-schema-version": "2.1.0",
+  "x-contract-source": "backend.app.schemas.events.RemediationCreatedEventPayload"
+}

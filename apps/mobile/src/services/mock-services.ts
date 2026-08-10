@@ -1,5 +1,6 @@
 import { contractIds } from "@tegang/mock-data";
 import { makeRequestId, traceIdForRequest, wait } from "@tegang/shared-utils";
+import { CONTRACT_SCHEMA_VERSION } from "@tegang/types";
 import type {
   ContractAssessmentDraftView,
   ContractAssessmentQuestion,
@@ -84,6 +85,7 @@ function response<T>(data: T): ServiceResponse<T> {
   const request_id = makeRequestId();
   return {
     data,
+    schema_version: CONTRACT_SCHEMA_VERSION,
     request_id,
     trace_id: traceIdForRequest(request_id),
     occurred_at: new Date().toISOString()
@@ -92,7 +94,7 @@ function response<T>(data: T): ServiceResponse<T> {
 
 function assertAvailable() {
   if (runtime.failures.networkOffline) {
-    throw new MobileServiceError("NETWORK_ERROR", "网络连接不可用，请检查网络后重试。", true);
+    throw new MobileServiceError("CONNECTOR_UNAVAILABLE", "网络连接不可用，请检查网络后重试。", true);
   }
   if (runtime.failures.sessionExpired) {
     throw new MobileServiceError("UNAUTHORIZED", "登录状态已失效，请重新登录。");
@@ -135,7 +137,7 @@ function matchesFilter(task: ContractTrainingTaskView, filter: EmployeeTaskFilte
 function getTaskOrThrow(task_id: string): ContractTrainingTaskView {
   if (task_id === primaryTaskBase.id) return currentTask();
   if (task_id === completedTask.id) return completedTask;
-  throw new MobileServiceError("NOT_FOUND", "未找到该培训任务。");
+  throw new MobileServiceError("RESOURCE_NOT_FOUND", "未找到该培训任务。");
 }
 
 function draftKey(task_id: string, attempt: number) {
@@ -188,10 +190,10 @@ export const mobileServices: MobileServices = {
       assertAvailable();
       const account = credentials.account.trim().toUpperCase();
       if (!account || credentials.password.length < 6) {
-        throw new MobileServiceError("VALIDATION_ERROR", "请输入有效的账号和密码。");
+        throw new MobileServiceError("INVALID_INPUT", "请输入有效的账号和密码。");
       }
       if (account.startsWith("A-") || account.startsWith("ADMIN")) {
-        throw new MobileServiceError("FORBIDDEN", "当前账号没有员工培训端访问权限。");
+        throw new MobileServiceError("FORBIDDEN_SCOPE", "当前账号没有员工培训端访问权限。");
       }
       if (account !== employeeProfile.account_label) {
         throw new MobileServiceError("UNAUTHORIZED", "账号或密码不正确，请重新输入。");
@@ -229,7 +231,7 @@ export const mobileServices: MobileServices = {
       assertAvailable();
       getTaskOrThrow(task_id);
       if (runtime.failures.courseUnavailable) {
-        throw new MobileServiceError("CONTENT_UNAVAILABLE", "课程内容暂时无法加载，请稍后重试。", true);
+        throw new MobileServiceError("CONNECTOR_UNAVAILABLE", "课程内容暂时无法加载，请稍后重试。", true);
       }
       const is_remedial = Boolean(options?.remedial);
       const units = is_remedial
@@ -267,7 +269,7 @@ export const mobileServices: MobileServices = {
       assertAvailable();
       getTaskOrThrow(task_id);
       if (!employeeCourseModules.some((course) => course.id === unit_id)) {
-        throw new MobileServiceError("NOT_FOUND", "未找到当前学习单元。");
+        throw new MobileServiceError("RESOURCE_NOT_FOUND", "未找到当前学习单元。");
       }
       runtime.current_unit_index = Math.min(runtime.current_unit_index + 1, employeeCourseModules.length - 1);
       runtime.progress_percent = Math.max(runtime.progress_percent, Math.round((runtime.current_unit_index / employeeCourseModules.length) * 100));
@@ -304,10 +306,10 @@ export const mobileServices: MobileServices = {
       await wait(620);
       assertAvailable();
       getTaskOrThrow(task_id);
-      if (!question.trim()) throw new MobileServiceError("VALIDATION_ERROR", "请输入要咨询的问题。");
+      if (!question.trim()) throw new MobileServiceError("INVALID_INPUT", "请输入要咨询的问题。");
       if (runtime.failures.tutorFailuresRemaining > 0) {
         runtime.failures.tutorFailuresRemaining -= 1;
-        throw new MobileServiceError("NETWORK_ERROR", "回答暂时无法生成，请稍后重试。", true);
+        throw new MobileServiceError("CONNECTOR_UNAVAILABLE", "回答暂时无法生成，请稍后重试。", true);
       }
       const suffix = makeRequestId().slice(4);
       if (question.includes("绩效") || question.includes("岗位任免")) {
@@ -357,9 +359,9 @@ export const mobileServices: MobileServices = {
       assertAvailable();
       getTaskOrThrow(task_id);
       const unanswered = questions.filter((question) => !answers[question.id]?.length);
-      if (unanswered.length) throw new MobileServiceError("VALIDATION_ERROR", `还有 ${unanswered.length} 道题未完成。`);
+      if (unanswered.length) throw new MobileServiceError("INVALID_INPUT", `还有 ${unanswered.length} 道题未完成。`);
       const key = draftKey(task_id, attempt);
-      if (runtime.submitted_attempts.has(key)) throw new MobileServiceError("DUPLICATE_SUBMISSION", "本次测评已提交，请勿重复提交。");
+      if (runtime.submitted_attempts.has(key)) throw new MobileServiceError("IDEMPOTENCY_CONFLICT", "本次测评已提交，请勿重复提交。");
 
       const correctness = questions.map((question) => sameAnswers(answers[question.id], question.correct_option_indexes));
       const score = (correctness[0] ? 20 : 0) + (correctness[1] ? 40 : 0) + (correctness[2] ? 40 : 0);
@@ -492,9 +494,9 @@ export const mobileServices: MobileServices = {
     async listByIds(ids) {
       await wait(220);
       assertAvailable();
-      if (runtime.failures.citationUnavailable) throw new MobileServiceError("CONTENT_UNAVAILABLE", "知识来源暂时无法加载。", true);
+      if (runtime.failures.citationUnavailable) throw new MobileServiceError("CONNECTOR_UNAVAILABLE", "知识来源暂时无法加载。", true);
       const selected = ids?.length ? citations.filter((item) => ids.includes(item.id)) : citations;
-      if (!selected.length) throw new MobileServiceError("FORBIDDEN", "当前账号无权查看该资料。");
+      if (!selected.length) throw new MobileServiceError("FORBIDDEN_SCOPE", "当前账号无权查看该资料。");
       return response(selected);
     }
   }

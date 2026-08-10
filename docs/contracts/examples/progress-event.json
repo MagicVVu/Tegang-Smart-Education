@@ -2,10 +2,13 @@
   "data": {
     "created_at": "2026-08-04T08:00:00Z",
     "created_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "current_stage": "approval",
     "entity_version": 1,
     "event_type": "approval_required",
-    "id": "event_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "event_version": "1.0.0",
+    "id": "event_01ARZ3NDEKTSV4RRFFQ69G5FAZ",
     "metadata": {},
+    "next_action": "request_approval",
     "occurred_at": "2026-08-04T08:05:00Z",
     "payload": {
       "checkpoint_id": "checkpoint_01ARZ3NDEKTSV4RRFFQ69G5FAV",
@@ -20,7 +23,7 @@
       "retry_count": 0,
       "risk_level": "high",
       "run_id": "run_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-      "schema_version": "2.0.0",
+      "schema_version": "2.1.0",
       "status": "waiting",
       "step_id": "step_01ARZ3NDEKTSV4RRFFQ69G5FAV",
       "summary": "Plan checks passed; waiting for high-risk approval.",
@@ -28,19 +31,26 @@
       "updated_at": "2026-08-04T08:05:00Z",
       "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
     },
+    "progress_summary": "Plan checks passed; waiting for high-risk approval.",
     "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "requires_user_action": true,
     "risk_level": "high",
     "run_id": "run_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-    "schema_version": "2.0.0",
+    "schema_version": "2.1.0",
     "sequence": 7,
     "status": "emitted",
     "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "updated_at": "2026-08-04T08:05:00Z",
-    "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "visibility": "business",
+    "workflow_status": "AR-WAIT-APPROVAL"
+  },
+  "meta": {
+    "warnings": []
   },
   "occurred_at": "2026-08-04T08:05:00Z",
   "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
 }

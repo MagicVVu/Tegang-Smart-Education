@@ -1,0 +1,25 @@
+{
+  "error": {
+    "category": "contract_version",
+    "code": "UNSUPPORTED_CONTRACT_VERSION",
+    "details": {
+      "requested_version": "9.0.0",
+      "supported_versions": [
+        "2.0.0",
+        "2.1.0"
+      ]
+    },
+    "error_id": "error_01ARZ3NDEKTSV4RRFFQ69G5FAW",
+    "field_errors": [],
+    "message": "The requested contract version is not supported.",
+    "occurred_at": "2026-08-04T08:05:00Z",
+    "retryable": false,
+    "schema_version": "2.1.0",
+    "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "user_action": "Use one of the supported schema versions and resubmit the request."
+  },
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.1.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

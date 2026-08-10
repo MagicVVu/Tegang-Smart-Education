@@ -25,7 +25,12 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from backend.app.schemas.common import CONTRACT_SCHEMA_VERSION  # noqa: E402
+from backend.app.schemas.common import (  # noqa: E402
+    AGENT_STATE_VERSION,
+    CONTRACT_SCHEMA_VERSION,
+    EVENT_SCHEMA_VERSION,
+    SUPPORTED_CONTRACT_SCHEMA_VERSIONS,
+)
 from backend.app.schemas.examples import build_examples  # noqa: E402
 from backend.app.schemas.registry import CONTRACT_MODELS  # noqa: E402
 
@@ -224,6 +229,10 @@ def generate_outputs() -> dict[Path, str]:
 
     manifest = {
         "schema_version": CONTRACT_SCHEMA_VERSION,
+        "contract_package_version": CONTRACT_SCHEMA_VERSION,
+        "supported_schema_versions": sorted(SUPPORTED_CONTRACT_SCHEMA_VERSIONS),
+        "agent_state_version": AGENT_STATE_VERSION,
+        "event_version": EVENT_SCHEMA_VERSION,
         "source_of_truth": "backend/app/schemas",
         "generator": "backend/scripts/export_contracts.py",
         "combined_schema": catalog_path.relative_to(REPO_ROOT).as_posix(),

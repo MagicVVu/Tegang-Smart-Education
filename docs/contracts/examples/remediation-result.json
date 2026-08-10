@@ -14,7 +14,7 @@
       "course_01ARZ3NDEKTSV4RRFFQ69G5FAV"
     ],
     "risk_level": "high",
-    "schema_version": "2.0.0",
+    "schema_version": "2.1.0",
     "status": "planned",
     "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
@@ -24,8 +24,11 @@
       "kp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
     ]
   },
+  "meta": {
+    "warnings": []
+  },
   "occurred_at": "2026-08-04T08:05:00Z",
   "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
 }

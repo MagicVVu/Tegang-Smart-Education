@@ -1,5 +1,5 @@
 {
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:wrong-answer-reason",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:wrong-answer-reason",
   "additionalProperties": false,
   "properties": {
     "knowledge_point_id": {
@@ -44,6 +44,6 @@
   ],
   "title": "WrongAnswerReason",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.experience.WrongAnswerReason"
 }

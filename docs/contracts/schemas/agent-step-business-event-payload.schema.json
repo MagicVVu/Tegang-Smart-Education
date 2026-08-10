@@ -1,0 +1,91 @@
+{
+  "$defs": {
+    "AgentStepStatus": {
+      "enum": [
+        "pending",
+        "running",
+        "waiting",
+        "succeeded",
+        "failed",
+        "skipped"
+      ],
+      "title": "AgentStepStatus",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:agent-step-business-event-payload",
+  "additionalProperties": false,
+  "properties": {
+    "checkpoint_id": {
+      "anyOf": [
+        {
+          "description": "Agent checkpoint ID: checkpoint_<ULID>.",
+          "examples": [
+            "checkpoint_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^checkpoint_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Checkpoint Id"
+    },
+    "error_id": {
+      "anyOf": [
+        {
+          "description": "Immutable error occurrence ID: error_<ULID>.",
+          "examples": [
+            "error_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^error_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error Id"
+    },
+    "run_id": {
+      "description": "Immutable Agent run ID: run_<ULID>.",
+      "examples": [
+        "run_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^run_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/AgentStepStatus"
+    },
+    "step_id": {
+      "description": "Immutable Agent step ID: step_<ULID>.",
+      "examples": [
+        "step_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^step_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Step Id",
+      "type": "string"
+    },
+    "summary": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "step_id",
+    "status",
+    "summary"
+  ],
+  "title": "AgentStepBusinessEventPayload",
+  "type": "object",
+  "x-contract-schema-version": "2.1.0",
+  "x-contract-source": "backend.app.schemas.events.AgentStepBusinessEventPayload"
+}

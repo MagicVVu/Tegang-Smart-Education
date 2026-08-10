@@ -145,7 +145,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.0.0",
+          "default": "2.1.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -246,7 +246,7 @@
       "type": "string"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:assessment-result",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:assessment-result",
   "additionalProperties": false,
   "description": "Scored assessment result; never a direct performance or HR conclusion.",
   "properties": {
@@ -392,7 +392,7 @@
       "default": "low"
     },
     "schema_version": {
-      "default": "2.0.0",
+      "default": "2.1.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
@@ -481,6 +481,6 @@
   ],
   "title": "AssessmentResult",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.assessment.AssessmentResult"
 }

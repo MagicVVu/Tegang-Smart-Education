@@ -1,0 +1,25 @@
+{
+  "actor": {
+    "source": "system"
+  },
+  "aggregate_id": "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "aggregate_type": "assessment_result",
+  "causation_id": "assessment_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "correlation_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "event_id": "event_01ARZ3NDEKTSV4RRFFQ69G5FAW",
+  "event_type": "assessment.completed",
+  "event_version": "1.0.0",
+  "metadata": {},
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "payload": {
+    "assessment_result_id": "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "assessment_session_id": "assessment_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "employee_profile_id": "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "high_risk_passed": false,
+    "passed": false,
+    "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+  },
+  "producer": "assessment",
+  "sequence": 1,
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

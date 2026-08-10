@@ -1,0 +1,29 @@
+{
+  "actor": {
+    "actor_id": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "actor_role": "training_admin",
+    "department_id": "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "source": "user"
+  },
+  "aggregate_id": "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "aggregate_type": "approval",
+  "causation_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "correlation_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "deduplication_key": "idem_approval_event_20260804_001",
+  "event_id": "event_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "event_type": "approval.requested",
+  "event_version": "1.0.0",
+  "metadata": {},
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "payload": {
+    "approval_id": "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "plan_id": "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "status": "AP-WAITING",
+    "summary": "A high-risk training plan approval was requested.",
+    "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+  },
+  "producer": "approval",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "sequence": 1,
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

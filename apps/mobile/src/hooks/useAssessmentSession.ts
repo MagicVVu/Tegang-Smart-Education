@@ -97,7 +97,7 @@ export function useAssessmentSession(taskId: string, attempt: number) {
     } catch (submitError) {
       if (
         submitError instanceof MobileServiceError &&
-        submitError.code === "DUPLICATE_SUBMISSION"
+        submitError.code === "IDEMPOTENCY_CONFLICT"
       ) {
         setSubmitted(true);
       }

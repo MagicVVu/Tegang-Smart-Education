@@ -2,6 +2,17 @@
 
 All notable changes to the cross-module contract are recorded here. Versions follow semantic versioning.
 
+## 2.1.0 - 2026-08-10
+
+- Added the common API request context and optional response metadata without making new fields mandatory for `2.0.0` callers.
+- Added independently versioned Agent State checkpoint fields and kept the existing `id`/`task_id` C-03 names as the canonical run/task references.
+- Added the immutable internal `EventEnvelope`, 16 past-tense business event names, minimal typed payloads, actor context, ordering, correlation, causation, and deduplication identity.
+- Expanded realtime progress events with business/developer visibility, workflow status, user-action, safe error summary, and next-action fields.
+- Added explicit unsupported-version and resource-not-found error codes while continuing to use the single `UnifiedError` object.
+- Added generated approval, assessment, Agent-step, human-takeover, error, and previous-compatible examples plus contract tests for versions, round trips, envelope exclusivity, event identity, and TypeScript drift.
+- Aligned Web/Android Mock response versions and Android Mock error codes with generated contracts.
+- Did not add API routes, persistence, event transport, message queues, workflow nodes, or model integrations.
+
 ## 2.0.0 - 2026-08-04
 
 - Performed the approved breaking cutover from prototype camelCase DTOs and readable IDs to generated formal contracts.

@@ -1,29 +1,61 @@
 {
   "data": {
     "checkpoint_id": "checkpoint_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "checkpoint_sequence": 6,
+    "checkpointed_at": "2026-08-04T08:05:00Z",
+    "completed_step_ids": [
+      "step_01ARZ3NDEKTSV4RRFFQ69G5FAW"
+    ],
+    "constraints": [
+      "high-risk knowledge requires approval"
+    ],
     "created_at": "2026-08-04T08:00:00Z",
     "created_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "current_approval_id": "approval_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "current_assessment_result_id": "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "current_knowledge_citation_ids": [
+      "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    ],
+    "current_node": "approval_wait",
     "current_plan_id": "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "current_stage": "approval",
     "current_step_id": "step_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "deadline": "2026-08-15",
     "entity_version": 1,
     "formal_write_occurred": false,
     "id": "run_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "metadata": {},
+    "next_allowed_actions": [
+      "request_approval",
+      "cancel"
+    ],
+    "pending_step_ids": [
+      "step_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    ],
     "recoverable": true,
     "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "retry_count": 0,
     "risk_level": "high",
-    "schema_version": "2.0.0",
+    "schema_version": "2.1.0",
+    "started_at": "2026-08-04T08:00:00Z",
+    "state_version": "1.0.0",
     "status": "AR-WAIT-APPROVAL",
+    "target_employee_profile_ids": [
+      "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    ],
     "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "training_goal_id": "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "updated_at": "2026-08-04T08:05:00Z",
     "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-    "waiting_for": "authorized_reviewer"
+    "waiting_for": "authorized_reviewer",
+    "waiting_human_action": "Review the bound high-risk plan and record an approval decision."
+  },
+  "meta": {
+    "warnings": []
   },
   "occurred_at": "2026-08-04T08:05:00Z",
   "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
 }

@@ -15,10 +15,15 @@ if str(REPO_ROOT) not in sys.path:
 from backend.app.schemas.agent import AgentRunStatus  # noqa: E402
 from backend.app.schemas.api import (  # noqa: E402
     CreateTrainingTaskRequest,
+    CreateTrainingTaskResponse,
     DifyPlanAgentOutput,
+    ErrorResponse,
     PlanGenerationResponse,
 )
 from backend.app.schemas.common import (  # noqa: E402
+    AGENT_STATE_VERSION,
+    CONTRACT_SCHEMA_VERSION,
+    EVENT_SCHEMA_VERSION,
     ApprovalId,
     Confidence,
     EventId,
@@ -26,7 +31,8 @@ from backend.app.schemas.common import (  # noqa: E402
     TrainingTaskId,
     UserId,
 )
-from backend.app.schemas.errors import UnifiedError  # noqa: E402
+from backend.app.schemas.errors import ErrorCode, UnifiedError  # noqa: E402
+from backend.app.schemas.events import EventEnvelope  # noqa: E402
 from backend.app.schemas.examples import EXAMPLE_MODELS  # noqa: E402
 from backend.app.schemas.training import TrainingTask  # noqa: E402
 from backend.scripts.export_contracts import generate_outputs  # noqa: E402
@@ -120,6 +126,88 @@ class ContractTests(unittest.TestCase):
         for forbidden in ("stack", "system_prompt", "credential", "secret"):
             self.assertNotIn(forbidden, serialized)
 
+    def test_api_context_success_and_error_envelopes_are_explicit(self) -> None:
+        request = CreateTrainingTaskRequest.model_validate(_load_example("create-training-task-request"))
+        self.assertEqual(request.actor_role, "training_admin")
+        self.assertIsNotNone(request.trace_id)
+        self.assertIsNotNone(request.requested_at)
+
+        success = _load_example("create-training-task-response")
+        failure = _load_example("error-response")
+        self.assertIn("data", success)
+        self.assertNotIn("error", success)
+        self.assertIn("error", failure)
+        self.assertNotIn("data", failure)
+
+        success_schema = CreateTrainingTaskResponse.model_json_schema()
+        error_schema = ErrorResponse.model_json_schema()
+        self.assertIn("data", success_schema["required"])
+        self.assertNotIn("error", success_schema["properties"])
+        self.assertIn("error", error_schema["required"])
+        self.assertNotIn("data", error_schema["properties"])
+
+    def test_agent_state_round_trip_and_version_recognition(self) -> None:
+        response_model = EXAMPLE_MODELS["agent-state"].model_validate(_load_example("agent-state"))
+        state = response_model.data
+        self.assertEqual(state.state_version, AGENT_STATE_VERSION)
+        self.assertEqual(state.checkpoint_sequence, 6)
+        self.assertIn("request_approval", state.next_allowed_actions)
+
+        restored = type(state).model_validate_json(state.model_dump_json())
+        self.assertEqual(restored, state)
+
+        unsupported = state.model_dump(mode="json")
+        unsupported["state_version"] = "9.0.0"
+        with self.assertRaises(ValidationError):
+            type(state).model_validate(unsupported)
+
+    def test_business_event_envelope_versions_and_idempotency_identity(self) -> None:
+        required_fields = {
+            "event_id",
+            "event_type",
+            "event_version",
+            "occurred_at",
+            "producer",
+            "aggregate_type",
+            "aggregate_id",
+            "sequence",
+            "trace_id",
+            "correlation_id",
+            "actor",
+            "payload",
+            "metadata",
+        }
+        raw = _load_example("agent-step-event")
+        self.assertTrue(required_fields.issubset(raw))
+        event = EventEnvelope.model_validate(raw)
+        duplicate = EventEnvelope.model_validate(copy.deepcopy(raw))
+        self.assertEqual(event.event_version, EVENT_SCHEMA_VERSION)
+        self.assertEqual(event.deduplication_identity, duplicate.deduplication_identity)
+
+        unsupported = copy.deepcopy(raw)
+        unsupported["event_version"] = "9.0.0"
+        with self.assertRaises(ValidationError):
+            EventEnvelope.model_validate(unsupported)
+
+    def test_contract_version_compatibility_and_explicit_unsupported_error(self) -> None:
+        current = CreateTrainingTaskResponse.model_validate(_load_example("create-training-task-response"))
+        previous = CreateTrainingTaskResponse.model_validate(
+            _load_example("previous-compatible-training-task-response")
+        )
+        self.assertEqual(current.schema_version, CONTRACT_SCHEMA_VERSION)
+        self.assertEqual(previous.schema_version, "2.0.0")
+
+        unsupported = CreateTrainingTaskRequest.model_validate(
+            _load_example("create-training-task-request")
+        ).model_dump(mode="json")
+        unsupported["schema_version"] = "9.0.0"
+        with self.assertRaises(ValidationError):
+            CreateTrainingTaskRequest.model_validate(unsupported)
+
+        error = ErrorResponse.model_validate(_load_example("unsupported-contract-version-error"))
+        self.assertEqual(error.error.code, ErrorCode.UNSUPPORTED_CONTRACT_VERSION)
+        self.assertFalse(error.error.retryable)
+
     def test_dify_style_output_uses_authoritative_model(self) -> None:
         output = DifyPlanAgentOutput.model_validate(_load_example("dify-plan-agent-output"))
         self.assertTrue(output.human_review_required)
@@ -144,11 +232,37 @@ class ContractTests(unittest.TestCase):
         self.assertIn("export type ContractTrainingTaskView", generated)
         self.assertIn("export type ContractAssessmentResultView", generated)
         self.assertIn("export type ContractRealtimeEvent", generated)
+        self.assertIn("export type ContractApiRequestContext", generated)
+        self.assertIn("export type ContractEventEnvelope", generated)
+        self.assertIn("export type ContractAgentState", generated)
+
+        event_schema = json.loads(
+            (REPO_ROOT / "docs/contracts/schemas/event-envelope.schema.json").read_text(encoding="utf-8")
+        )
+        for field in event_schema["required"]:
+            self.assertIn(f"  {field}:", generated)
+
+    def test_mobile_mock_uses_authoritative_error_codes(self) -> None:
+        contracts = (REPO_ROOT / "apps/mobile/src/services/contracts.ts").read_text(encoding="utf-8")
+        services = (REPO_ROOT / "apps/mobile/src/services/mock-services.ts").read_text(encoding="utf-8")
+        self.assertIn("MobileServiceErrorCode = ContractErrorCode", contracts)
+        for retired in (
+            '"NETWORK_ERROR"',
+            '"FORBIDDEN"',
+            '"NOT_FOUND"',
+            '"VALIDATION_ERROR"',
+            '"CONTENT_UNAVAILABLE"',
+            '"DUPLICATE_SUBMISSION"',
+        ):
+            self.assertNotIn(retired, services)
 
     def test_manifest_keeps_database_schema_out_of_scope(self) -> None:
         manifest = json.loads((REPO_ROOT / "docs/contracts/manifest.json").read_text(encoding="utf-8"))
         self.assertFalse(manifest["database_schema_in_scope"])
-        self.assertEqual(manifest["schema_version"], "2.0.0")
+        self.assertEqual(manifest["schema_version"], "2.1.0")
+        self.assertEqual(manifest["agent_state_version"], "1.0.0")
+        self.assertEqual(manifest["event_version"], "1.0.0")
+        self.assertEqual(manifest["supported_schema_versions"], ["2.0.0", "2.1.0"])
 
 
 if __name__ == "__main__":

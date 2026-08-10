@@ -1,84 +1,135 @@
 {
+  "agent_state_version": "1.0.0",
   "combined_schema": "docs/contracts/schemas/contracts.schema.json",
+  "contract_package_version": "2.1.0",
   "database_schema_in_scope": false,
+  "event_version": "1.0.0",
   "examples": [
     {
       "model": "CreateTrainingTaskRequest",
       "name": "create-training-task-request",
       "path": "docs/contracts/examples/create-training-task-request.json",
-      "sha256": "c3738d9f347cf0007df51fbe1a0be5b37e3aa66237c32e5daa8b78375410f16c"
+      "sha256": "25e4033e47643182befb3fbfbb59a208fbc88e6c0312ef5dc24bd29c9713e852"
     },
     {
       "model": "CreateTrainingTaskResponse",
       "name": "create-training-task-response",
       "path": "docs/contracts/examples/create-training-task-response.json",
-      "sha256": "89073b81d26663be3433e2aa951e75217d1e4fe202974f9a7c4a1b13240ad06a"
+      "sha256": "8ec709de2c6ef837ca8c8365153fb475c84a782e4bb4d71b074d9d41bbacd454"
     },
     {
       "model": "PlanGenerationRequest",
       "name": "plan-generation-request",
       "path": "docs/contracts/examples/plan-generation-request.json",
-      "sha256": "4a8f1d7ffa092f24a3ad84836c0007031ed78aa8ef33b91b6a80bf0ad1433bd0"
+      "sha256": "f6c5fa5cb24067064c4e8ae2c67e23da4f0ce897c2e91d7d79004b3af0326d75"
     },
     {
       "model": "PlanGenerationResponse",
       "name": "plan-generation-response",
       "path": "docs/contracts/examples/plan-generation-response.json",
-      "sha256": "493a05f5b721daca424ac7db5bc1ae9789c1779ba99cbbe10ed9dffa4d7a8d80"
+      "sha256": "8824cc6c1b007cb0bb498e1815901e53db7951d6ea24ec6d1ff1cf5a944d5605"
     },
     {
       "model": "SubmitApprovalRequest",
       "name": "approval-request",
       "path": "docs/contracts/examples/approval-request.json",
-      "sha256": "5b3d0a351183618737901e25c300310c2c80641a55bcfe9de42ae5100d184564"
+      "sha256": "a3a8be8f14bce276cf682041b2052995792574ad20c2a9b3c11d1436c3c6f984"
     },
     {
       "model": "ApprovalResultResponse",
       "name": "approval-result",
       "path": "docs/contracts/examples/approval-result.json",
-      "sha256": "914ae7e93d61ab8b40c5b8f48541f90a566ec8170fa4fcf0ea06c61c6946a658"
+      "sha256": "e38a885d92b8e458363a6fcb7b89c6ec3cbc33b85f00422ae9db71ff90b16404"
+    },
+    {
+      "model": "ApprovalResultResponse",
+      "name": "approval-rejected-result",
+      "path": "docs/contracts/examples/approval-rejected-result.json",
+      "sha256": "20b0d7a9a51caea31fe9c338561a675206536dcfa936aa94cd2e6d86d3278f87"
     },
     {
       "model": "AssessmentResultResponse",
       "name": "assessment-result",
       "path": "docs/contracts/examples/assessment-result.json",
-      "sha256": "8e7df6af1a1b1bfc4b0ebe53af7a96e195374034ae181cbac3e3e8c7208666b7"
+      "sha256": "cf9d4492b9e0a1ff00dd46ee889d38e333451ce0208929727fb0544b6db51905"
     },
     {
       "model": "RemediationResultResponse",
       "name": "remediation-result",
       "path": "docs/contracts/examples/remediation-result.json",
-      "sha256": "2491d20e0cc7467821d067234a2cea55b21b5e71519883fb0fb1ce415dc0297d"
+      "sha256": "0c859d5dd5e3070fd09dbb1e88671250d79017cdf1a9a083fa0ec3d123569d07"
     },
     {
       "model": "RetestResultResponse",
       "name": "retest-result",
       "path": "docs/contracts/examples/retest-result.json",
-      "sha256": "090127b1d087cdaac3dc13ae1c45304d5c85eb7373d4b50e243428e5ae0b9c86"
+      "sha256": "997609a012acd18f5501ca6b4fb7103024f2ebde302ea96c615777cafce738f9"
     },
     {
       "model": "AgentStateResponse",
       "name": "agent-state",
       "path": "docs/contracts/examples/agent-state.json",
-      "sha256": "a093b923bd3da453df225d1c4cf53795386401748dd2d52eac01647367c97ff2"
+      "sha256": "f2532f2fb13916f9a683a6ecd08fe7cd3e334e6b6503c95a78b16ca8169a98a7"
     },
     {
       "model": "RealtimeEventResponse",
       "name": "progress-event",
       "path": "docs/contracts/examples/progress-event.json",
-      "sha256": "3e71bb70bb313343f555406a5a99268df79dcf10d7f984f5df87d73cabc24acd"
+      "sha256": "0cda3587b45c35da2c208850f47a9c9ae4058156814177d2f681710f6d1b1613"
+    },
+    {
+      "model": "EventEnvelope",
+      "name": "agent-step-event",
+      "path": "docs/contracts/examples/agent-step-event.json",
+      "sha256": "60a04238ff6830be2f3e6789ac88f9a307549124555830b2671fd24dddc729e4"
+    },
+    {
+      "model": "EventEnvelope",
+      "name": "approval-requested-event",
+      "path": "docs/contracts/examples/approval-requested-event.json",
+      "sha256": "9eb8f2248ab5fbdea400b0f75e6694afbd059dd713bf527f73a8cdd8b0968561"
+    },
+    {
+      "model": "EventEnvelope",
+      "name": "assessment-completed-event",
+      "path": "docs/contracts/examples/assessment-completed-event.json",
+      "sha256": "eeacbbd52d3c8ceea9a9a8d58301a489acd5d19568b99da194a5bcdcfd600cd3"
+    },
+    {
+      "model": "EventEnvelope",
+      "name": "human-takeover-event",
+      "path": "docs/contracts/examples/human-takeover-event.json",
+      "sha256": "a0e907290ef30cf4833b806076e470508ddd3b483c1ac34d0a0006efa8591be7"
     },
     {
       "model": "UnifiedError",
       "name": "unified-error",
       "path": "docs/contracts/examples/unified-error.json",
-      "sha256": "4accb15ea6f7b1b3ff88695dde32ea8913d8cab5c1c6a462f791c631a31e13e7"
+      "sha256": "bc5d9ee71e503333451981ebe6b575f9b35386b8191ea5ad965c4bb849554d81"
+    },
+    {
+      "model": "ErrorResponse",
+      "name": "error-response",
+      "path": "docs/contracts/examples/error-response.json",
+      "sha256": "7ae159341695d67d9018a1671efbbb30bf29dbcc735431d6e7f5e8f04cdae996"
+    },
+    {
+      "model": "ErrorResponse",
+      "name": "unsupported-contract-version-error",
+      "path": "docs/contracts/examples/unsupported-contract-version-error.json",
+      "sha256": "62356af8f3123ed0995d6da46688cc9ce553e6cdc993162779b01d8b9f94f7ab"
+    },
+    {
+      "model": "CreateTrainingTaskResponse",
+      "name": "previous-compatible-training-task-response",
+      "path": "docs/contracts/examples/previous-compatible-training-task-response.json",
+      "sha256": "ee98f47287e10ab3e311bc524e69e090eaf7f1bc21e8190e38b97837d6d06836"
     },
     {
       "model": "DifyPlanAgentOutput",
       "name": "dify-plan-agent-output",
       "path": "docs/contracts/examples/dify-plan-agent-output.json",
-      "sha256": "a4a40f7d32a27f4bc188e6df576398c075fd2aa35892e917243476c98644e1a1"
+      "sha256": "40b365945d8943c8f63b534bafd418b16d8b118e6cdb55ec0c2c44ffa4c52f8d"
     }
   ],
   "generator": "backend/scripts/export_contracts.py",
@@ -87,438 +138,547 @@
       "json_schema": "docs/contracts/schemas/api-envelope.schema.json",
       "model": "ApiEnvelope",
       "python_source": "backend.app.schemas.common.ApiEnvelope",
-      "sha256": "e267e821770057677cceda5516e4a064dce45587459f331721e0b037e2b68124",
+      "sha256": "680b5cb58885730ec8f0eae4538e9f7c0364959bcad8cf157839ef885dfe19be",
       "typescript_type": "ContractApiEnvelope"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/api-request-context.schema.json",
+      "model": "ApiRequestContext",
+      "python_source": "backend.app.schemas.common.ApiRequestContext",
+      "sha256": "17c1754972224942ef8c03b01f09bc4b5383b75cc671e35008713fd9f8002838",
+      "typescript_type": "ContractApiRequestContext"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/api-response-meta.schema.json",
+      "model": "ApiResponseMeta",
+      "python_source": "backend.app.schemas.common.ApiResponseMeta",
+      "sha256": "bd2a094330eb74206e24fd7e526c53c92fe0aa04688afac4eabb912beea0bfd5",
+      "typescript_type": "ContractApiResponseMeta"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/page-number-pagination-meta.schema.json",
+      "model": "PageNumberPaginationMeta",
+      "python_source": "backend.app.schemas.common.PageNumberPaginationMeta",
+      "sha256": "a9a9085881c3fa3e437f47d5f46d4c0773a697213244fba5677dd66363a7573d",
+      "typescript_type": "ContractPageNumberPaginationMeta"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/cursor-pagination-meta.schema.json",
+      "model": "CursorPaginationMeta",
+      "python_source": "backend.app.schemas.common.CursorPaginationMeta",
+      "sha256": "a7e3bbb4bc95ab0fc5cfbb048e9ba3311da506dc8d40126187e1c06e9ca525b8",
+      "typescript_type": "ContractCursorPaginationMeta"
     },
     {
       "json_schema": "docs/contracts/schemas/user.schema.json",
       "model": "User",
       "python_source": "backend.app.schemas.identity.User",
-      "sha256": "2cccb2a27ce5b81bf44fc977eadfea1e00706a605c84ad5fc252589b92fcdb44",
+      "sha256": "76b4978128839153943a145007d401c1f4f974f406f94704cd25c71b4e131594",
       "typescript_type": "ContractUser"
     },
     {
       "json_schema": "docs/contracts/schemas/role.schema.json",
       "model": "Role",
       "python_source": "backend.app.schemas.identity.Role",
-      "sha256": "739942156b2764a11be5f02590f64c970f7ca6ddf517803cb0bdf37b1df3d7ea",
+      "sha256": "cdb323abdd6bb63552fea06df8262d7b543d97a18b78a2a1b0e828d02d3987c0",
       "typescript_type": "ContractRole"
     },
     {
       "json_schema": "docs/contracts/schemas/department.schema.json",
       "model": "Department",
       "python_source": "backend.app.schemas.identity.Department",
-      "sha256": "4c7e32a5e12b1e155b6e42af061db4dce1af38357bcddf0edd1bc9b11e12ce34",
+      "sha256": "474db2a597ad71823230ae7a0cb27677bae51ce6df796e2f79a558caf343356b",
       "typescript_type": "ContractDepartment"
     },
     {
       "json_schema": "docs/contracts/schemas/employee-profile.schema.json",
       "model": "EmployeeProfile",
       "python_source": "backend.app.schemas.identity.EmployeeProfile",
-      "sha256": "699114ed29ba2780d0f1602b3bf31ef1582831439121d7adcd188603474c0e34",
+      "sha256": "94b506cfb3b10fdbc66793f32ac8b35e0617d65287f0c7bb7bef1b45a42d6635",
       "typescript_type": "ContractEmployeeProfile"
     },
     {
       "json_schema": "docs/contracts/schemas/training-goal.schema.json",
       "model": "TrainingGoal",
       "python_source": "backend.app.schemas.training.TrainingGoal",
-      "sha256": "d383b96fff265b24b18f7d56ce6ea6a4b0f9043d0796805f804decef41e8a741",
+      "sha256": "cf5b2b4fa1964cffcc21bba9b2765d38cb91a4089a3f09a13ef57b22d0c61262",
       "typescript_type": "ContractTrainingGoal"
     },
     {
       "json_schema": "docs/contracts/schemas/training-task.schema.json",
       "model": "TrainingTask",
       "python_source": "backend.app.schemas.training.TrainingTask",
-      "sha256": "d93d8b86f5066c1035040b7f34d3375ea243d5199a1722a3d6e054d9b31aea4c",
+      "sha256": "0f78ff0277af613ae3ecab7289ebbc52100a22f5c611eb2aa738b0785923e04b",
       "typescript_type": "ContractTrainingTask"
     },
     {
       "json_schema": "docs/contracts/schemas/training-plan.schema.json",
       "model": "TrainingPlan",
       "python_source": "backend.app.schemas.training.TrainingPlan",
-      "sha256": "fc317f465f9a07998b21d4f9ac283325e6c3288398d4375ce1701aa917dfb13f",
+      "sha256": "23111e112ee50fc572e6f3f3434e67986a4c374d716802275c723cf7a980947a",
       "typescript_type": "ContractTrainingPlan"
     },
     {
       "json_schema": "docs/contracts/schemas/course.schema.json",
       "model": "Course",
       "python_source": "backend.app.schemas.training.Course",
-      "sha256": "37c8eda4abcf56fd46668d998d5eb197c965f23babec1c639c16bce74a7f074e",
+      "sha256": "522cf12efaf399262c011ec73215e09d58e23432e200bc88885a4ddade2b893d",
       "typescript_type": "ContractCourse"
     },
     {
       "json_schema": "docs/contracts/schemas/rule-check-summary.schema.json",
       "model": "RuleCheckSummary",
       "python_source": "backend.app.schemas.training.RuleCheckSummary",
-      "sha256": "fc00e73ea5743e028a9ea253ec7514377cd546969cfca293cc4fc84cd72c00a7",
+      "sha256": "333607d48677e4d89f93a4f269bf64ea67dea8a54d02fbc85d53b94b136a9eb5",
       "typescript_type": "ContractRuleCheckSummary"
     },
     {
       "json_schema": "docs/contracts/schemas/knowledge-citation.schema.json",
       "model": "KnowledgeCitation",
       "python_source": "backend.app.schemas.knowledge.KnowledgeCitation",
-      "sha256": "bb9cd4f358f8ee964838123fab278f0d13a31ddb1c470454f631eed4f58ca396",
+      "sha256": "17c790dfbd30301e5d28c212fb0d37daaa0da28361714efe835b9bf56fed556e",
       "typescript_type": "ContractKnowledgeCitation"
     },
     {
       "json_schema": "docs/contracts/schemas/approval.schema.json",
       "model": "Approval",
       "python_source": "backend.app.schemas.approval.Approval",
-      "sha256": "aacc7b9b865188988ba9d8be7368ed024dfd0553026f8a5fb7c2c767538335d8",
+      "sha256": "504546124be62bf1f962dd9b25f9b06b9fcefe4e9fa832652bf87e45955a1297",
       "typescript_type": "ContractApproval"
     },
     {
       "json_schema": "docs/contracts/schemas/approval-result.schema.json",
       "model": "ApprovalResult",
       "python_source": "backend.app.schemas.approval.ApprovalResult",
-      "sha256": "600fc33a56fa60de18ede1f2c9c45dfe32a90dfdf336dd2ba0e3fcac222f2f29",
+      "sha256": "48bea347dda66b63c9faa87832ed3b778d510c2921bc28765a873c43dc6a0f16",
       "typescript_type": "ContractApprovalResult"
     },
     {
       "json_schema": "docs/contracts/schemas/assessment-session.schema.json",
       "model": "AssessmentSession",
       "python_source": "backend.app.schemas.assessment.AssessmentSession",
-      "sha256": "0fbe415bc63b6970546bfc3869acb35b030c2260f0b3650c6afc8bb17b38ef1f",
+      "sha256": "2251f11e0c830d11d02265f72730bd0d7e7dae252ac160f0c0c005e511cb917f",
       "typescript_type": "ContractAssessmentSession"
     },
     {
       "json_schema": "docs/contracts/schemas/assessment-question.schema.json",
       "model": "AssessmentQuestion",
       "python_source": "backend.app.schemas.assessment.AssessmentQuestion",
-      "sha256": "b9301b808e0987a3f4c8cffe7f1709a5d63a1db657714b3522367e9f1d3cc8c1",
+      "sha256": "0f50cda4c7ca731e8ba48bbfce38843a146066d45c7118074b8d1344ba9421b1",
       "typescript_type": "ContractAssessmentQuestion"
     },
     {
       "json_schema": "docs/contracts/schemas/assessment-result.schema.json",
       "model": "AssessmentResult",
       "python_source": "backend.app.schemas.assessment.AssessmentResult",
-      "sha256": "bfa38c44a57b95fb40dc99a01015b54bff7aaa7cde28a8d6e293900633747729",
+      "sha256": "9108c3b7e37e22ad11b091394707e50c015000ea7ed55adcb77e71a61bf0561e",
       "typescript_type": "ContractAssessmentResult"
     },
     {
       "json_schema": "docs/contracts/schemas/knowledge-point-performance.schema.json",
       "model": "KnowledgePointPerformance",
       "python_source": "backend.app.schemas.assessment.KnowledgePointPerformance",
-      "sha256": "5abfbc64ffc2acae9ac6beeddfc7904c432da7c905360fa2a55d85f58742c163",
+      "sha256": "3f5f697bcf8cd6454e48802b60f2290e813686c6e4f7e8380f0a6b753396391e",
       "typescript_type": "ContractKnowledgePointPerformance"
     },
     {
       "json_schema": "docs/contracts/schemas/remediation-intervention.schema.json",
       "model": "RemediationIntervention",
       "python_source": "backend.app.schemas.assessment.RemediationIntervention",
-      "sha256": "566198b7b7ee75bef07ecfd95889cb4b9b8cbc9275182af852201a097509e352",
+      "sha256": "7e64de86db70d0d3592bf086e14272b16086e12bc4968b09dc927784339e6ea7",
       "typescript_type": "ContractRemediationIntervention"
     },
     {
       "json_schema": "docs/contracts/schemas/retest.schema.json",
       "model": "Retest",
       "python_source": "backend.app.schemas.assessment.Retest",
-      "sha256": "07ab86e9aa891aff1fcb44953cc3c3eedcbbbedd872091fecf46ec0c273c9c2c",
+      "sha256": "5165c5f89c2342175d442c95b518ac3b2e9b17c784fb466553bd30923ee2b7c7",
       "typescript_type": "ContractRetest"
     },
     {
       "json_schema": "docs/contracts/schemas/agent-run.schema.json",
       "model": "AgentRun",
       "python_source": "backend.app.schemas.agent.AgentRun",
-      "sha256": "778e4184d010c5dab083ce9193d826d42a88e8374f1449ffcebff79beced70e6",
+      "sha256": "76e134527e124202ec5af70d82a2710fd5530067f677932bb8ca2ebaee4766dc",
       "typescript_type": "ContractAgentRun"
     },
     {
       "json_schema": "docs/contracts/schemas/agent-decision-summary.schema.json",
       "model": "AgentDecisionSummary",
       "python_source": "backend.app.schemas.agent.AgentDecisionSummary",
-      "sha256": "a9c49c72fc94cb4712a9599b854caf1e4213025f0e2353381f49223be142a42a",
+      "sha256": "30fe687cc499a3b89fc8bed06978759728ef34c9c5cc0924a4a38fadc8dc12c6",
       "typescript_type": "ContractAgentDecisionSummary"
     },
     {
       "json_schema": "docs/contracts/schemas/agent-state.schema.json",
       "model": "AgentState",
       "python_source": "backend.app.schemas.agent.AgentState",
-      "sha256": "a11e031ad5d0cd3cdc92704216cbaf44cf12e2a138f5963bdfa076f3e8f422fd",
+      "sha256": "1bb90dfceed384c04d7fc3568d5c8038ce9646635fa2175ac0188747ade9fcb0",
       "typescript_type": "ContractAgentState"
     },
     {
       "json_schema": "docs/contracts/schemas/agent-step-summary.schema.json",
       "model": "AgentStepSummary",
       "python_source": "backend.app.schemas.agent.AgentStepSummary",
-      "sha256": "3300fe0a5e07138c044df8173fb860332d51f92578638996a5fe5c52b8da84ff",
+      "sha256": "b3760ebd0a6ab27dbf5902d33ab4d69b2d3b20c9bf19074da2ea2673a05422a2",
       "typescript_type": "ContractAgentStepSummary"
     },
     {
       "json_schema": "docs/contracts/schemas/agent-progress-payload.schema.json",
       "model": "AgentProgressPayload",
       "python_source": "backend.app.schemas.agent.AgentProgressPayload",
-      "sha256": "927728c37201bd6c9cc5ab3788e18e7a28c8b72ef4294e6d2e62d46a102c856a",
+      "sha256": "69ca5d0e53c88f3b4b760b6b7d1da55667bac2501c278f62bd591b13ea411828",
       "typescript_type": "ContractAgentProgressPayload"
     },
     {
       "json_schema": "docs/contracts/schemas/approval-event-payload.schema.json",
       "model": "ApprovalEventPayload",
       "python_source": "backend.app.schemas.agent.ApprovalEventPayload",
-      "sha256": "7053bf13a2a08a4b7ef53d43e295fc9fca6f080db735b82433d21e791d0882be",
+      "sha256": "db0a5f887fab78577d6ad87ccada6be424e2f1b9ebce008623eaff6c89440226",
       "typescript_type": "ContractApprovalEventPayload"
     },
     {
       "json_schema": "docs/contracts/schemas/error-event-payload.schema.json",
       "model": "ErrorEventPayload",
       "python_source": "backend.app.schemas.agent.ErrorEventPayload",
-      "sha256": "ebec0ff0c3ff56de23c730d3522a1c00391b75795b6664536daf2c1932772c13",
+      "sha256": "10f8dad092e6fc6ba3fcac6bb2ee15bffe00cd92294f14974da7af3bb044ab6a",
       "typescript_type": "ContractErrorEventPayload"
     },
     {
       "json_schema": "docs/contracts/schemas/realtime-event.schema.json",
       "model": "RealtimeEvent",
       "python_source": "backend.app.schemas.agent.RealtimeEvent",
-      "sha256": "9e10dae5e899ea5613b89ca1f09d91ec901671b78e72154b28d515e9477e5713",
+      "sha256": "7c783151fa4985f5929f29be0658f2460bbc7486edd92454a0fe6b1a488f64bc",
       "typescript_type": "ContractRealtimeEvent"
     },
     {
       "json_schema": "docs/contracts/schemas/field-error.schema.json",
       "model": "FieldError",
       "python_source": "backend.app.schemas.errors.FieldError",
-      "sha256": "7727619e4b43bb8691023584f1e3d8dc0fc618726d76cde8f899f2fa7c59fcb5",
+      "sha256": "93e15a167ba181faa602116d1e96c417b80af13285864179c4f508a3158bccfa",
       "typescript_type": "ContractFieldError"
     },
     {
       "json_schema": "docs/contracts/schemas/unified-error.schema.json",
       "model": "UnifiedError",
       "python_source": "backend.app.schemas.errors.UnifiedError",
-      "sha256": "222255b81c79d0afc9eae7cf92202d2589643b214b49928dc09fcf9c05e4e933",
+      "sha256": "958c866e7051e4da4e78652b4a8f253ea8f8f821050696181662316f131c5422",
       "typescript_type": "ContractUnifiedError"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/event-actor.schema.json",
+      "model": "EventActor",
+      "python_source": "backend.app.schemas.events.EventActor",
+      "sha256": "b2cb780774ef055e7975cfac1000755c4068971f9b065c7c3c836a8d1699dbb7",
+      "typescript_type": "ContractEventActor"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/training-task-event-payload.schema.json",
+      "model": "TrainingTaskEventPayload",
+      "python_source": "backend.app.schemas.events.TrainingTaskEventPayload",
+      "sha256": "043d03a08c50aae6eb24c63ae7da981143bd8562003325167f60598bf5fa50ec",
+      "typescript_type": "ContractTrainingTaskEventPayload"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/training-plan-event-payload.schema.json",
+      "model": "TrainingPlanEventPayload",
+      "python_source": "backend.app.schemas.events.TrainingPlanEventPayload",
+      "sha256": "8e1154283a93fb34926bb3f9aace91c2660f8590c01b6ee0276ae384e79f610c",
+      "typescript_type": "ContractTrainingPlanEventPayload"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/approval-business-event-payload.schema.json",
+      "model": "ApprovalBusinessEventPayload",
+      "python_source": "backend.app.schemas.events.ApprovalBusinessEventPayload",
+      "sha256": "c3851521ecb47f6387378ce70d8a85bc9257613006d0355a757c1d9b43a2a372",
+      "typescript_type": "ContractApprovalBusinessEventPayload"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/learning-business-event-payload.schema.json",
+      "model": "LearningBusinessEventPayload",
+      "python_source": "backend.app.schemas.events.LearningBusinessEventPayload",
+      "sha256": "a27d38ab0d70a84ba9644f11d912c546bd7b941a796b4c3e0f51c77b552bcf01",
+      "typescript_type": "ContractLearningBusinessEventPayload"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/assessment-completed-event-payload.schema.json",
+      "model": "AssessmentCompletedEventPayload",
+      "python_source": "backend.app.schemas.events.AssessmentCompletedEventPayload",
+      "sha256": "3ea96410b2adfbb05ab954da76fb85f1e3e3bdd081972873322b5f9a273b6258",
+      "typescript_type": "ContractAssessmentCompletedEventPayload"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/remediation-created-event-payload.schema.json",
+      "model": "RemediationCreatedEventPayload",
+      "python_source": "backend.app.schemas.events.RemediationCreatedEventPayload",
+      "sha256": "d89a0ae32b1b2cc5bf75850017769d7159652162b29b2c0be288ea7d54c3231a",
+      "typescript_type": "ContractRemediationCreatedEventPayload"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/retest-completed-event-payload.schema.json",
+      "model": "RetestCompletedEventPayload",
+      "python_source": "backend.app.schemas.events.RetestCompletedEventPayload",
+      "sha256": "47015886e132176cbc3e90557ae67aed87cc1fbd2e8794b031407a2fe2bd2ba9",
+      "typescript_type": "ContractRetestCompletedEventPayload"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/agent-step-business-event-payload.schema.json",
+      "model": "AgentStepBusinessEventPayload",
+      "python_source": "backend.app.schemas.events.AgentStepBusinessEventPayload",
+      "sha256": "5a9bc7b5e45d270aaf3b14a75d6be3c16f6cbe2fd13d3651631c01547ce75c85",
+      "typescript_type": "ContractAgentStepBusinessEventPayload"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/human-takeover-requested-event-payload.schema.json",
+      "model": "HumanTakeoverRequestedEventPayload",
+      "python_source": "backend.app.schemas.events.HumanTakeoverRequestedEventPayload",
+      "sha256": "e2992875630c8f744264508fa5c3d698715697d81be447c4960d33e2fa7d6233",
+      "typescript_type": "ContractHumanTakeoverRequestedEventPayload"
+    },
+    {
+      "json_schema": "docs/contracts/schemas/event-envelope.schema.json",
+      "model": "EventEnvelope",
+      "python_source": "backend.app.schemas.events.EventEnvelope",
+      "sha256": "fa2eb3299fc00bedad1b17d77103510744ca3c2a95b8a10f6b28147bcda3480d",
+      "typescript_type": "ContractEventEnvelope"
     },
     {
       "json_schema": "docs/contracts/schemas/create-training-task-input.schema.json",
       "model": "CreateTrainingTaskInput",
       "python_source": "backend.app.schemas.api.CreateTrainingTaskInput",
-      "sha256": "e8ba6137d79b98ccab17d870a49f3c8554787dd05febff1e747bf79c44939d3e",
+      "sha256": "415c8134c4465f50d1d92d9be9cbd63252a4ff052b71c456e84273334d79fd2c",
       "typescript_type": "ContractCreateTrainingTaskInput"
     },
     {
       "json_schema": "docs/contracts/schemas/create-training-task-request.schema.json",
       "model": "CreateTrainingTaskRequest",
       "python_source": "backend.app.schemas.api.CreateTrainingTaskRequest",
-      "sha256": "365da61aaf16ece22c0446f5cd52f1691008f0b50d6f6301f2a1365f217c47d4",
+      "sha256": "927f4a4f84994e79d4e60b8d18be29f4c3198cf41e538009e8e7c2a3565cb306",
       "typescript_type": "ContractCreateTrainingTaskRequest"
     },
     {
       "json_schema": "docs/contracts/schemas/create-training-task-response.schema.json",
       "model": "CreateTrainingTaskResponse",
       "python_source": "backend.app.schemas.api.CreateTrainingTaskResponse",
-      "sha256": "dcdda211f0a45794346bbdf34a88d0a1d194db9d6171497b66a9c88f4003f666",
+      "sha256": "863ffb9bc872be0429c04dc1e3c91e8c4ed5592dd59892ddf9c48007c8fa6f69",
       "typescript_type": "ContractCreateTrainingTaskResponse"
     },
     {
       "json_schema": "docs/contracts/schemas/plan-generation-input.schema.json",
       "model": "PlanGenerationInput",
       "python_source": "backend.app.schemas.api.PlanGenerationInput",
-      "sha256": "d6499efb92a33cb1a332b7379450323ef6cdfe8db5caef4b0d21beeec4c0a601",
+      "sha256": "2196b8ffe98d7eddd25214df3516bd970e8db8600fbbf76306305cd78cb43763",
       "typescript_type": "ContractPlanGenerationInput"
     },
     {
       "json_schema": "docs/contracts/schemas/plan-generation-request.schema.json",
       "model": "PlanGenerationRequest",
       "python_source": "backend.app.schemas.api.PlanGenerationRequest",
-      "sha256": "000d3cca2de7c230ec6bf0439c80df73725c2ac7e83ed1c65752fe61064f4926",
+      "sha256": "032fa0717d992ce0cfe820373ec145aac604f292f2cd9373b6b2c5417b330c37",
       "typescript_type": "ContractPlanGenerationRequest"
     },
     {
       "json_schema": "docs/contracts/schemas/plan-generation-response.schema.json",
       "model": "PlanGenerationResponse",
       "python_source": "backend.app.schemas.api.PlanGenerationResponse",
-      "sha256": "1491a13bae08d744fc7c3647226df9f75a388b46b35f48a86b1534d1b7656b8b",
+      "sha256": "acd087932bed2e3778e87cffaeb628639384a03f2d225a16623279ab17c44b44",
       "typescript_type": "ContractPlanGenerationResponse"
     },
     {
       "json_schema": "docs/contracts/schemas/submit-approval-input.schema.json",
       "model": "SubmitApprovalInput",
       "python_source": "backend.app.schemas.api.SubmitApprovalInput",
-      "sha256": "5ca4ff26f40b3e7cb35660b4a31cddc453063b3a7bc5f152dd1356402d604d41",
+      "sha256": "ba184d88e79730ee51db196fe1a99c5c05378cf518360591f690ed993c02f8f8",
       "typescript_type": "ContractSubmitApprovalInput"
     },
     {
       "json_schema": "docs/contracts/schemas/submit-approval-request.schema.json",
       "model": "SubmitApprovalRequest",
       "python_source": "backend.app.schemas.api.SubmitApprovalRequest",
-      "sha256": "fbcca44914dafdf89ef5ce507188bd063243f6d83808355afe9840538daa4953",
+      "sha256": "8a8565e5cc20650715c99a60c532572e17729a0af7fdc7025db4de0b8f607e1f",
       "typescript_type": "ContractSubmitApprovalRequest"
     },
     {
       "json_schema": "docs/contracts/schemas/approval-result-response.schema.json",
       "model": "ApprovalResultResponse",
       "python_source": "backend.app.schemas.api.ApprovalResultResponse",
-      "sha256": "f3b455bb52dce4408b8daed0b18b6b8a8477f4fbed8aa48f519bd5f51e27468b",
+      "sha256": "1489e28ae6c9a1ece114aab17eb586a04211047da80c12f199c6469e63826986",
       "typescript_type": "ContractApprovalResultResponse"
     },
     {
       "json_schema": "docs/contracts/schemas/assessment-result-response.schema.json",
       "model": "AssessmentResultResponse",
       "python_source": "backend.app.schemas.api.AssessmentResultResponse",
-      "sha256": "2dc3e378c6c85727e82d7281fe71863b2306c35d3b05e3be5abf0dfb6b7e04ba",
+      "sha256": "653c619d5f4a23a855278ec84118ed0b7182d892123fe5f10fc4d0adc823a272",
       "typescript_type": "ContractAssessmentResultResponse"
     },
     {
       "json_schema": "docs/contracts/schemas/remediation-result-response.schema.json",
       "model": "RemediationResultResponse",
       "python_source": "backend.app.schemas.api.RemediationResultResponse",
-      "sha256": "f0b36de4ccc9dee0f7553ffe69a5a1f8bd20e013aab3c2f72a7afe3b8ee79dd3",
+      "sha256": "4826d70df34a36c682f92936629bcfc4991ca853cae35653d19fc14a6011562f",
       "typescript_type": "ContractRemediationResultResponse"
     },
     {
       "json_schema": "docs/contracts/schemas/retest-result-response.schema.json",
       "model": "RetestResultResponse",
       "python_source": "backend.app.schemas.api.RetestResultResponse",
-      "sha256": "40029041944d48622b009740ac9b09a30f9b74ef2522e86ad0f442c5b9b6a6ec",
+      "sha256": "b88563538826d5d3cef3f917ef9dc8d96a3c18e36dee6d728f6e4ffaac291667",
       "typescript_type": "ContractRetestResultResponse"
     },
     {
       "json_schema": "docs/contracts/schemas/agent-state-response.schema.json",
       "model": "AgentStateResponse",
       "python_source": "backend.app.schemas.api.AgentStateResponse",
-      "sha256": "59b528b1df9e50ba79542de16f7f61611958b78206a618dae86f26c9ad3404e7",
+      "sha256": "e4d9e0efed212f86ec678b008f3142e91aff02110215710ac9598de256ac7d56",
       "typescript_type": "ContractAgentStateResponse"
     },
     {
       "json_schema": "docs/contracts/schemas/realtime-event-response.schema.json",
       "model": "RealtimeEventResponse",
       "python_source": "backend.app.schemas.api.RealtimeEventResponse",
-      "sha256": "f3e1fb214dffa9f4fb92ee3539b4e4dfd598020a3aee49e1fdf0e2d793c44e30",
+      "sha256": "7910d8112c712d6627f4211188878c8fc9a5e643efab97295dc1abb4236b820b",
       "typescript_type": "ContractRealtimeEventResponse"
     },
     {
       "json_schema": "docs/contracts/schemas/error-response.schema.json",
       "model": "ErrorResponse",
       "python_source": "backend.app.schemas.api.ErrorResponse",
-      "sha256": "f10cf69c2d4bda190605664958b7a63ae35d5fb671b83b702fc5db085fdbae5e",
+      "sha256": "c37e82eea9ec603192dfb36604196528a653ac98dcf773182b57924f23dce6db",
       "typescript_type": "ContractErrorResponse"
     },
     {
       "json_schema": "docs/contracts/schemas/dify-plan-agent-output.schema.json",
       "model": "DifyPlanAgentOutput",
       "python_source": "backend.app.schemas.api.DifyPlanAgentOutput",
-      "sha256": "29687e628b097f112a548e1f8d77e6cc3a3ed151b2eb5f027b60e90bce5a645d",
+      "sha256": "11c508f7c656d6d3fb36189f60dae063f7f9508a13b0e6267b8e390267236521",
       "typescript_type": "ContractDifyPlanAgentOutput"
     },
     {
       "json_schema": "docs/contracts/schemas/prototype-user-profile.schema.json",
       "model": "PrototypeUserProfile",
       "python_source": "backend.app.schemas.experience.PrototypeUserProfile",
-      "sha256": "60396c927537d6c268a5372b30623c4c28472f3c517eb9f0ceb291829dedc132",
+      "sha256": "8f5eba2c44b4f7028de37b27e48557847649ebdb0244237bf522f91faf15580e",
       "typescript_type": "ContractPrototypeUserProfile"
     },
     {
       "json_schema": "docs/contracts/schemas/course-plan-item.schema.json",
       "model": "CoursePlanItem",
       "python_source": "backend.app.schemas.experience.CoursePlanItem",
-      "sha256": "f1de8629af7335e0fc631766666af82f1951c34c3d961f2d28985434d22b9d6a",
+      "sha256": "56fd76c461e09649ed5e11034c8f800dd92b7b1789c780f20eaf904095ce0c09",
       "typescript_type": "ContractCoursePlanItem"
     },
     {
       "json_schema": "docs/contracts/schemas/training-plan-detail.schema.json",
       "model": "TrainingPlanDetail",
       "python_source": "backend.app.schemas.experience.TrainingPlanDetail",
-      "sha256": "899902b29e3bd795ce52db1dd6202cceb29d4820664a58244e9b687ed9fca3d4",
+      "sha256": "0dbe3637a69a124c374a9f9183dd4af81a3f1aa2dc7615ab2c53267e95f0fccf",
       "typescript_type": "ContractTrainingPlanDetail"
     },
     {
       "json_schema": "docs/contracts/schemas/training-task-view.schema.json",
       "model": "TrainingTaskView",
       "python_source": "backend.app.schemas.experience.TrainingTaskView",
-      "sha256": "9af5b17f17b90fc5c137c09e41bcfc99f8ddb050f1ca64d7459f971733095930",
+      "sha256": "875c7ac6243c423a1a3cae2be4dc2129f2015b9d9ca96615a4ec23511d08a6d5",
       "typescript_type": "ContractTrainingTaskView"
     },
     {
       "json_schema": "docs/contracts/schemas/training-record-view.schema.json",
       "model": "TrainingRecordView",
       "python_source": "backend.app.schemas.experience.TrainingRecordView",
-      "sha256": "6b03175f5faa09edce63ad2e489e965e4dedc314b1f0e8e10fb18f631b277d81",
+      "sha256": "4269f6a0fbe78ee4c180bfb945adcdacd8d5ea7a75f553a9acbfe714509c0976",
       "typescript_type": "ContractTrainingRecordView"
     },
     {
       "json_schema": "docs/contracts/schemas/course-unit-content.schema.json",
       "model": "CourseUnitContent",
       "python_source": "backend.app.schemas.experience.CourseUnitContent",
-      "sha256": "5a234a4c4b255dec95d6d5abbd6b87c746c8b696438d11e28d593fd7b69ccf25",
+      "sha256": "6e25dd4e1c683f3873a5e170e5e0aea5150958904b8ca0960d1cc01b2e46ee52",
       "typescript_type": "ContractCourseUnitContent"
     },
     {
       "json_schema": "docs/contracts/schemas/course-detail-view.schema.json",
       "model": "CourseDetailView",
       "python_source": "backend.app.schemas.experience.CourseDetailView",
-      "sha256": "8f94d881da00af7707642a09e75bc91b004157a11e04007871dac88b6c596b78",
+      "sha256": "5ae5c7159f983ea54a534201847a7b80ce2e762ad20f130efd36fc1c958c253d",
       "typescript_type": "ContractCourseDetailView"
     },
     {
       "json_schema": "docs/contracts/schemas/learning-progress-view.schema.json",
       "model": "LearningProgressView",
       "python_source": "backend.app.schemas.experience.LearningProgressView",
-      "sha256": "16990627facc87a78081ca9d4e064a687e3aee88413617e0b26ee4037b8682fa",
+      "sha256": "619b8e73003c3a6759272c0a468ff4f6b83d2a6d3df1e5df1e3ad27cc3431c78",
       "typescript_type": "ContractLearningProgressView"
     },
     {
       "json_schema": "docs/contracts/schemas/tutor-session-view.schema.json",
       "model": "TutorSessionView",
       "python_source": "backend.app.schemas.experience.TutorSessionView",
-      "sha256": "b5ebf73e6f91b429ce6453938406bd632a34a2520331db6b1f27588f949a24ae",
+      "sha256": "e05dff83f5806d035c4c4eab2e50360b860cbfc7561f055cbd13b82363f786cb",
       "typescript_type": "ContractTutorSessionView"
     },
     {
       "json_schema": "docs/contracts/schemas/tutor-answer-view.schema.json",
       "model": "TutorAnswerView",
       "python_source": "backend.app.schemas.experience.TutorAnswerView",
-      "sha256": "65057df6ef0e343febfe21b03105e57f888f9bfd28d1ceb59be7df39d6e1e171",
+      "sha256": "c203ac014d1884a5963668fcc1ed8e230851085f769a99f2ec2327ff3387f0f7",
       "typescript_type": "ContractTutorAnswerView"
     },
     {
       "json_schema": "docs/contracts/schemas/wrong-answer-reason.schema.json",
       "model": "WrongAnswerReason",
       "python_source": "backend.app.schemas.experience.WrongAnswerReason",
-      "sha256": "2919183c2557ac71b3a0b86e89f1ee9a6f4f42fa397413ff182d270b6ebf7861",
+      "sha256": "86ca610d213a7047a0eee9f6fccb4d75f7abb9062c56e605d40626cbf0396a17",
       "typescript_type": "ContractWrongAnswerReason"
     },
     {
       "json_schema": "docs/contracts/schemas/assessment-result-view.schema.json",
       "model": "AssessmentResultView",
       "python_source": "backend.app.schemas.experience.AssessmentResultView",
-      "sha256": "00579dbc3b2bd7a74157160e0b03331b14e1bffa000563494a7ceee875847e87",
+      "sha256": "74fcc7198dcab03ff6376c60595b790269c5c31cd9cd5e4d9653ddfe317910d5",
       "typescript_type": "ContractAssessmentResultView"
     },
     {
       "json_schema": "docs/contracts/schemas/assessment-draft-view.schema.json",
       "model": "AssessmentDraftView",
       "python_source": "backend.app.schemas.experience.AssessmentDraftView",
-      "sha256": "6bd2a6d7603bf1ada39b569e6a8f765b0937c70034c2ff4ea91c9c66c239f973",
+      "sha256": "c0cd3bee5f05269bb3eccbf5c511cba2f80d3d660c4b5a251ec8963496b8ab6a",
       "typescript_type": "ContractAssessmentDraftView"
     },
     {
       "json_schema": "docs/contracts/schemas/weak-knowledge-point.schema.json",
       "model": "WeakKnowledgePoint",
       "python_source": "backend.app.schemas.experience.WeakKnowledgePoint",
-      "sha256": "0e1659f914dc01baf4cd6d2d749ba697f5b0ff651c32c7dafbe329c56ed34fce",
+      "sha256": "5abcf6801d05084ee582382d00285e9e2761b2f715fa8345116062fe272dbeb9",
       "typescript_type": "ContractWeakKnowledgePoint"
     },
     {
       "json_schema": "docs/contracts/schemas/remedial-plan-view.schema.json",
       "model": "RemedialPlanView",
       "python_source": "backend.app.schemas.experience.RemedialPlanView",
-      "sha256": "0548c929df5de7a788935273a7d9d2304b3fbad06ad04f97862ff3de7eaafae2",
+      "sha256": "ec239063635f887d5b415259600abfee175ec41b508307ae565a183e066169a8",
       "typescript_type": "ContractRemedialPlanView"
     },
     {
       "json_schema": "docs/contracts/schemas/notification-item-view.schema.json",
       "model": "NotificationItemView",
       "python_source": "backend.app.schemas.experience.NotificationItemView",
-      "sha256": "c9305131c516840c686c2146e763b1a2cd61ba3c3b49fe98633119245434f729",
+      "sha256": "621b9fa460bfbedf3dc4391a2a9cae4dde40ed6406ebce88eeaaa179a199cb92",
       "typescript_type": "ContractNotificationItemView"
     },
     {
       "json_schema": "docs/contracts/schemas/report-summary.schema.json",
       "model": "ReportSummary",
       "python_source": "backend.app.schemas.experience.ReportSummary",
-      "sha256": "6a6382c4f6268b2011e1ffdf5f1aa9a809af1ac410a8e3aecb08a05ce5b80b49",
+      "sha256": "cbcf7bd4fe4eaab1e6254a48cdee9cebf3a63359c9e999aeffb4537cb39445bd",
       "typescript_type": "ContractReportSummary"
     }
   ],
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "source_of_truth": "backend/app/schemas",
+  "supported_schema_versions": [
+    "2.0.0",
+    "2.1.0"
+  ],
   "typescript_output": "packages/types/src/contracts.generated.ts"
 }

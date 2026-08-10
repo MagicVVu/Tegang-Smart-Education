@@ -18,6 +18,8 @@ from .common import (
 
 class ErrorCategory(StrEnum):
     VALIDATION = "validation"
+    NOT_FOUND = "not_found"
+    CONTRACT_VERSION = "contract_version"
     PERMISSION_SCOPE = "permission_scope"
     STATE_CONFLICT = "state_conflict"
     KNOWLEDGE_VERSION = "knowledge_version"
@@ -33,6 +35,8 @@ class ErrorCategory(StrEnum):
 class ErrorCode(StrEnum):
     INVALID_INPUT = "INVALID_INPUT"
     MISSING_INFORMATION = "MISSING_INFORMATION"
+    RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND"
+    UNSUPPORTED_CONTRACT_VERSION = "UNSUPPORTED_CONTRACT_VERSION"
     UNAUTHORIZED = "UNAUTHORIZED"
     FORBIDDEN_SCOPE = "FORBIDDEN_SCOPE"
     STATE_CONFLICT = "STATE_CONFLICT"

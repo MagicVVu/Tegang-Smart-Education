@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from enum import StrEnum
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 
 from pydantic import (
     AwareDatetime,
@@ -21,7 +21,12 @@ from pydantic import (
     model_validator,
 )
 
-CONTRACT_SCHEMA_VERSION = "2.0.0"
+CONTRACT_SCHEMA_VERSION = "2.1.0"
+SUPPORTED_CONTRACT_SCHEMA_VERSIONS = frozenset({"2.0.0", CONTRACT_SCHEMA_VERSION})
+AGENT_STATE_VERSION = "1.0.0"
+SUPPORTED_AGENT_STATE_VERSIONS = frozenset({AGENT_STATE_VERSION})
+EVENT_SCHEMA_VERSION = "1.0.0"
+SUPPORTED_EVENT_SCHEMA_VERSIONS = frozenset({EVENT_SCHEMA_VERSION})
 ULID_PATTERN = r"[0-9A-HJKMNP-TV-Z]{26}"
 SEMVER_PATTERN = r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$"
 
@@ -86,6 +91,14 @@ SchemaVersion = Annotated[
     str,
     StringConstraints(pattern=SEMVER_PATTERN),
     Field(description="Contract schema semantic version."),
+]
+ContractReferenceId = Annotated[
+    str,
+    StringConstraints(pattern=rf"^[a-z][a-z0-9_]*_{ULID_PATTERN}$"),
+    Field(
+        description="Reference to a C-03 external entity ID; the owning schema defines the allowed prefix.",
+        examples=["task_01ARZ3NDEKTSV4RRFFQ69G5FAV"],
+    ),
 ]
 Confidence = Annotated[
     float,
@@ -243,6 +256,57 @@ class VersionedEntity(ContractModel):
         return self
 
 
+class PageNumberPaginationMeta(ContractModel):
+    """Page-number metadata used only by list endpoints that select this strategy."""
+
+    kind: Literal["page"] = "page"
+    page: int = Field(ge=1)
+    page_size: int = Field(ge=1, le=500)
+    total: int = Field(ge=0)
+
+
+class CursorPaginationMeta(ContractModel):
+    """Cursor metadata used only by list endpoints that select this strategy."""
+
+    kind: Literal["cursor"] = "cursor"
+    page_size: int = Field(ge=1, le=500)
+    next_cursor: str | None = Field(default=None, min_length=1, max_length=1000)
+
+
+class ApiResponseMeta(ContractModel):
+    """Optional response metadata; non-list responses do not emit empty pagination."""
+
+    pagination: PageNumberPaginationMeta | CursorPaginationMeta | None = None
+    warnings: list[str] = Field(default_factory=list)
+
+
+def validate_supported_contract_schema_version(value: str) -> str:
+    """Reject unsupported API contract versions without attempting silent conversion."""
+
+    if value not in SUPPORTED_CONTRACT_SCHEMA_VERSIONS:
+        supported = ", ".join(sorted(SUPPORTED_CONTRACT_SCHEMA_VERSIONS))
+        raise ValueError(f"unsupported contract schema version {value}; supported: {supported}")
+    return value
+
+
+class ApiRequestContext(ContractModel):
+    """Common API request context; role and department remain server-verified assertions."""
+
+    schema_version: SchemaVersion = CONTRACT_SCHEMA_VERSION
+    request_id: RequestId
+    trace_id: TraceId | None = None
+    actor_id: UserId
+    actor_role: UserRole | None = None
+    department_id: DepartmentId | None = None
+    idempotency_key: IdempotencyKey | None = None
+    requested_at: AwareDatetime | None = None
+
+    @field_validator("schema_version")
+    @classmethod
+    def validate_supported_schema_version(cls, value: str) -> str:
+        return validate_supported_contract_schema_version(value)
+
+
 class ApiEnvelope(ContractModel):
     """Common response envelope fields; concrete responses add a typed data field."""
 
@@ -250,6 +314,12 @@ class ApiEnvelope(ContractModel):
     request_id: RequestId
     trace_id: TraceId
     occurred_at: AwareDatetime
+    meta: ApiResponseMeta | None = None
+
+    @field_validator("schema_version")
+    @classmethod
+    def validate_supported_schema_version(cls, value: str) -> str:
+        return validate_supported_contract_schema_version(value)
 
 
 def ensure_utc(value: datetime) -> datetime:

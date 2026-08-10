@@ -13,7 +13,7 @@
     "progress_percent": 42.0,
     "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "risk_level": "high",
-    "schema_version": "2.0.0",
+    "schema_version": "2.1.0",
     "status": "TB-WAIT-CONFIRM",
     "target_department_ids": [
       "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
@@ -26,8 +26,11 @@
     "updated_at": "2026-08-04T08:05:00Z",
     "updated_by": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
   },
+  "meta": {
+    "warnings": []
+  },
   "occurred_at": "2026-08-04T08:05:00Z",
   "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
 }

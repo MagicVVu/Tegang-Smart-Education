@@ -3,7 +3,13 @@
 from __future__ import annotations
 
 from pydantic import BaseModel
-from .common import ApiEnvelope
+from .common import (
+    ApiEnvelope,
+    ApiRequestContext,
+    ApiResponseMeta,
+    CursorPaginationMeta,
+    PageNumberPaginationMeta,
+)
 
 from .agent import (
     AgentDecisionSummary,
@@ -43,6 +49,19 @@ from .assessment import (
     Retest,
 )
 from .errors import FieldError, UnifiedError
+from .events import (
+    AgentStepBusinessEventPayload,
+    ApprovalBusinessEventPayload,
+    AssessmentCompletedEventPayload,
+    EventActor,
+    EventEnvelope,
+    HumanTakeoverRequestedEventPayload,
+    LearningBusinessEventPayload,
+    RemediationCreatedEventPayload,
+    RetestCompletedEventPayload,
+    TrainingPlanEventPayload,
+    TrainingTaskEventPayload,
+)
 from .experience import (
     AssessmentDraftView,
     AssessmentResultView,
@@ -69,6 +88,10 @@ from .training import Course, RuleCheckSummary, TrainingGoal, TrainingPlan, Trai
 
 CONTRACT_MODELS: tuple[type[BaseModel], ...] = (
     ApiEnvelope,
+    ApiRequestContext,
+    ApiResponseMeta,
+    PageNumberPaginationMeta,
+    CursorPaginationMeta,
     User,
     Role,
     Department,
@@ -97,6 +120,17 @@ CONTRACT_MODELS: tuple[type[BaseModel], ...] = (
     RealtimeEvent,
     FieldError,
     UnifiedError,
+    EventActor,
+    TrainingTaskEventPayload,
+    TrainingPlanEventPayload,
+    ApprovalBusinessEventPayload,
+    LearningBusinessEventPayload,
+    AssessmentCompletedEventPayload,
+    RemediationCreatedEventPayload,
+    RetestCompletedEventPayload,
+    AgentStepBusinessEventPayload,
+    HumanTakeoverRequestedEventPayload,
+    EventEnvelope,
     CreateTrainingTaskInput,
     CreateTrainingTaskRequest,
     CreateTrainingTaskResponse,

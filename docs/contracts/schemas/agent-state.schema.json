@@ -1,5 +1,20 @@
 {
   "$defs": {
+    "AgentNextAction": {
+      "enum": [
+        "continue",
+        "provide_input",
+        "request_approval",
+        "retry",
+        "rollback",
+        "replan",
+        "request_human_takeover",
+        "cancel",
+        "complete"
+      ],
+      "title": "AgentNextAction",
+      "type": "string"
+    },
     "AgentRunStatus": {
       "description": "Agent execution states from chapter 15.8.",
       "enum": [
@@ -32,7 +47,7 @@
       "type": "string"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.0.0:agent-state",
+  "$id": "urn:tegang:smart-education:contracts:2.1.0:agent-state",
   "additionalProperties": false,
   "description": "Serializable resumable Agent state, distinct from an API envelope or event.",
   "properties": {
@@ -53,6 +68,37 @@
       "default": null,
       "title": "Checkpoint Id"
     },
+    "checkpoint_sequence": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Checkpoint Sequence",
+      "type": "integer"
+    },
+    "checkpointed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Checkpointed At"
+    },
+    "completed_step_ids": {
+      "items": {
+        "description": "Immutable Agent step ID: step_<ULID>.",
+        "examples": [
+          "step_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^step_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Completed Step Ids",
+      "type": "array"
+    },
     "confidence": {
       "anyOf": [
         {
@@ -67,6 +113,13 @@
       ],
       "default": null,
       "title": "Confidence"
+    },
+    "constraints": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Constraints",
+      "type": "array"
     },
     "created_at": {
       "description": "Creation time with timezone; serialized as ISO 8601.",
@@ -108,6 +161,48 @@
       "default": null,
       "title": "Current Approval Id"
     },
+    "current_assessment_result_id": {
+      "anyOf": [
+        {
+          "description": "Immutable assessment result ID: assessment_result_<ULID>.",
+          "examples": [
+            "assessment_result_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^assessment_result_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Current Assessment Result Id"
+    },
+    "current_knowledge_citation_ids": {
+      "items": {
+        "description": "Immutable external knowledge citation ID: know_<ULID>.",
+        "examples": [
+          "know_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^know_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Current Knowledge Citation Ids",
+      "type": "array"
+    },
+    "current_node": {
+      "anyOf": [
+        {
+          "maxLength": 240,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Current Node"
+    },
     "current_plan_id": {
       "anyOf": [
         {
@@ -125,6 +220,19 @@
       "default": null,
       "title": "Current Plan Id"
     },
+    "current_stage": {
+      "anyOf": [
+        {
+          "maxLength": 240,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Current Stage"
+    },
     "current_step_id": {
       "anyOf": [
         {
@@ -141,6 +249,19 @@
       ],
       "default": null,
       "title": "Current Step Id"
+    },
+    "deadline": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Deadline"
     },
     "entity_version": {
       "default": 1,
@@ -180,11 +301,60 @@
       "default": null,
       "title": "Idempotency Key"
     },
+    "last_error_code": {
+      "anyOf": [
+        {
+          "maxLength": 120,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Last Error Code"
+    },
+    "last_error_id": {
+      "anyOf": [
+        {
+          "description": "Immutable error occurrence ID: error_<ULID>.",
+          "examples": [
+            "error_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^error_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Last Error Id"
+    },
     "metadata": {
       "additionalProperties": true,
       "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
       "title": "Metadata",
       "type": "object"
+    },
+    "next_allowed_actions": {
+      "items": {
+        "$ref": "#/$defs/AgentNextAction"
+      },
+      "title": "Next Allowed Actions",
+      "type": "array"
+    },
+    "pending_step_ids": {
+      "items": {
+        "description": "Immutable Agent step ID: step_<ULID>.",
+        "examples": [
+          "step_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^step_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Pending Step Ids",
+      "type": "array"
     },
     "recoverable": {
       "default": true,
@@ -220,14 +390,46 @@
       "default": "low"
     },
     "schema_version": {
-      "default": "2.0.0",
+      "default": "2.1.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
       "type": "string"
     },
+    "started_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Started At"
+    },
+    "state_version": {
+      "default": "1.0.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "State Version",
+      "type": "string"
+    },
     "status": {
       "$ref": "#/$defs/AgentRunStatus"
+    },
+    "target_employee_profile_ids": {
+      "items": {
+        "description": "Immutable external employee profile ID: emp_<ULID>.",
+        "examples": [
+          "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Target Employee Profile Ids",
+      "type": "array"
     },
     "task_id": {
       "description": "Immutable external training task ID: task_<ULID>.",
@@ -254,6 +456,23 @@
       ],
       "default": null,
       "title": "Trace Id"
+    },
+    "training_goal_id": {
+      "anyOf": [
+        {
+          "description": "Immutable external training goal ID: goal_<ULID>.",
+          "examples": [
+            "goal_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^goal_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Training Goal Id"
     },
     "updated_at": {
       "description": "Last update time with timezone; serialized as ISO 8601.",
@@ -290,6 +509,19 @@
       ],
       "default": null,
       "title": "Waiting For"
+    },
+    "waiting_human_action": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Waiting Human Action"
     }
   },
   "required": [
@@ -301,6 +533,6 @@
   ],
   "title": "AgentState",
   "type": "object",
-  "x-contract-schema-version": "2.0.0",
+  "x-contract-schema-version": "2.1.0",
   "x-contract-source": "backend.app.schemas.agent.AgentState"
 }

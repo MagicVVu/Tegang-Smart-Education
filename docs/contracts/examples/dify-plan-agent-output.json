@@ -9,7 +9,7 @@
   ],
   "proposed_plan_id": "plan_01ARZ3NDEKTSV4RRFFQ69G5FAV",
   "risk_level": "high",
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "selection_reason": "Shortens the exposure window while preserving department-specific paths.",
   "summary": "Front-load high-risk knowledge before operational learning.",
   "title": "Risk-first differentiated path",

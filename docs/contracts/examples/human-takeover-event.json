@@ -1,0 +1,24 @@
+{
+  "actor": {
+    "source": "system"
+  },
+  "aggregate_id": "run_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "aggregate_type": "agent_run",
+  "causation_id": "event_01ARZ3NDEKTSV4RRFFQ69G5FAX",
+  "correlation_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "event_id": "event_01ARZ3NDEKTSV4RRFFQ69G5FAY",
+  "event_type": "human_takeover.requested",
+  "event_version": "1.0.0",
+  "metadata": {},
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "payload": {
+    "checkpoint_id": "checkpoint_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "reason": "The controlled retry boundary was reached and an authorized reviewer is required.",
+    "requested_role": "reviewer",
+    "run_id": "run_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+  },
+  "producer": "agent_orchestrator",
+  "sequence": 8,
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}
