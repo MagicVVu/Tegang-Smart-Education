@@ -5,10 +5,10 @@ import {
   Descriptions,
   Drawer,
   Flex,
-  List,
   Tag,
   Typography
 } from "antd";
+import { DataList as List } from "./DataList";
 import { knowledgeCitations } from "../services/workspace-data";
 
 interface KnowledgeDrawerProps {
@@ -35,7 +35,7 @@ export function KnowledgeDrawer({
   return (
     <Drawer
       title="知识引用与有效性"
-      width={520}
+      size={520}
       open={open}
       onClose={onClose}
       footer={
@@ -47,7 +47,7 @@ export function KnowledgeDrawer({
       <Alert
         type="info"
         showIcon
-        message="引用用于说明当前内容依据，不代表模型可以绕过权限或版本规则。"
+        title="引用用于说明当前内容依据，不代表模型可以绕过权限或版本规则。"
         style={{ marginBottom: 20 }}
       />
       <List

@@ -16,12 +16,14 @@ __pycache__/
 htmlcov/
 .venv/
 venv/
+.python-version.local
 dist/
 build/
 *.egg-info/
 
 # JavaScript / frontend
 node_modules/
+.pnpm-store/
 .next/
 coverage/
 .expo/
@@ -53,3 +55,4 @@ logs/
 tmp/
 data/generated/
 artifacts/
+.env.c02-copy

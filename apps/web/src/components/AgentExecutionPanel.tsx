@@ -75,17 +75,17 @@ export function AgentExecutionPanel({
           type="error"
           showIcon
           icon={<ExclamationCircleOutlined />}
-          message="SKILL_TIMEOUT：授权知识检索超过等待时间"
+          title="SKILL_TIMEOUT：授权知识检索超过等待时间"
           description="已完成 1 次有限重试，未执行正式业务写入。可以重试、回退到最近稳定检查点或请求人工接管。"
           style={{ marginBottom: 20 }}
         />
       ) : null}
       <Steps
-        direction="vertical"
+        orientation="vertical"
         current={current}
         items={stages.map((title, index) => ({
           title,
-          description:
+          content:
             index < current
               ? "已完成并保存检查点"
               : index === current

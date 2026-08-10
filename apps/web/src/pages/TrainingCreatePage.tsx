@@ -181,7 +181,7 @@ export function TrainingCreatePage() {
           <Alert
             showIcon
             type="warning"
-            message="部分员工基础信息待补充"
+            title="部分员工基础信息待补充"
             description="可以继续保存草稿；提交后系统会列出缺口并暂停分析，不会使用推测信息补全员工资料。"
             style={{ marginBottom: 20 }}
           />
@@ -240,7 +240,7 @@ export function TrainingCreatePage() {
             </Form.Item>
             <Alert
               type="info"
-              message="数据范围由当前角色与部门授权共同决定；跨部门越权对象不会返回字段值。"
+              title="数据范围由当前角色与部门授权共同决定；跨部门越权对象不会返回字段值。"
               showIcon
             />
           </div>
@@ -295,7 +295,7 @@ export function TrainingCreatePage() {
             <Alert
               type="info"
               showIcon
-              message="版本冲突或引用失效时，方案生成将暂停并转知识责任人处理。"
+              title="版本冲突或引用失效时，方案生成将暂停并转知识责任人处理。"
             />
           </div>
           <div hidden={step !== 4}>
@@ -331,7 +331,7 @@ export function TrainingCreatePage() {
             <Alert
               type="warning"
               showIcon
-              message="高风险要求将进入确定性风险分级；正式业务写入前必须完成必要审批。"
+              title="高风险要求将进入确定性风险分级；正式业务写入前必须完成必要审批。"
             />
           </div>
           <div hidden={step !== 5}>
@@ -343,7 +343,7 @@ export function TrainingCreatePage() {
             <Alert
               showIcon
               type="info"
-              message="提交不会直接下发培训，也不会绕过高风险审批。"
+              title="提交不会直接下发培训，也不会绕过高风险审批。"
             />
           </div>
         </Form>

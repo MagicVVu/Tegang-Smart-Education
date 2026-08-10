@@ -14,7 +14,6 @@ import {
   Card,
   Col,
   Flex,
-  List,
   Progress,
   Row,
   Table,
@@ -24,6 +23,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { statusLabels } from "@tegang/shared-utils";
 import { PageHeader } from "../components/PageHeader";
+import { DataList as List } from "../components/DataList";
 import { trainingTask } from "../services/workspace-data";
 import { StatusTag } from "../components/StatusTag";
 import { usePrototypeStore } from "../stores/prototype-store";
@@ -102,7 +102,7 @@ export function AdminDashboardPage() {
         <Alert
           showIcon
           type="error"
-          message="知识版本冲突已暂停方案生成"
+          title="知识版本冲突已暂停方案生成"
           description="《炼钢生产部安全操作规范》存在待确认版本。系统未使用冲突内容，请由知识责任人确认后从稳定检查点恢复。"
           action={
             <Button onClick={() => navigate(`/agent-runs/${trainingTask.id}`)}>
