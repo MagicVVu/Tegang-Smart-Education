@@ -14,7 +14,6 @@ import {
   Col,
   Descriptions,
   Flex,
-  List,
   Progress,
   Row,
   Space,
@@ -25,6 +24,7 @@ import {
 } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DataList as List } from "../components/DataList";
 import { PageHeader } from "../components/PageHeader";
 import { StatusTag } from "../components/StatusTag";
 import { services } from "../services";
@@ -92,7 +92,7 @@ export function ReportPage() {
       <Alert
         showIcon
         type={reportStatus === "confirmed" ? "success" : "warning"}
-        message={
+        title={
           reportStatus === "confirmed"
             ? "报告已完成确认，可作为当前版本的正式培训结果"
             : reportStatus === "awaiting_confirmation"
@@ -146,7 +146,7 @@ export function ReportPage() {
         <Alert
           type="warning"
           showIcon
-          message="需要处理：3 人首次未通过高风险知识要求"
+          title="需要处理：3 人首次未通过高风险知识要求"
           description="其中 1 人待复测、2 人复测已通过。完成剩余复测并核对异常记录后再确认报告。"
           action={<Button type="link">查看未完成项</Button>}
           style={{ marginTop: 16 }}

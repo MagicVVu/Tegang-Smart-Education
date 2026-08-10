@@ -23,7 +23,6 @@ import {
   Flex,
   Form,
   Input,
-  List,
   Modal,
   Radio,
   Row,
@@ -34,6 +33,7 @@ import {
   Typography,
   message
 } from "antd";
+import { DataList as List } from "../components/DataList";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StatusTag } from "../components/StatusTag";
@@ -125,7 +125,7 @@ export function PlanPage() {
         <Alert
           type="warning"
           showIcon
-          message="高风险动作已暂停，等待审核员决定"
+          title="高风险动作已暂停，等待审核员决定"
           description="当前没有向外部系统写入正式培训任务。审核员将核对知识引用、影响范围和规则命中原因。"
           action={
             <Button
@@ -142,7 +142,7 @@ export function PlanPage() {
         <Alert
           type="error"
           showIcon
-          message="当前版本被拒绝"
+          title="当前版本被拒绝"
           description="拒绝原因：高风险模块的现场案例与现行版本范围不一致。请修订后重新生成并校验，或终止任务。"
           action={
             <Button
@@ -162,7 +162,7 @@ export function PlanPage() {
         <Alert
           type="info"
           showIcon
-          message="按审核意见修改后批准"
+          title="按审核意见修改后批准"
           description="需将炼钢高风险模块前置，并将独立复测设为下发条件。应用修改后，系统会重新运行硬约束校验。"
           action={
             <Button
@@ -287,7 +287,7 @@ export function PlanPage() {
             <Timeline
               items={selectedPlan.courses.map((module) => ({
                 color: module.risk_level === "high" ? "red" : "blue",
-                children: (
+                content: (
                   <div className="module-timeline">
                     <Flex justify="space-between">
                       <strong>{module.title}</strong>
@@ -476,7 +476,7 @@ export function PlanPage() {
       </Row>
       <Drawer
         title="修改部分培训内容"
-        width={560}
+        size={560}
         open={editOpen}
         onClose={() => setEditOpen(false)}
         extra={
@@ -494,7 +494,7 @@ export function PlanPage() {
         <Alert
           type="info"
           showIcon
-          message="修改课程顺序或说明不会改变目标；更改目标或约束应使用“重新规划”。"
+          title="修改课程顺序或说明不会改变目标；更改目标或约束应使用“重新规划”。"
           style={{ marginBottom: 20 }}
         />
         <Form layout="vertical">
@@ -540,7 +540,7 @@ export function PlanPage() {
         <Alert
           type="info"
           showIcon
-          message="培训目标和硬约束保持不变；新方案仍需重新完成知识、规则和风险校验。"
+          title="培训目标和硬约束保持不变；新方案仍需重新完成知识、规则和风险校验。"
           style={{ marginBottom: 16 }}
         />
         <Input.TextArea

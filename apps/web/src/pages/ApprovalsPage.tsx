@@ -18,7 +18,6 @@ import {
   Flex,
   Form,
   Input,
-  List,
   Modal,
   Row,
   Space,
@@ -29,6 +28,7 @@ import {
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { ContractApprovalDecision } from "@tegang/types";
+import { DataList as List } from "../components/DataList";
 import { KnowledgeDrawer } from "../components/KnowledgeDrawer";
 import { PageHeader } from "../components/PageHeader";
 import { StatusTag } from "../components/StatusTag";
@@ -97,7 +97,7 @@ export function ApprovalsPage() {
         <Alert
           type="info"
           showIcon
-          message="当前为审批进度只读视图"
+          title="当前为审批进度只读视图"
           description="高风险决定由当前责任审核员处理。培训管理员可以查看进度，并按退回意见修订方案。"
           style={{ marginBottom: 20 }}
         />
@@ -106,7 +106,7 @@ export function ApprovalsPage() {
         <Alert
           type={approvalStatus === "AP-REJECTED" ? "error" : "success"}
           showIcon
-          message={
+          title={
             approvalStatus === "AP-APPROVED"
               ? "当前版本已批准"
               : approvalStatus === "AP-EDITING"
@@ -146,7 +146,7 @@ export function ApprovalsPage() {
                     avatar={<AuditOutlined />}
                     title={item.title}
                     description={
-                      <Space direction="vertical" size={4}>
+                      <Space orientation="vertical" size={4}>
                         <span>{item.id}</span>
                         <span>{item.reason}</span>
                         <span>{item.impact}</span>
@@ -192,7 +192,7 @@ export function ApprovalsPage() {
             <Alert
               type="error"
               showIcon
-              message="待决定：是否允许下发包含高风险知识要求的培训任务"
+              title="待决定：是否允许下发包含高风险知识要求的培训任务"
               description="风险等级高；影响智信部与炼钢生产部新员工。当前流程停在风险分级正式检查点，尚未发生正式业务写入。"
               style={{ marginBottom: 20 }}
             />
@@ -270,7 +270,7 @@ export function ApprovalsPage() {
                 <Alert
                   type="info"
                   showIcon
-                  message="这是 Agent 建议，不是规则结论或审批决定。"
+                  title="这是 Agent 建议，不是规则结论或审批决定。"
                 />
               </Card>
             </Col>
@@ -420,7 +420,7 @@ export function ApprovalsPage() {
               : "info"
           }
           showIcon
-          message={
+          title={
             decision === "approved"
               ? "批准后，流程将恢复到待下发；当前方案的高风险范围保持不变。"
               : decision === "approved_with_changes"

@@ -140,7 +140,7 @@ export function LoginPage() {
       </section>
 
       <section className="login-panel">
-        <Card className="login-card" bordered={false}>
+        <Card className="login-card" variant="borderless">
           <Typography.Text className="eyebrow">统一身份认证</Typography.Text>
           <Typography.Title level={2}>登录培训管理平台</Typography.Title>
           <Typography.Paragraph type="secondary">
@@ -151,7 +151,7 @@ export function LoginPage() {
             <Alert
               type="error"
               showIcon
-              message="登录失败"
+              title="登录失败"
               description={error}
               closable
               onClose={() => setError(undefined)}

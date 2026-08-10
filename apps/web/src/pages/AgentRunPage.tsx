@@ -22,7 +22,6 @@ import {
   Descriptions,
   Divider,
   Flex,
-  List,
   Row,
   Space,
   Statistic,
@@ -33,6 +32,7 @@ import {
   message
 } from "antd";
 import { useEffect, useMemo, useState } from "react";
+import { DataList as List } from "../components/DataList";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { formatDuration } from "@tegang/shared-utils";
 import type { ContractTrainingTaskStatus } from "@tegang/types";
@@ -153,7 +153,7 @@ export function AgentRunPage() {
                   ? "Skill 调用失败"
                   : run.current_stage
               }
-              valueStyle={{ fontSize: 18 }}
+              styles={{ content: { fontSize: 18 } }}
             />
           </Col>
           <Col span={5}>
@@ -175,7 +175,7 @@ export function AgentRunPage() {
                   ? (run.trace_id ?? "未记录")
                   : "管理员确认或异常处理"
               }
-              valueStyle={{ fontSize: 16 }}
+              styles={{ content: { fontSize: 16 } }}
               suffix={
                 permittedView === "开发者视图" ? (
                   <Button
@@ -196,7 +196,7 @@ export function AgentRunPage() {
         <Alert
           type="error"
           showIcon
-          message="受控 Skill 调用失败，未发生正式业务写入"
+          title="受控 Skill 调用失败，未发生正式业务写入"
           description={`错误 SKILL_TIMEOUT；已尝试 ${retryCount} 次。禁止无限重试，可回退或转人工。`}
           action={
             <Flex gap={8}>
@@ -231,7 +231,7 @@ export function AgentRunPage() {
         <Alert
           type="warning"
           showIcon
-          message="任务已暂停"
+          title="任务已暂停"
           description="等待外部依赖或人工决定；恢复时将校验审批版本、参数哈希和外部状态。"
           action={
             <Button type="primary" onClick={resume}>
@@ -274,7 +274,7 @@ function BusinessTrace({
       <Col span={7}>
         <Card title="培训阶段">
           <Steps
-            direction="vertical"
+            orientation="vertical"
             current={3}
             items={[
               "目标与上下文",
@@ -287,7 +287,7 @@ function BusinessTrace({
               "报告与审计"
             ].map((title, index) => ({
               title,
-              description:
+              content:
                 index < 3
                   ? "已完成并留痕"
                   : index === 3
@@ -316,7 +316,7 @@ function BusinessTrace({
                   : node.status === "succeeded"
                     ? "green"
                     : "blue",
-              children: (
+              content: (
                 <div className="trace-event">
                   <Flex justify="space-between" gap={12}>
                     <strong>{node.label}</strong>
@@ -401,7 +401,7 @@ function BusinessTrace({
           <Alert
             type="warning"
             showIcon
-            message="高风险下发前必须审批"
+            title="高风险下发前必须审批"
             description="规则已暂停正式业务写入，并保存恢复检查点。"
           />
         </Card>
@@ -624,7 +624,7 @@ function DeveloperTrace({ nodes }: { nodes: NonNullable<typeof agentRun.steps> }
             type="info"
             showIcon
             icon={<ToolOutlined />}
-            message="参数与员工字段按最小必要原则脱敏"
+            title="参数与员工字段按最小必要原则脱敏"
             description="开发者视图用于诊断，不提供业务审批、学习结果修改或正式报告编辑入口。"
           />
         </Card>

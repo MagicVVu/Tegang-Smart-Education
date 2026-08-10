@@ -13,7 +13,6 @@ import {
   Card,
   Col,
   Flex,
-  List,
   Row,
   Switch,
   Table,
@@ -22,6 +21,7 @@ import {
   Typography,
   message
 } from "antd";
+import { DataList as List } from "../components/DataList";
 import { PageHeader } from "../components/PageHeader";
 import { knowledgeCitations } from "../services/workspace-data";
 
@@ -60,7 +60,7 @@ export function SystemConfigPage() {
       <Alert
         type="warning"
         showIcon
-        message="发布配置前必须完成影响分析与回归检查"
+        title="发布配置前必须完成影响分析与回归检查"
         description="校验失败、知识冲突或回归失败时，系统保持上一有效版本，不影响正在执行的任务快照。"
         style={{ marginBottom: 20 }}
       />
