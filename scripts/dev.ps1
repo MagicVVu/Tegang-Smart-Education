@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('install', 'backend', 'model-check')]
+    [ValidateSet('install', 'backend', 'identity-bootstrap', 'model-check', 'test', 'migrate', 'migration-check')]
     [string]$Target = 'backend'
 )
 
@@ -68,11 +68,34 @@ try {
             }
             & $python -m uvicorn backend.app.main:app --host $hostAddress --port $port --reload
         }
+        'identity-bootstrap' {
+            Import-LocalEnvironment
+            $python = Resolve-Python
+            Assert-Python312 -PythonPath $python
+            & $python -m backend.scripts.bootstrap_identity
+        }
         'model-check' {
             Import-LocalEnvironment
             $python = Resolve-Python
             Assert-Python312 -PythonPath $python
             & $python -m backend.scripts.check_model
+        }
+        'test' {
+            $python = Resolve-Python
+            Assert-Python312 -PythonPath $python
+            & $python -m pytest backend/tests
+        }
+        'migrate' {
+            Import-LocalEnvironment
+            $python = Resolve-Python
+            Assert-Python312 -PythonPath $python
+            & $python -m alembic -c backend/alembic.ini upgrade head
+        }
+        'migration-check' {
+            Import-LocalEnvironment
+            $python = Resolve-Python
+            Assert-Python312 -PythonPath $python
+            & $python -m backend.scripts.verify_migrations
         }
     }
 }

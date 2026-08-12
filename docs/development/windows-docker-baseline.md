@@ -1,5 +1,7 @@
 # C-02｜Windows 开发与 Docker 复现基线
 
+> 本文保留 C-02 历史运行基线。C-04 已在其上增加 SQLAlchemy、Alembic、一次性 `migrate` 服务和最小纵向接口；当前操作说明见 [C-04 后端与持久化骨架](c04-backend-persistence.md)，C-02 历史验证报告未改写。
+
 ## 目标与批准边界
 
 本基线采用 Windows 宿主机直接调试、Docker Compose 集成复现、Linux 容器在线部署标准三种模式。项目负责人于 2026-08-10 明确批准在 C-02 范围采用 FastAPI、PostgreSQL/pgvector、Redis、Docker Compose 和 OpenAI-compatible 模型配置，并批准 Redis 作为 Compose 基础依赖启用。

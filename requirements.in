@@ -1,9 +1,19 @@
+alembic==1.18.5
 fastapi==0.139.2
 httpx==0.28.1
 psycopg[binary]==3.3.4
 pydantic==2.13.4
+pwdlib[argon2]==0.3.0
+PyJWT==2.13.0
 redis==8.0.1
-uvicorn[standard]==0.51.0
+sqlalchemy==2.0.51
+uvicorn==0.51.0
+httptools==0.8.0
+python-dotenv==1.2.2
+PyYAML==6.0.3
+watchfiles==1.2.0
+websockets==17.0.1
+uvloop==0.22.1 ; sys_platform != "win32"
 
 # Test-only; tests stub external dependencies and never call a real model.
 pytest==9.1.1

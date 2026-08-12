@@ -9,7 +9,11 @@
 5. [评测材料](evaluation/README.md)
 6. [本地开发](development/local-development.md)
 7. [C-02 Windows 与 Docker 基线](development/windows-docker-baseline.md)
-8. [C-02 Quickstart](development/quickstart.md)
+8. [C-02/C-04 Quickstart](development/quickstart.md)
+9. [C-04 FastAPI 与持久化骨架](development/c04-backend-persistence.md)
+10. [C-04 实际验证记录](test-reports/c04-validation.md)
+11. [组织、身份与权限基础](development/identity-access-foundation.md)
+12. [组织、身份与权限验证记录](test-reports/c06-validation.md)
 
 ## 治理与可追溯
 

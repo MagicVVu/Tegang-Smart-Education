@@ -1,0 +1,26 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:login-request",
+  "additionalProperties": false,
+  "properties": {
+    "account": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Account",
+      "type": "string"
+    },
+    "password": {
+      "format": "password",
+      "title": "Password",
+      "type": "string",
+      "writeOnly": true
+    }
+  },
+  "required": [
+    "account",
+    "password"
+  ],
+  "title": "LoginRequest",
+  "type": "object",
+  "x-contract-schema-version": "2.2.0",
+  "x-contract-source": "backend.app.schemas.auth.LoginRequest"
+}

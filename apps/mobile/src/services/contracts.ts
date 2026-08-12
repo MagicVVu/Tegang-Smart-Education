@@ -40,6 +40,7 @@ export type ServiceResponse<T> = ContractApiEnvelope & { data: T };
 export interface AuthService {
   login(credentials: AuthCredentials): Promise<ServiceResponse<ContractPrototypeUserProfile>>;
   logout(): Promise<ServiceResponse<{ success: true }>>;
+  restoreSession(): Promise<ServiceResponse<ContractPrototypeUserProfile> | null>;
 }
 
 export interface EmployeeTrainingService {

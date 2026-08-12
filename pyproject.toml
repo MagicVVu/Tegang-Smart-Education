@@ -1,14 +1,18 @@
 [project]
-name = "tegang-smart-education-backend-baseline"
-version = "0.1.0"
-description = "C-02 minimal runtime and health-check baseline; not the C-04 business service."
+name = "tegang-smart-education-backend"
+version = "0.3.0"
+description = "FastAPI identity, authentication, and RBAC foundation."
 requires-python = ">=3.12,<3.13"
 dependencies = [
+  "alembic==1.18.5",
   "fastapi==0.139.2",
   "httpx==0.28.1",
   "psycopg[binary]==3.3.4",
   "pydantic==2.13.4",
+  "pwdlib[argon2]==0.3.0",
+  "PyJWT==2.13.0",
   "redis==8.0.1",
+  "sqlalchemy==2.0.51",
   "uvicorn[standard]==0.51.0",
 ]
 

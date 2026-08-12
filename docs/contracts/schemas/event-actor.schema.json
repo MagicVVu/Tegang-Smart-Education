@@ -22,7 +22,7 @@
       "type": "string"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.1.0:event-actor",
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:event-actor",
   "additionalProperties": false,
   "description": "Minimal verified actor context; it never grants authority by itself.",
   "properties": {
@@ -80,6 +80,6 @@
   ],
   "title": "EventActor",
   "type": "object",
-  "x-contract-schema-version": "2.1.0",
+  "x-contract-schema-version": "2.2.0",
   "x-contract-source": "backend.app.schemas.events.EventActor"
 }

@@ -1,0 +1,135 @@
+{
+  "$defs": {
+    "UserRole": {
+      "enum": [
+        "employee",
+        "training_admin",
+        "reviewer",
+        "system_admin"
+      ],
+      "title": "UserRole",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:auth-principal",
+  "additionalProperties": false,
+  "description": "Fresh server-side authorization projection for one active session.",
+  "properties": {
+    "authorized_data_scopes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Authorized Data Scopes",
+      "type": "array"
+    },
+    "capabilities": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Capabilities",
+      "type": "array"
+    },
+    "department_ids": {
+      "items": {
+        "description": "Immutable external department ID: dept_<ULID>.",
+        "examples": [
+          "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Department Ids",
+      "type": "array"
+    },
+    "display_name": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Display Name",
+      "type": "string"
+    },
+    "employee_profile_id": {
+      "anyOf": [
+        {
+          "description": "Immutable external employee profile ID: emp_<ULID>.",
+          "examples": [
+            "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Employee Profile Id"
+    },
+    "permission_scopes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Permission Scopes",
+      "type": "array"
+    },
+    "primary_role": {
+      "$ref": "#/$defs/UserRole"
+    },
+    "request_id": {
+      "description": "Single request ID: req_<ULID>.",
+      "examples": [
+        "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "roles": {
+      "items": {
+        "$ref": "#/$defs/UserRole"
+      },
+      "minItems": 1,
+      "title": "Roles",
+      "type": "array"
+    },
+    "session_id": {
+      "description": "Immutable authentication session ID: sid_<ULID>.",
+      "examples": [
+        "sid_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^sid_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Session Id",
+      "type": "string"
+    },
+    "trace_id": {
+      "description": "Cross-service trace ID: trc_<ULID>.",
+      "examples": [
+        "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "user_id": {
+      "description": "Immutable external user ID: usr_<ULID>.",
+      "examples": [
+        "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "User Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_id",
+    "session_id",
+    "display_name",
+    "roles",
+    "primary_role",
+    "request_id",
+    "trace_id"
+  ],
+  "title": "AuthPrincipal",
+  "type": "object",
+  "x-contract-schema-version": "2.2.0",
+  "x-contract-source": "backend.app.schemas.auth.AuthPrincipal"
+}

@@ -143,7 +143,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -405,7 +405,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -599,7 +599,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -1043,7 +1043,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -1219,7 +1219,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -1565,7 +1565,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -1716,7 +1716,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -1821,7 +1821,7 @@
           "title": "Requested At"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2099,7 +2099,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2378,7 +2378,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2588,7 +2588,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2693,7 +2693,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -2816,7 +2816,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3001,7 +3001,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3224,7 +3224,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3346,7 +3346,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3446,7 +3446,7 @@
           "title": "Previous Score Percent"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3629,7 +3629,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3736,6 +3736,287 @@
       ],
       "title": "AssessmentSessionStatus",
       "type": "string"
+    },
+    "AuthMeResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/AuthPrincipal"
+        },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "request_id": {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "2.2.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "trace_id": {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Trace Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "trace_id",
+        "occurred_at",
+        "data"
+      ],
+      "title": "AuthMeResponse",
+      "type": "object"
+    },
+    "AuthPrincipal": {
+      "additionalProperties": false,
+      "description": "Fresh server-side authorization projection for one active session.",
+      "properties": {
+        "authorized_data_scopes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Authorized Data Scopes",
+          "type": "array"
+        },
+        "capabilities": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Capabilities",
+          "type": "array"
+        },
+        "department_ids": {
+          "items": {
+            "description": "Immutable external department ID: dept_<ULID>.",
+            "examples": [
+              "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+            ],
+            "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "title": "Department Ids",
+          "type": "array"
+        },
+        "display_name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Display Name",
+          "type": "string"
+        },
+        "employee_profile_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external employee profile ID: emp_<ULID>.",
+              "examples": [
+                "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Employee Profile Id"
+        },
+        "permission_scopes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Permission Scopes",
+          "type": "array"
+        },
+        "primary_role": {
+          "$ref": "#/$defs/UserRole"
+        },
+        "request_id": {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/$defs/UserRole"
+          },
+          "minItems": 1,
+          "title": "Roles",
+          "type": "array"
+        },
+        "session_id": {
+          "description": "Immutable authentication session ID: sid_<ULID>.",
+          "examples": [
+            "sid_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^sid_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "trace_id": {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Trace Id",
+          "type": "string"
+        },
+        "user_id": {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "User Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id",
+        "session_id",
+        "display_name",
+        "roles",
+        "primary_role",
+        "request_id",
+        "trace_id"
+      ],
+      "title": "AuthPrincipal",
+      "type": "object"
+    },
+    "AuthSessionData": {
+      "additionalProperties": false,
+      "properties": {
+        "access_token": {
+          "maxLength": 4096,
+          "minLength": 32,
+          "title": "Access Token",
+          "type": "string"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "principal": {
+          "$ref": "#/$defs/AuthPrincipal"
+        },
+        "refresh_token": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "minLength": 32,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Returned only to the Android client for immediate secure-storage persistence.",
+          "title": "Refresh Token"
+        },
+        "token_type": {
+          "const": "Bearer",
+          "default": "Bearer",
+          "title": "Token Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "access_token",
+        "expires_at",
+        "principal"
+      ],
+      "title": "AuthSessionData",
+      "type": "object"
+    },
+    "AuthSessionResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/AuthSessionData"
+        },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "request_id": {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "2.2.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "trace_id": {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Trace Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "trace_id",
+        "occurred_at",
+        "data"
+      ],
+      "title": "AuthSessionResponse",
+      "type": "object"
     },
     "BusinessEventType": {
       "enum": [
@@ -3897,7 +4178,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -3984,7 +4265,7 @@
           "type": "boolean"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4070,7 +4351,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4181,7 +4462,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4347,7 +4628,7 @@
           "title": "Requested At"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4412,7 +4693,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4472,6 +4753,132 @@
         "page_size"
       ],
       "title": "CursorPaginationMeta",
+      "type": "object"
+    },
+    "DemoLoginRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "account": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Account",
+          "type": "string"
+        }
+      },
+      "required": [
+        "account"
+      ],
+      "title": "DemoLoginRequest",
+      "type": "object"
+    },
+    "DemoProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "account": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Account",
+          "type": "string"
+        },
+        "department_ids": {
+          "items": {
+            "description": "Immutable external department ID: dept_<ULID>.",
+            "examples": [
+              "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+            ],
+            "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "title": "Department Ids",
+          "type": "array"
+        },
+        "display_name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Display Name",
+          "type": "string"
+        },
+        "primary_role": {
+          "$ref": "#/$defs/UserRole"
+        },
+        "user_id": {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "User Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "account",
+        "user_id",
+        "display_name",
+        "primary_role"
+      ],
+      "title": "DemoProfile",
+      "type": "object"
+    },
+    "DemoProfilesResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "items": {
+            "$ref": "#/$defs/DemoProfile"
+          },
+          "title": "Data",
+          "type": "array"
+        },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "request_id": {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "2.2.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "trace_id": {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Trace Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "trace_id",
+        "occurred_at",
+        "data"
+      ],
+      "title": "DemoProfilesResponse",
       "type": "object"
     },
     "Department": {
@@ -4561,6 +4968,23 @@
           "title": "Name",
           "type": "string"
         },
+        "organization_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external organization ID: org_<ULID>.",
+              "examples": [
+                "org_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^org_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Organization Id"
+        },
         "parent_department_id": {
           "anyOf": [
             {
@@ -4600,7 +5024,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4713,7 +5137,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -4766,6 +5190,117 @@
         "human_review_required"
       ],
       "title": "DifyPlanAgentOutput",
+      "type": "object"
+    },
+    "EmployeeIdentityResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/EmployeeIdentitySummary"
+        },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "request_id": {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "2.2.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "trace_id": {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Trace Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "trace_id",
+        "occurred_at",
+        "data"
+      ],
+      "title": "EmployeeIdentityResponse",
+      "type": "object"
+    },
+    "EmployeeIdentitySummary": {
+      "additionalProperties": false,
+      "description": "Minimal non-sensitive projection returned through scoped identity access.",
+      "properties": {
+        "department_id": {
+          "description": "Immutable external department ID: dept_<ULID>.",
+          "examples": [
+            "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Department Id",
+          "type": "string"
+        },
+        "display_name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Display Name",
+          "type": "string"
+        },
+        "employee_profile_id": {
+          "description": "Immutable external employee profile ID: emp_<ULID>.",
+          "examples": [
+            "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Employee Profile Id",
+          "type": "string"
+        },
+        "job_title": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Job Title",
+          "type": "string"
+        },
+        "user_id": {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "User Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "employee_profile_id",
+        "user_id",
+        "display_name",
+        "department_id",
+        "job_title"
+      ],
+      "title": "EmployeeIdentitySummary",
       "type": "object"
     },
     "EmployeeProfile": {
@@ -4871,6 +5406,23 @@
           "title": "Metadata",
           "type": "object"
         },
+        "position_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external position ID: pos_<ULID>.",
+              "examples": [
+                "pos_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^pos_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Position Id"
+        },
         "request_id": {
           "anyOf": [
             {
@@ -4893,7 +5445,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5157,7 +5709,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5250,7 +5802,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -5794,7 +6346,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6019,7 +6571,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6169,7 +6721,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6202,6 +6754,128 @@
       ],
       "title": "LearningRecordStatus",
       "type": "string"
+    },
+    "LoginRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "account": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Account",
+          "type": "string"
+        },
+        "password": {
+          "format": "password",
+          "title": "Password",
+          "type": "string",
+          "writeOnly": true
+        }
+      },
+      "required": [
+        "account",
+        "password"
+      ],
+      "title": "LoginRequest",
+      "type": "object"
+    },
+    "LogoutRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "refresh_token": {
+          "anyOf": [
+            {
+              "format": "password",
+              "type": "string",
+              "writeOnly": true
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Refresh Token"
+        }
+      },
+      "title": "LogoutRequest",
+      "type": "object"
+    },
+    "LogoutResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/LogoutResult"
+        },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiResponseMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "request_id": {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "2.2.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "trace_id": {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Trace Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "trace_id",
+        "occurred_at",
+        "data"
+      ],
+      "title": "LogoutResponse",
+      "type": "object"
+    },
+    "LogoutResult": {
+      "additionalProperties": false,
+      "properties": {
+        "revoked_at": {
+          "format": "date-time",
+          "title": "Revoked At",
+          "type": "string"
+        },
+        "success": {
+          "const": true,
+          "default": true,
+          "title": "Success",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "revoked_at"
+      ],
+      "title": "LogoutResult",
+      "type": "object"
     },
     "NotificationDestination": {
       "enum": [
@@ -6253,7 +6927,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6296,6 +6970,180 @@
         "unread"
       ],
       "title": "NotificationItemView",
+      "type": "object"
+    },
+    "Organization": {
+      "additionalProperties": false,
+      "description": "Top-level simulated or real organization boundary.",
+      "properties": {
+        "confidence": {
+          "anyOf": [
+            {
+              "description": "Model or retrieval confidence in the closed interval [0, 1].",
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "created_at": {
+          "description": "Creation time with timezone; serialized as ISO 8601.",
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "created_by": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Created By"
+        },
+        "entity_version": {
+          "default": 1,
+          "description": "Optimistic entity revision, independent of schema_version.",
+          "minimum": 1,
+          "title": "Entity Version",
+          "type": "integer"
+        },
+        "id": {
+          "description": "Immutable external organization ID: org_<ULID>.",
+          "examples": [
+            "org_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^org_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "idempotency_key": {
+          "anyOf": [
+            {
+              "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+              "examples": [
+                "idem_training_create_20260804_001"
+              ],
+              "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idempotency Key"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
+          "title": "Metadata",
+          "type": "object"
+        },
+        "name": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "description": "Single request ID: req_<ULID>.",
+              "examples": [
+                "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Id"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/RiskLevel",
+          "default": "low"
+        },
+        "schema_version": {
+          "default": "2.2.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "simulated": {
+          "default": false,
+          "title": "Simulated",
+          "type": "boolean"
+        },
+        "status": {
+          "$ref": "#/$defs/EntityStatus"
+        },
+        "trace_id": {
+          "anyOf": [
+            {
+              "description": "Cross-service trace ID: trc_<ULID>.",
+              "examples": [
+                "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trace Id"
+        },
+        "updated_at": {
+          "description": "Last update time with timezone; serialized as ISO 8601.",
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "updated_by": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Updated By"
+        }
+      },
+      "required": [
+        "created_at",
+        "updated_at",
+        "id",
+        "status",
+        "name"
+      ],
+      "title": "Organization",
       "type": "object"
     },
     "PageNumberPaginationMeta": {
@@ -6463,7 +7311,7 @@
           "title": "Requested At"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6534,7 +7382,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6569,6 +7417,202 @@
       ],
       "title": "PlanStatus",
       "type": "string"
+    },
+    "Position": {
+      "additionalProperties": false,
+      "description": "Position within one organization and department.",
+      "properties": {
+        "code": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "description": "Model or retrieval confidence in the closed interval [0, 1].",
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "created_at": {
+          "description": "Creation time with timezone; serialized as ISO 8601.",
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "created_by": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Created By"
+        },
+        "department_id": {
+          "description": "Immutable external department ID: dept_<ULID>.",
+          "examples": [
+            "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Department Id",
+          "type": "string"
+        },
+        "entity_version": {
+          "default": 1,
+          "description": "Optimistic entity revision, independent of schema_version.",
+          "minimum": 1,
+          "title": "Entity Version",
+          "type": "integer"
+        },
+        "id": {
+          "description": "Immutable external position ID: pos_<ULID>.",
+          "examples": [
+            "pos_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^pos_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "idempotency_key": {
+          "anyOf": [
+            {
+              "description": "Caller-generated idempotency key. It is not a domain entity ID.",
+              "examples": [
+                "idem_training_create_20260804_001"
+              ],
+              "pattern": "^idem_[A-Za-z0-9._:-]{8,120}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idempotency Key"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "description": "Non-sensitive extension metadata. Secrets, prompts, stacks, and unauthorized data are forbidden.",
+          "title": "Metadata",
+          "type": "object"
+        },
+        "name": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Immutable external organization ID: org_<ULID>.",
+          "examples": [
+            "org_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^org_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "description": "Single request ID: req_<ULID>.",
+              "examples": [
+                "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Id"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/RiskLevel",
+          "default": "low"
+        },
+        "schema_version": {
+          "default": "2.2.0",
+          "description": "Contract schema semantic version.",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/EntityStatus"
+        },
+        "trace_id": {
+          "anyOf": [
+            {
+              "description": "Cross-service trace ID: trc_<ULID>.",
+              "examples": [
+                "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trace Id"
+        },
+        "updated_at": {
+          "description": "Last update time with timezone; serialized as ISO 8601.",
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "updated_by": {
+          "anyOf": [
+            {
+              "description": "Immutable external user ID: usr_<ULID>.",
+              "examples": [
+                "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Updated By"
+        }
+      },
+      "required": [
+        "created_at",
+        "updated_at",
+        "id",
+        "status",
+        "organization_id",
+        "department_id",
+        "code",
+        "name"
+      ],
+      "title": "Position",
+      "type": "object"
     },
     "ProgressVisibility": {
       "enum": [
@@ -6635,7 +7679,7 @@
           "$ref": "#/$defs/UserRole"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6857,7 +7901,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -6985,7 +8029,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -7008,6 +8052,27 @@
         "data"
       ],
       "title": "RealtimeEventResponse",
+      "type": "object"
+    },
+    "RefreshRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "refresh_token": {
+          "anyOf": [
+            {
+              "format": "password",
+              "type": "string",
+              "writeOnly": true
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Refresh Token"
+        }
+      },
+      "title": "RefreshRequest",
       "type": "object"
     },
     "RemedialPlanView": {
@@ -7043,7 +8108,7 @@
           "type": "array"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -7292,7 +8357,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -7411,7 +8476,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -7495,7 +8560,7 @@
           "type": "integer"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -7708,7 +8773,7 @@
           "title": "Scheduled At"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -7871,7 +8936,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -8037,7 +9102,7 @@
           "$ref": "#/$defs/UserRole"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -8229,7 +9294,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -8433,7 +9498,7 @@
           "title": "Requested At"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -8602,7 +9667,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -8851,7 +9916,7 @@
           "type": "array"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -9116,7 +10181,7 @@
           "type": "array"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -9294,7 +10359,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -9487,7 +10552,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -9817,7 +10882,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -9911,7 +10976,7 @@
           "type": "array"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -9930,7 +10995,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -10004,7 +11069,7 @@
           "type": "boolean"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -10179,7 +11244,7 @@
           "type": "array"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -10334,7 +11399,7 @@
       "type": "object"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.1.0:catalog",
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:catalog",
   "description": "Combined Pydantic-derived schema catalog. Database schema is explicitly out of scope.",
   "properties": {
     "agent_decision_summary": {
@@ -10403,6 +11468,18 @@
     "assessment_session": {
       "$ref": "#/$defs/AssessmentSession"
     },
+    "auth_me_response": {
+      "$ref": "#/$defs/AuthMeResponse"
+    },
+    "auth_principal": {
+      "$ref": "#/$defs/AuthPrincipal"
+    },
+    "auth_session_data": {
+      "$ref": "#/$defs/AuthSessionData"
+    },
+    "auth_session_response": {
+      "$ref": "#/$defs/AuthSessionResponse"
+    },
     "course": {
       "$ref": "#/$defs/Course"
     },
@@ -10427,11 +11504,26 @@
     "cursor_pagination_meta": {
       "$ref": "#/$defs/CursorPaginationMeta"
     },
+    "demo_login_request": {
+      "$ref": "#/$defs/DemoLoginRequest"
+    },
+    "demo_profile": {
+      "$ref": "#/$defs/DemoProfile"
+    },
+    "demo_profiles_response": {
+      "$ref": "#/$defs/DemoProfilesResponse"
+    },
     "department": {
       "$ref": "#/$defs/Department"
     },
     "dify_plan_agent_output": {
       "$ref": "#/$defs/DifyPlanAgentOutput"
+    },
+    "employee_identity_response": {
+      "$ref": "#/$defs/EmployeeIdentityResponse"
+    },
+    "employee_identity_summary": {
+      "$ref": "#/$defs/EmployeeIdentitySummary"
     },
     "employee_profile": {
       "$ref": "#/$defs/EmployeeProfile"
@@ -10466,8 +11558,23 @@
     "learning_progress_view": {
       "$ref": "#/$defs/LearningProgressView"
     },
+    "login_request": {
+      "$ref": "#/$defs/LoginRequest"
+    },
+    "logout_request": {
+      "$ref": "#/$defs/LogoutRequest"
+    },
+    "logout_response": {
+      "$ref": "#/$defs/LogoutResponse"
+    },
+    "logout_result": {
+      "$ref": "#/$defs/LogoutResult"
+    },
     "notification_item_view": {
       "$ref": "#/$defs/NotificationItemView"
+    },
+    "organization": {
+      "$ref": "#/$defs/Organization"
     },
     "page_number_pagination_meta": {
       "$ref": "#/$defs/PageNumberPaginationMeta"
@@ -10481,6 +11588,9 @@
     "plan_generation_response": {
       "$ref": "#/$defs/PlanGenerationResponse"
     },
+    "position": {
+      "$ref": "#/$defs/Position"
+    },
     "prototype_user_profile": {
       "$ref": "#/$defs/PrototypeUserProfile"
     },
@@ -10489,6 +11599,9 @@
     },
     "realtime_event_response": {
       "$ref": "#/$defs/RealtimeEventResponse"
+    },
+    "refresh_request": {
+      "$ref": "#/$defs/RefreshRequest"
     },
     "remedial_plan_view": {
       "$ref": "#/$defs/RemedialPlanView"
@@ -10575,10 +11688,26 @@
     "api_response_meta",
     "page_number_pagination_meta",
     "cursor_pagination_meta",
+    "organization",
+    "position",
     "user",
     "role",
     "department",
     "employee_profile",
+    "auth_principal",
+    "login_request",
+    "refresh_request",
+    "logout_request",
+    "demo_login_request",
+    "auth_session_data",
+    "auth_session_response",
+    "auth_me_response",
+    "demo_profile",
+    "demo_profiles_response",
+    "employee_identity_summary",
+    "employee_identity_response",
+    "logout_result",
+    "logout_response",
     "training_goal",
     "training_task",
     "training_plan",
@@ -10650,6 +11779,6 @@
   ],
   "title": "Special Steel Education Contract Catalog",
   "type": "object",
-  "x-contract-schema-version": "2.1.0",
+  "x-contract-schema-version": "2.2.0",
   "x-contract-source": "backend.app.schemas.registry.CONTRACT_MODELS"
 }

@@ -205,6 +205,9 @@ export const mobileServices: MobileServices = {
       await wait(180);
       runtime.authenticated = false;
       return response({ success: true as const });
+    },
+    async restoreSession() {
+      return null;
     }
   },
   training: {

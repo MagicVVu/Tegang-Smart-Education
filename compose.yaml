@@ -41,8 +41,28 @@ services:
     networks:
       - runtime
 
+  migrate:
+    image: tegang-smart-education/backend:c06-0.3.0
+    restart: "no"
+    command:
+      - python
+      - -m
+      - alembic
+      - -c
+      - backend/alembic.ini
+      - upgrade
+      - head
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-tegang_app}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-tegang_smart_education}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - runtime
+
   backend:
-    image: tegang-smart-education/backend:c02-0.1.0
+    image: tegang-smart-education/backend:c06-0.3.0
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -50,6 +70,15 @@ services:
     environment:
       APP_ENV: ${APP_ENV:-development}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://127.0.0.1:5173}
+      OPENAPI_ENABLED: ${OPENAPI_ENABLED:-}
+      DEMO_MODE: ${DEMO_MODE:-false}
+      AUTH_JWT_SECRET: ${AUTH_JWT_SECRET:-}
+      AUTH_JWT_ISSUER: ${AUTH_JWT_ISSUER:-tegang-smart-education}
+      AUTH_JWT_AUDIENCE: ${AUTH_JWT_AUDIENCE:-tegang-clients}
+      AUTH_ACCESS_TOKEN_MINUTES: ${AUTH_ACCESS_TOKEN_MINUTES:-15}
+      AUTH_REFRESH_TOKEN_DAYS: ${AUTH_REFRESH_TOKEN_DAYS:-7}
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-false}
       DATABASE_URL: postgresql://${POSTGRES_USER:-tegang_app}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-tegang_smart_education}
       REDIS_URL: redis://redis:6379/0
       MODEL_PROVIDER: ${MODEL_PROVIDER:-}
@@ -60,8 +89,8 @@ services:
     ports:
       - "${API_PORT:-8000}:8000"
     depends_on:
-      db:
-        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
       redis:
         condition: service_healthy
     healthcheck:
@@ -78,12 +107,13 @@ services:
       - runtime
 
   web:
-    image: tegang-smart-education/web:c02-0.1.0
+    image: tegang-smart-education/web:c06-0.3.0
     build:
       context: .
       dockerfile: apps/web/Dockerfile
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://127.0.0.1:8000}
+        VITE_DEMO_MODE: ${DEMO_MODE:-false}
     restart: unless-stopped
     ports:
       - "${WEB_PORT:-5173}:4173"

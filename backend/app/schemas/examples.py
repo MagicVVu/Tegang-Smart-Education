@@ -30,6 +30,16 @@ from .api import (
     SubmitApprovalRequest,
 )
 from .approval import Approval, ApprovalDecision, ApprovalResult
+from .auth import (
+    AuthMeResponse,
+    AuthPrincipal,
+    AuthSessionData,
+    AuthSessionResponse,
+    DemoProfile,
+    DemoProfilesResponse,
+    LogoutResponse,
+    LogoutResult,
+)
 from .assessment import (
     AssessmentNextAction,
     AssessmentResult,
@@ -301,7 +311,10 @@ def build_examples() -> dict[str, tuple[type[BaseModel], BaseModel]]:
         category=ErrorCategory.CONTRACT_VERSION,
         retryable=False,
         user_action="Use one of the supported schema versions and resubmit the request.",
-        details={"requested_version": "9.0.0", "supported_versions": ["2.0.0", "2.1.0"]},
+        details={
+            "requested_version": "9.0.0",
+            "supported_versions": ["2.0.0", "2.1.0", "2.2.0"],
+        },
         field_errors=[],
         trace_id=_id("trc"),
         occurred_at=LATER,
@@ -404,6 +417,21 @@ def build_examples() -> dict[str, tuple[type[BaseModel], BaseModel]]:
         metadata={},
     )
 
+    principal = AuthPrincipal(
+        user_id=_id("usr"),
+        session_id=_id("sid"),
+        display_name="模拟培训管理员 A-001",
+        roles=[UserRole.TRAINING_ADMIN],
+        primary_role=UserRole.TRAINING_ADMIN,
+        department_ids=[_id("dept")],
+        employee_profile_id=_id("emp"),
+        permission_scopes=["training.department.manage"],
+        authorized_data_scopes=[f"department:{_id('dept')}"],
+        capabilities=["training.department.manage"],
+        request_id=_id("req"),
+        trace_id=_id("trc"),
+    )
+
     response_common = {
         "request_id": _id("req"),
         "trace_id": _id("trc"),
@@ -417,6 +445,43 @@ def build_examples() -> dict[str, tuple[type[BaseModel], BaseModel]]:
     }
     previous_compatible_task = task.model_copy(update={"schema_version": "2.0.0"})
     examples: dict[str, tuple[type[BaseModel], BaseModel]] = {
+        "auth-login-response": (
+            AuthSessionResponse,
+            AuthSessionResponse(
+                data=AuthSessionData(
+                    access_token="example.jwt.access.token.not-a-real-credential",
+                    expires_at=LATER,
+                    principal=principal,
+                ),
+                **response_common,
+            ),
+        ),
+        "auth-me-response": (
+            AuthMeResponse,
+            AuthMeResponse(data=principal, **response_common),
+        ),
+        "auth-demo-profiles-response": (
+            DemoProfilesResponse,
+            DemoProfilesResponse(
+                data=[
+                    DemoProfile(
+                        account="A-001",
+                        user_id=principal.user_id,
+                        display_name=principal.display_name,
+                        primary_role=principal.primary_role,
+                        department_ids=principal.department_ids,
+                    )
+                ],
+                **response_common,
+            ),
+        ),
+        "auth-logout-response": (
+            LogoutResponse,
+            LogoutResponse(
+                data=LogoutResult(revoked_at=LATER),
+                **response_common,
+            ),
+        ),
         "create-training-task-request": (
             CreateTrainingTaskRequest,
             CreateTrainingTaskRequest(

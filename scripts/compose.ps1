@@ -50,7 +50,7 @@ function New-AsciiBuildStage {
             if (-not (Test-Path -LiteralPath $fullCandidate)) {
                 New-Item -ItemType Directory -Path $fullCandidate | Out-Null
             }
-            $stage = Join-Path $fullCandidate ("tegang-c02-build-$PID-$([guid]::NewGuid().ToString('N'))")
+            $stage = Join-Path $fullCandidate ("tegang-c04-build-$PID-$([guid]::NewGuid().ToString('N'))")
             New-Item -ItemType Directory -Path $stage | Out-Null
             $script:buildStageParent = $fullCandidate
             return $stage
@@ -85,7 +85,7 @@ function Copy-BuildContext([string]$Destination) {
 function Remove-BuildStage([string]$Stage) {
     if ([string]::IsNullOrWhiteSpace($Stage) -or -not (Test-Path -LiteralPath $Stage)) { return }
     $leaf = Split-Path -Leaf $Stage
-    if ($leaf -notlike 'tegang-c02-build-*') {
+    if ($leaf -notlike 'tegang-c04-build-*') {
         throw "Refusing to remove unexpected build stage: $Stage"
     }
     $resolvedParent = [System.IO.Path]::GetFullPath((Split-Path -Parent $Stage))
@@ -138,7 +138,7 @@ try {
                 Write-Host '[REFUSED] Reset deletes the PostgreSQL and Redis named volumes. Re-run with -ConfirmDataLoss only after backup/review.' -ForegroundColor Red
                 exit 2
             }
-            Write-Warning 'Deleting C-02 PostgreSQL and Redis persistent volumes.'
+            Write-Warning 'Deleting the project PostgreSQL and Redis persistent volumes.'
             Invoke-Compose -Arguments @('down', '--volumes', '--remove-orphans')
         }
     }

@@ -11,7 +11,7 @@
       "type": "string"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.1.0:training-plan-event-payload",
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:training-plan-event-payload",
   "additionalProperties": false,
   "properties": {
     "knowledge_citation_ids": {
@@ -62,6 +62,6 @@
   ],
   "title": "TrainingPlanEventPayload",
   "type": "object",
-  "x-contract-schema-version": "2.1.0",
+  "x-contract-schema-version": "2.2.0",
   "x-contract-source": "backend.app.schemas.events.TrainingPlanEventPayload"
 }

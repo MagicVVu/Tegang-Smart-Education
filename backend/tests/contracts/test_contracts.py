@@ -259,10 +259,13 @@ class ContractTests(unittest.TestCase):
     def test_manifest_keeps_database_schema_out_of_scope(self) -> None:
         manifest = json.loads((REPO_ROOT / "docs/contracts/manifest.json").read_text(encoding="utf-8"))
         self.assertFalse(manifest["database_schema_in_scope"])
-        self.assertEqual(manifest["schema_version"], "2.1.0")
+        self.assertEqual(manifest["schema_version"], "2.2.0")
         self.assertEqual(manifest["agent_state_version"], "1.0.0")
         self.assertEqual(manifest["event_version"], "1.0.0")
-        self.assertEqual(manifest["supported_schema_versions"], ["2.0.0", "2.1.0"])
+        self.assertEqual(
+            manifest["supported_schema_versions"],
+            ["2.0.0", "2.1.0", "2.2.0"],
+        )
 
 
 if __name__ == "__main__":

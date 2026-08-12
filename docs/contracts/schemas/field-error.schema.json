@@ -1,5 +1,5 @@
 {
-  "$id": "urn:tegang:smart-education:contracts:2.1.0:field-error",
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:field-error",
   "additionalProperties": false,
   "description": "Field-level validation problem safe for a caller to display.",
   "properties": {
@@ -29,6 +29,6 @@
   ],
   "title": "FieldError",
   "type": "object",
-  "x-contract-schema-version": "2.1.0",
+  "x-contract-schema-version": "2.2.0",
   "x-contract-source": "backend.app.schemas.errors.FieldError"
 }

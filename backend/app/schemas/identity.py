@@ -8,6 +8,8 @@ from .common import (
     DepartmentId,
     EmployeeProfileId,
     EntityStatus,
+    OrganizationId,
+    PositionId,
     RoleId,
     UserId,
     UserRole,
@@ -41,6 +43,7 @@ class Department(VersionedEntity):
     id: DepartmentId
     status: EntityStatus
     name: str = Field(min_length=1, max_length=160)
+    organization_id: OrganizationId | None = None
     parent_department_id: DepartmentId | None = None
 
 
@@ -51,6 +54,27 @@ class EmployeeProfile(VersionedEntity):
     status: EntityStatus
     user_id: UserId
     department_id: DepartmentId
+    position_id: PositionId | None = None
     job_title: str = Field(min_length=1, max_length=160)
     training_tags: list[str] = Field(default_factory=list)
     authorized_data_scopes: list[str] = Field(default_factory=list)
+
+
+class Organization(VersionedEntity):
+    """Top-level simulated or real organization boundary."""
+
+    id: OrganizationId
+    status: EntityStatus
+    name: str = Field(min_length=1, max_length=160)
+    simulated: bool = False
+
+
+class Position(VersionedEntity):
+    """Position within one organization and department."""
+
+    id: PositionId
+    status: EntityStatus
+    organization_id: OrganizationId
+    department_id: DepartmentId
+    code: str = Field(min_length=1, max_length=80)
+    name: str = Field(min_length=1, max_length=160)

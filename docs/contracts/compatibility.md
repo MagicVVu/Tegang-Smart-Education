@@ -1,14 +1,14 @@
 # Compatibility and evolution policy
 
-Current contract package/schema version: `2.1.0`.
+Current contract package/schema version: `2.2.0`.
 
-Supported API schema versions: `2.0.0`, `2.1.0`.
+Supported API schema versions: `2.0.0`, `2.1.0`, `2.2.0`.
 
 Current business-event version: `1.0.0`. Current Agent State version: `1.0.0`.
 
 ## Direct formal cutover
 
-Version `2.0.0` was the intentional breaking cutover. Version `2.1.0` is an additive compatible release. Web, Android, shared rules, shared utilities, Mock data, and tests consume the generated formal contracts directly. The repository does not provide a legacy adapter, conversion layer, camelCase alias, readable demo-ID mapping, or dual-write period.
+Version `2.0.0` was the intentional breaking cutover. Versions `2.1.0` and `2.2.0` are additive compatible releases. Version `2.2.0` adds organization, position, authenticated Principal, session, demo profile, and scoped employee identity contracts without changing existing required fields or ID meanings. Web, Android, shared rules, shared utilities, Mock data, and tests consume the generated formal contracts directly. The repository does not provide a legacy adapter, conversion layer, camelCase alias, readable demo-ID mapping, or dual-write period.
 
 Legacy pre-C-03 payloads and IDs remain rejected at the formal boundary. Valid `2.0.0` payloads continue to parse under `2.1.0`; this is direct schema compatibility, not conversion. Historical data from outside this repository may only be handled by a separately authorized migration task that writes already-valid formal objects.
 

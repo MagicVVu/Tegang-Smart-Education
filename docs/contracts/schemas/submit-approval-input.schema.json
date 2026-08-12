@@ -1,5 +1,5 @@
 {
-  "$id": "urn:tegang:smart-education:contracts:2.1.0:submit-approval-input",
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:submit-approval-input",
   "additionalProperties": false,
   "properties": {
     "impact_scope": {
@@ -65,6 +65,6 @@
   ],
   "title": "SubmitApprovalInput",
   "type": "object",
-  "x-contract-schema-version": "2.1.0",
+  "x-contract-schema-version": "2.2.0",
   "x-contract-source": "backend.app.schemas.api.SubmitApprovalInput"
 }

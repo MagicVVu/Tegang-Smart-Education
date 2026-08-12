@@ -22,6 +22,7 @@ interface MobileState {
   trainingError: string | null;
   login: (credentials: AuthCredentials) => Promise<void>;
   logout: () => Promise<void>;
+  restoreSession: () => Promise<void>;
   loadCurrentTask: () => Promise<void>;
   loadTasks: (filter?: EmployeeTaskFilter) => Promise<void>;
   startLearning: (taskId: string) => Promise<void>;
@@ -98,6 +99,15 @@ export const useMobileStore = create<MobileState>((set, get) => ({
         trainingError: null
       });
     }
+  },
+  restoreSession: async () => {
+    set({ authLoading: true });
+    const response = await mobileServices.auth.restoreSession();
+    set({
+      authenticated: response !== null,
+      employee: response?.data ?? null,
+      authLoading: false,
+    });
   },
   loadCurrentTask: async () => {
     set({ trainingLoading: true, trainingError: null });

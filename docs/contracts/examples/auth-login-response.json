@@ -1,0 +1,38 @@
+{
+  "data": {
+    "access_token": "example.jwt.access.token.not-a-real-credential",
+    "expires_at": "2026-08-04T08:05:00Z",
+    "principal": {
+      "authorized_data_scopes": [
+        "department:dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "capabilities": [
+        "training.department.manage"
+      ],
+      "department_ids": [
+        "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "display_name": "模拟培训管理员 A-001",
+      "employee_profile_id": "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "permission_scopes": [
+        "training.department.manage"
+      ],
+      "primary_role": "training_admin",
+      "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "roles": [
+        "training_admin"
+      ],
+      "session_id": "sid_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "user_id": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    },
+    "token_type": "Bearer"
+  },
+  "meta": {
+    "warnings": []
+  },
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.2.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

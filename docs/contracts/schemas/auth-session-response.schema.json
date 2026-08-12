@@ -1,0 +1,341 @@
+{
+  "$defs": {
+    "ApiResponseMeta": {
+      "additionalProperties": false,
+      "description": "Optional response metadata; non-list responses do not emit empty pagination.",
+      "properties": {
+        "pagination": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PageNumberPaginationMeta"
+            },
+            {
+              "$ref": "#/$defs/CursorPaginationMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pagination"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "title": "ApiResponseMeta",
+      "type": "object"
+    },
+    "AuthPrincipal": {
+      "additionalProperties": false,
+      "description": "Fresh server-side authorization projection for one active session.",
+      "properties": {
+        "authorized_data_scopes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Authorized Data Scopes",
+          "type": "array"
+        },
+        "capabilities": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Capabilities",
+          "type": "array"
+        },
+        "department_ids": {
+          "items": {
+            "description": "Immutable external department ID: dept_<ULID>.",
+            "examples": [
+              "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+            ],
+            "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "title": "Department Ids",
+          "type": "array"
+        },
+        "display_name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Display Name",
+          "type": "string"
+        },
+        "employee_profile_id": {
+          "anyOf": [
+            {
+              "description": "Immutable external employee profile ID: emp_<ULID>.",
+              "examples": [
+                "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+              ],
+              "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Employee Profile Id"
+        },
+        "permission_scopes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Permission Scopes",
+          "type": "array"
+        },
+        "primary_role": {
+          "$ref": "#/$defs/UserRole"
+        },
+        "request_id": {
+          "description": "Single request ID: req_<ULID>.",
+          "examples": [
+            "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/$defs/UserRole"
+          },
+          "minItems": 1,
+          "title": "Roles",
+          "type": "array"
+        },
+        "session_id": {
+          "description": "Immutable authentication session ID: sid_<ULID>.",
+          "examples": [
+            "sid_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^sid_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "trace_id": {
+          "description": "Cross-service trace ID: trc_<ULID>.",
+          "examples": [
+            "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "Trace Id",
+          "type": "string"
+        },
+        "user_id": {
+          "description": "Immutable external user ID: usr_<ULID>.",
+          "examples": [
+            "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+          "title": "User Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id",
+        "session_id",
+        "display_name",
+        "roles",
+        "primary_role",
+        "request_id",
+        "trace_id"
+      ],
+      "title": "AuthPrincipal",
+      "type": "object"
+    },
+    "AuthSessionData": {
+      "additionalProperties": false,
+      "properties": {
+        "access_token": {
+          "maxLength": 4096,
+          "minLength": 32,
+          "title": "Access Token",
+          "type": "string"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "principal": {
+          "$ref": "#/$defs/AuthPrincipal"
+        },
+        "refresh_token": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "minLength": 32,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Returned only to the Android client for immediate secure-storage persistence.",
+          "title": "Refresh Token"
+        },
+        "token_type": {
+          "const": "Bearer",
+          "default": "Bearer",
+          "title": "Token Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "access_token",
+        "expires_at",
+        "principal"
+      ],
+      "title": "AuthSessionData",
+      "type": "object"
+    },
+    "CursorPaginationMeta": {
+      "additionalProperties": false,
+      "description": "Cursor metadata used only by list endpoints that select this strategy.",
+      "properties": {
+        "kind": {
+          "const": "cursor",
+          "default": "cursor",
+          "title": "Kind",
+          "type": "string"
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Cursor"
+        },
+        "page_size": {
+          "maximum": 500,
+          "minimum": 1,
+          "title": "Page Size",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "page_size"
+      ],
+      "title": "CursorPaginationMeta",
+      "type": "object"
+    },
+    "PageNumberPaginationMeta": {
+      "additionalProperties": false,
+      "description": "Page-number metadata used only by list endpoints that select this strategy.",
+      "properties": {
+        "kind": {
+          "const": "page",
+          "default": "page",
+          "title": "Kind",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "page_size": {
+          "maximum": 500,
+          "minimum": 1,
+          "title": "Page Size",
+          "type": "integer"
+        },
+        "total": {
+          "minimum": 0,
+          "title": "Total",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "page",
+        "page_size",
+        "total"
+      ],
+      "title": "PageNumberPaginationMeta",
+      "type": "object"
+    },
+    "UserRole": {
+      "enum": [
+        "employee",
+        "training_admin",
+        "reviewer",
+        "system_admin"
+      ],
+      "title": "UserRole",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:auth-session-response",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/AuthSessionData"
+    },
+    "meta": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ApiResponseMeta"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "occurred_at": {
+      "format": "date-time",
+      "title": "Occurred At",
+      "type": "string"
+    },
+    "request_id": {
+      "description": "Single request ID: req_<ULID>.",
+      "examples": [
+        "req_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "2.2.0",
+      "description": "Contract schema semantic version.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "trace_id": {
+      "description": "Cross-service trace ID: trc_<ULID>.",
+      "examples": [
+        "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^trc_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Trace Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "trace_id",
+    "occurred_at",
+    "data"
+  ],
+  "title": "AuthSessionResponse",
+  "type": "object",
+  "x-contract-schema-version": "2.2.0",
+  "x-contract-source": "backend.app.schemas.auth.AuthSessionResponse"
+}

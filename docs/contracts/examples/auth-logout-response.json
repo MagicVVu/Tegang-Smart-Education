@@ -1,0 +1,13 @@
+{
+  "data": {
+    "revoked_at": "2026-08-04T08:05:00Z",
+    "success": true
+  },
+  "meta": {
+    "warnings": []
+  },
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.2.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

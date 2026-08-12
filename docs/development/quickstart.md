@@ -1,4 +1,4 @@
-# C-02 Quickstart
+# C-02/C-04 Quickstart
 
 以下命令均从任意新克隆目录执行，不依赖固定盘符。
 
@@ -39,6 +39,8 @@
    ```powershell
    pnpm compose:up
    ```
+
+   Compose 会先执行一次性 `migrate` 服务；只有迁移成功后 backend 才启动。宿主机直接开发时先运行 `pnpm db:upgrade`。
 
 8. 检查健康状态并读取日志：
 

@@ -1,10 +1,25 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import type { PropsWithChildren } from "react";
 import { Spin } from "antd";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import type { ContractUserRole } from "@tegang/types";
 import { AppShell } from "../layouts/AppShell";
 import { usePrototypeStore } from "../stores/prototype-store";
+import { services } from "../services";
+
+function hasPathCapability(path: string, capabilities: string[]): boolean {
+  if (path === "/mobile-handoff") return capabilities.includes("training.self.read");
+  if (path.startsWith("/admin/reports/")) return capabilities.includes("report.department.read");
+  if (path.startsWith("/admin/")) return capabilities.includes("training.department.manage");
+  if (path.startsWith("/approvals")) {
+    return capabilities.includes("approval.assigned.review") || capabilities.includes("training.department.manage");
+  }
+  if (path.startsWith("/agent-runs/")) {
+    return capabilities.includes("agent.business_trace.read") || capabilities.includes("agent.developer_trace.read");
+  }
+  if (path.startsWith("/system/")) return capabilities.includes("system.config.manage");
+  return false;
+}
 
 const AdminDashboardPage = lazy(() =>
   import("../pages/AdminDashboardPage").then((module) => ({
@@ -67,12 +82,16 @@ function RoleGuard({
   children
 }: PropsWithChildren<{ allowed: ContractUserRole[] }>) {
   const role = usePrototypeStore((state) => state.role);
+  const principal = usePrototypeStore((state) => state.principal);
   const location = useLocation();
 
   if (!role) {
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
   if (!allowed.includes(role)) {
+    return <Navigate to="/forbidden" replace />;
+  }
+  if (principal && !hasPathCapability(location.pathname, principal.capabilities ?? [])) {
     return <Navigate to="/forbidden" replace />;
   }
   return <>{children}</>;
@@ -90,6 +109,10 @@ function ShellRoute({
 }
 
 export function PrototypeApp() {
+  useEffect(() => {
+    void services.auth.restoreSession();
+  }, []);
+
   return (
     <Suspense
       fallback={

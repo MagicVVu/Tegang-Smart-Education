@@ -40,6 +40,22 @@ from .api import (
     SubmitApprovalRequest,
 )
 from .approval import Approval, ApprovalResult
+from .auth import (
+    AuthMeResponse,
+    AuthPrincipal,
+    AuthSessionData,
+    AuthSessionResponse,
+    DemoLoginRequest,
+    DemoProfile,
+    DemoProfilesResponse,
+    EmployeeIdentityResponse,
+    EmployeeIdentitySummary,
+    LoginRequest,
+    LogoutRequest,
+    LogoutResponse,
+    LogoutResult,
+    RefreshRequest,
+)
 from .assessment import (
     AssessmentQuestion,
     AssessmentResult,
@@ -81,7 +97,7 @@ from .experience import (
     WeakKnowledgePoint,
     WrongAnswerReason,
 )
-from .identity import Department, EmployeeProfile, Role, User
+from .identity import Department, EmployeeProfile, Organization, Position, Role, User
 from .knowledge import KnowledgeCitation
 from .training import Course, RuleCheckSummary, TrainingGoal, TrainingPlan, TrainingTask
 
@@ -92,10 +108,26 @@ CONTRACT_MODELS: tuple[type[BaseModel], ...] = (
     ApiResponseMeta,
     PageNumberPaginationMeta,
     CursorPaginationMeta,
+    Organization,
+    Position,
     User,
     Role,
     Department,
     EmployeeProfile,
+    AuthPrincipal,
+    LoginRequest,
+    RefreshRequest,
+    LogoutRequest,
+    DemoLoginRequest,
+    AuthSessionData,
+    AuthSessionResponse,
+    AuthMeResponse,
+    DemoProfile,
+    DemoProfilesResponse,
+    EmployeeIdentitySummary,
+    EmployeeIdentityResponse,
+    LogoutResult,
+    LogoutResponse,
     TrainingGoal,
     TrainingTask,
     TrainingPlan,

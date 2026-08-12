@@ -4,6 +4,7 @@ import { MD3LightTheme, PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { colors } from "@tegang/design-tokens";
 import { RootNavigator } from "./src/navigation/RootNavigator";
+import { useMobileStore } from "./src/stores/mobile-store";
 
 const theme = {
   ...MD3LightTheme,
@@ -23,6 +24,12 @@ const theme = {
 };
 
 export default function App() {
+  const restoreSession = useMobileStore((state) => state.restoreSession);
+
+  useEffect(() => {
+    void restoreSession();
+  }, [restoreSession]);
+
   return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
@@ -34,3 +41,4 @@ export default function App() {
     </SafeAreaProvider>
   );
 }
+import { useEffect } from "react";
