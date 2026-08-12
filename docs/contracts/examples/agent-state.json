@@ -36,7 +36,7 @@
     "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "retry_count": 0,
     "risk_level": "high",
-    "schema_version": "2.1.0",
+    "schema_version": "2.2.0",
     "started_at": "2026-08-04T08:00:00Z",
     "state_version": "1.0.0",
     "status": "AR-WAIT-APPROVAL",
@@ -56,6 +56,6 @@
   },
   "occurred_at": "2026-08-04T08:05:00Z",
   "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-  "schema_version": "2.1.0",
+  "schema_version": "2.2.0",
   "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
 }

@@ -23,7 +23,7 @@
       "type": "string"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.1.0:training-task-event-payload",
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:training-task-event-payload",
   "additionalProperties": false,
   "properties": {
     "approval_id": {
@@ -86,6 +86,6 @@
   ],
   "title": "TrainingTaskEventPayload",
   "type": "object",
-  "x-contract-schema-version": "2.1.0",
+  "x-contract-schema-version": "2.2.0",
   "x-contract-source": "backend.app.schemas.events.TrainingTaskEventPayload"
 }

@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "account": "A-001",
+      "department_ids": [
+        "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "display_name": "模拟培训管理员 A-001",
+      "primary_role": "training_admin",
+      "user_id": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    }
+  ],
+  "meta": {
+    "warnings": []
+  },
+  "occurred_at": "2026-08-04T08:05:00Z",
+  "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "schema_version": "2.2.0",
+  "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+}

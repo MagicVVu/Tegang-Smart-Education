@@ -11,12 +11,12 @@
     "message": "High-risk publication is waiting for an authorized reviewer.",
     "occurred_at": "2026-08-04T08:05:00Z",
     "retryable": false,
-    "schema_version": "2.1.0",
+    "schema_version": "2.2.0",
     "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "user_action": "Open the approval record and complete the authorized review."
   },
   "occurred_at": "2026-08-04T08:05:00Z",
   "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-  "schema_version": "2.1.0",
+  "schema_version": "2.2.0",
   "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
 }

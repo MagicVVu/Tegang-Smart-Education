@@ -1,64 +1,79 @@
-"""C-02 minimum API process; this is not the C-04 business service skeleton."""
+"""Testable C-04 FastAPI application factory and ASGI entry point."""
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from collections.abc import AsyncIterator, Awaitable, Callable
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import Engine
 
+from .api import api_router
 from .config import Settings
-from .health import collect_dependency_status
+from .database import create_database_engine, create_session_factory
+from .errors import install_exception_handlers
+from .health import ProbeResult, collect_dependency_status
+from .observability import configure_logging, install_request_context
 
-app = FastAPI(
-    title="Tegang Smart Education C-02 Runtime Baseline",
-    version="0.1.0",
-    docs_url=None,
-    redoc_url=None,
-)
-
-
-def _timestamp() -> str:
-    return datetime.now(UTC).isoformat()
+DependencyCollector = Callable[
+    [Settings], Awaitable[dict[str, ProbeResult]]
+]
 
 
-@app.get("/health/live")
-async def live() -> dict[str, str]:
-    return {
-        "status": "ok",
-        "service": "backend-c02-baseline",
-        "checked_at": _timestamp(),
-    }
+def create_app(
+    settings: Settings | None = None,
+    *,
+    engine: Engine | None = None,
+    dependency_collector: DependencyCollector = collect_dependency_status,
+) -> FastAPI:
+    resolved_settings = settings or Settings.from_env()
+    owns_engine = engine is None
+    resolved_engine = engine or create_database_engine(resolved_settings)
+    logger = configure_logging(resolved_settings.log_level)
 
+    @asynccontextmanager
+    async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+        yield
+        if owns_engine and resolved_engine is not None:
+            resolved_engine.dispose()
 
-@app.get("/health/dependencies")
-async def dependencies() -> JSONResponse:
-    settings = Settings.from_env()
-    results = await collect_dependency_status(settings)
-    healthy = all(result.status == "ok" for result in results.values())
-    return JSONResponse(
-        status_code=200 if healthy else 503,
-        content={
-            "status": "ok" if healthy else "failed",
-            "checked_at": _timestamp(),
-            "dependencies": {
-                name: result.as_dict() for name, result in results.items()
-            },
-        },
+    openapi_enabled = resolved_settings.openapi_enabled
+    application = FastAPI(
+        title="Tegang Smart Education API",
+        version="0.3.0",
+        docs_url="/docs" if openapi_enabled else None,
+        redoc_url=None,
+        openapi_url="/openapi.json" if openapi_enabled else None,
+        lifespan=lifespan,
     )
+    application.state.settings = resolved_settings
+    application.state.engine = resolved_engine
+    application.state.session_factory = create_session_factory(resolved_engine)
+    application.state.collect_dependency_status = dependency_collector
+
+    if resolved_settings.cors_origins:
+        application.add_middleware(
+            CORSMiddleware,
+            allow_origins=list(resolved_settings.cors_origins),
+            allow_credentials=True,
+            allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+            allow_headers=[
+                "Accept",
+                "Authorization",
+                "Content-Type",
+                "X-Request-ID",
+                "X-Trace-ID",
+                "X-CSRF-Token",
+                "X-Client-Kind",
+            ],
+            expose_headers=["X-Request-ID", "X-Trace-ID"],
+        )
+
+    install_request_context(application, logger)
+    install_exception_handlers(application, logger)
+    application.include_router(api_router)
+    return application
 
 
-@app.get("/health/ready")
-async def ready() -> JSONResponse:
-    settings = Settings.from_env()
-    results = await collect_dependency_status(settings)
-    healthy = all(result.status == "ok" for result in results.values())
-    return JSONResponse(
-        status_code=200 if healthy else 503,
-        content={
-            "status": "ready" if healthy else "not_ready",
-            "checked_at": _timestamp(),
-            "checks": {name: result.status for name, result in results.items()},
-        },
-    )
-
+app = create_app()

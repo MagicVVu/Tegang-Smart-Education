@@ -1,0 +1,24 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:refresh-request",
+  "additionalProperties": false,
+  "properties": {
+    "refresh_token": {
+      "anyOf": [
+        {
+          "format": "password",
+          "type": "string",
+          "writeOnly": true
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Refresh Token"
+    }
+  },
+  "title": "RefreshRequest",
+  "type": "object",
+  "x-contract-schema-version": "2.2.0",
+  "x-contract-source": "backend.app.schemas.auth.RefreshRequest"
+}

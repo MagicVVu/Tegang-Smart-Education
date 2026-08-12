@@ -2,20 +2,22 @@ from __future__ import annotations
 
 from fastapi.testclient import TestClient
 
-from backend.app import main
 from backend.app.health import ProbeResult
-
-
-client = TestClient(main.app)
+from backend.app.main import create_app
+from backend.tests.conftest import make_settings
 
 
 def test_live_is_independent_of_external_services() -> None:
-    response = client.get("/health/live")
+    with TestClient(create_app(make_settings(database_url=""))) as client:
+        response = client.get("/health/live")
+
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
+    assert response.headers["x-request-id"].startswith("req_")
+    assert response.headers["x-trace-id"].startswith("trc_")
 
 
-def test_ready_reports_dependency_failure(monkeypatch) -> None:
+def test_ready_reports_dependency_failure() -> None:
     async def failed_dependencies(_settings):
         return {
             "database": ProbeResult("failed", "database unavailable"),
@@ -25,8 +27,12 @@ def test_ready_reports_dependency_failure(monkeypatch) -> None:
             ),
         }
 
-    monkeypatch.setattr(main, "collect_dependency_status", failed_dependencies)
-    response = client.get("/health/ready")
+    app = create_app(
+        make_settings(database_url=""), dependency_collector=failed_dependencies
+    )
+    with TestClient(app) as client:
+        response = client.get("/health/ready")
+
     assert response.status_code == 503
     assert response.json() == {
         "status": "not_ready",
@@ -39,7 +45,7 @@ def test_ready_reports_dependency_failure(monkeypatch) -> None:
     }
 
 
-def test_dependencies_do_not_expose_secrets(monkeypatch) -> None:
+def test_dependencies_do_not_expose_secrets() -> None:
     async def healthy_dependencies(_settings):
         return {
             "database": ProbeResult("ok", "PostgreSQL and pgvector are available"),
@@ -51,10 +57,13 @@ def test_dependencies_do_not_expose_secrets(monkeypatch) -> None:
             ),
         }
 
-    monkeypatch.setattr(main, "collect_dependency_status", healthy_dependencies)
-    response = client.get("/health/dependencies")
-    assert response.status_code == 200
-    body = response.text
-    assert "api_key" not in body.lower()
-    assert "password" not in body.lower()
+    app = create_app(
+        make_settings(database_url=""), dependency_collector=healthy_dependencies
+    )
+    with TestClient(app) as client:
+        response = client.get("/health/dependencies")
 
+    assert response.status_code == 200
+    body = response.text.lower()
+    assert "api_key" not in body
+    assert "password" not in body

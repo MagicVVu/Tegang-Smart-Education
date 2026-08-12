@@ -21,7 +21,7 @@
       "type": "string"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.1.0:employee-profile",
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:employee-profile",
   "additionalProperties": false,
   "description": "Training-oriented employee profile with a minimal authorized data scope.",
   "properties": {
@@ -124,6 +124,23 @@
       "title": "Metadata",
       "type": "object"
     },
+    "position_id": {
+      "anyOf": [
+        {
+          "description": "Immutable external position ID: pos_<ULID>.",
+          "examples": [
+            "pos_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+          ],
+          "pattern": "^pos_[0-9A-HJKMNP-TV-Z]{26}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Position Id"
+    },
     "request_id": {
       "anyOf": [
         {
@@ -146,7 +163,7 @@
       "default": "low"
     },
     "schema_version": {
-      "default": "2.1.0",
+      "default": "2.2.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
@@ -223,6 +240,6 @@
   ],
   "title": "EmployeeProfile",
   "type": "object",
-  "x-contract-schema-version": "2.1.0",
+  "x-contract-schema-version": "2.2.0",
   "x-contract-source": "backend.app.schemas.identity.EmployeeProfile"
 }

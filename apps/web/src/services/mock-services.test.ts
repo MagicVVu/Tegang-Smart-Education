@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { services } from "./index";
+import { services } from "./mock-services";
 import { agentRun, trainingTask } from "./workspace-data";
 import { usePrototypeStore } from "../stores/prototype-store";
 

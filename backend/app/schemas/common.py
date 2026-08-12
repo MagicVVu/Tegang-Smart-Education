@@ -21,8 +21,10 @@ from pydantic import (
     model_validator,
 )
 
-CONTRACT_SCHEMA_VERSION = "2.1.0"
-SUPPORTED_CONTRACT_SCHEMA_VERSIONS = frozenset({"2.0.0", CONTRACT_SCHEMA_VERSION})
+CONTRACT_SCHEMA_VERSION = "2.2.0"
+SUPPORTED_CONTRACT_SCHEMA_VERSIONS = frozenset(
+    {"2.0.0", "2.1.0", CONTRACT_SCHEMA_VERSION}
+)
 AGENT_STATE_VERSION = "1.0.0"
 SUPPORTED_AGENT_STATE_VERSIONS = frozenset({AGENT_STATE_VERSION})
 EVENT_SCHEMA_VERSION = "1.0.0"
@@ -43,6 +45,10 @@ UserId = _prefixed_id("usr", "Immutable external user ID: usr_<ULID>.")
 RoleId = _prefixed_id("role", "Immutable external role ID: role_<ULID>.")
 DepartmentId = _prefixed_id("dept", "Immutable external department ID: dept_<ULID>.")
 EmployeeProfileId = _prefixed_id("emp", "Immutable external employee profile ID: emp_<ULID>.")
+OrganizationId = _prefixed_id("org", "Immutable external organization ID: org_<ULID>.")
+PositionId = _prefixed_id("pos", "Immutable external position ID: pos_<ULID>.")
+SessionId = _prefixed_id("sid", "Immutable authentication session ID: sid_<ULID>.")
+AuditId = _prefixed_id("audit", "Immutable security audit record ID: audit_<ULID>.")
 TrainingGoalId = _prefixed_id("goal", "Immutable external training goal ID: goal_<ULID>.")
 TrainingTaskId = _prefixed_id("task", "Immutable external training task ID: task_<ULID>.")
 TrainingPlanId = _prefixed_id("plan", "Immutable external training plan ID: plan_<ULID>.")

@@ -23,7 +23,7 @@
       "retry_count": 0,
       "risk_level": "high",
       "run_id": "run_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-      "schema_version": "2.1.0",
+      "schema_version": "2.2.0",
       "status": "waiting",
       "step_id": "step_01ARZ3NDEKTSV4RRFFQ69G5FAV",
       "summary": "Plan checks passed; waiting for high-risk approval.",
@@ -36,7 +36,7 @@
     "requires_user_action": true,
     "risk_level": "high",
     "run_id": "run_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-    "schema_version": "2.1.0",
+    "schema_version": "2.2.0",
     "sequence": 7,
     "status": "emitted",
     "task_id": "task_01ARZ3NDEKTSV4RRFFQ69G5FAV",
@@ -51,6 +51,6 @@
   },
   "occurred_at": "2026-08-04T08:05:00Z",
   "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
-  "schema_version": "2.1.0",
+  "schema_version": "2.2.0",
   "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
 }

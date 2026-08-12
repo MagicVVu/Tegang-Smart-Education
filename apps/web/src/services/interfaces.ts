@@ -1,5 +1,6 @@
 import type {
   ContractAgentRun,
+  ContractAuthPrincipal,
   ContractApiEnvelope,
   ContractApproval,
   ContractApprovalDecision,
@@ -16,6 +17,22 @@ import type {
 
 export type ServiceResponse<T> = ContractApiEnvelope & { data: T };
 
+export interface RuntimeDatabaseStatusResponse {
+  request_id: string;
+  trace_id: string;
+  occurred_at: string;
+  data: {
+    status: "ok";
+    storage: "postgresql";
+    schema_version: string;
+    migration_revision: string;
+  };
+}
+
+export interface RuntimeService {
+  getDatabaseStatus(): Promise<RuntimeDatabaseStatusResponse>;
+}
+
 export interface AuthCredentials {
   account: string;
   password: string;
@@ -31,6 +48,8 @@ export interface AuthService {
   login(credentials: AuthCredentials): Promise<ServiceResponse<AuthSession>>;
   developmentLogin(role: ContractUserRole): Promise<ServiceResponse<AuthSession>>;
   listDevelopmentProfiles(): Promise<ContractPrototypeUserProfile[]>;
+  restoreSession(): Promise<ContractAuthPrincipal | null>;
+  logout(): Promise<void>;
 }
 
 export interface TrainingService {

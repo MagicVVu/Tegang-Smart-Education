@@ -1,0 +1,64 @@
+{
+  "$defs": {
+    "UserRole": {
+      "enum": [
+        "employee",
+        "training_admin",
+        "reviewer",
+        "system_admin"
+      ],
+      "title": "UserRole",
+      "type": "string"
+    }
+  },
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:demo-profile",
+  "additionalProperties": false,
+  "properties": {
+    "account": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Account",
+      "type": "string"
+    },
+    "department_ids": {
+      "items": {
+        "description": "Immutable external department ID: dept_<ULID>.",
+        "examples": [
+          "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+        ],
+        "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+        "type": "string"
+      },
+      "title": "Department Ids",
+      "type": "array"
+    },
+    "display_name": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Display Name",
+      "type": "string"
+    },
+    "primary_role": {
+      "$ref": "#/$defs/UserRole"
+    },
+    "user_id": {
+      "description": "Immutable external user ID: usr_<ULID>.",
+      "examples": [
+        "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "User Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "account",
+    "user_id",
+    "display_name",
+    "primary_role"
+  ],
+  "title": "DemoProfile",
+  "type": "object",
+  "x-contract-schema-version": "2.2.0",
+  "x-contract-source": "backend.app.schemas.auth.DemoProfile"
+}

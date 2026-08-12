@@ -1,6 +1,6 @@
 # 特钢智教 AI Agent
 
-面向特钢企业员工培训的受控自主 Agent。仓库包含可运行的 Web 管理端、React Native Android 员工端，以及用于 Windows/Docker 复现的 C-02 最小 FastAPI 健康入口。
+面向特钢企业员工培训的受控自主 Agent。仓库包含可运行的 Web 管理端、React Native Android 员工端，以及 FastAPI、SQLAlchemy、Alembic、PostgreSQL 和组织身份权限基础。
 
 > 所有员工、制度、任务、测评和报告数据均为模拟数据，只用于验证页面、流程、权限和异常处理，不代表真实企业效果。
 
@@ -52,9 +52,15 @@ docs/
   page-mapping/        PRD 页面映射
   screenshots/         实际运行截图
   test-reports/        实际验证记录
+backend/
+  app/api/             FastAPI Router 与依赖组合
+  app/models/          SQLAlchemy 持久化模型
+  app/repositories/    数据访问边界
+  app/services/        应用服务边界
+  migrations/          Alembic 可逆迁移
 ```
 
-原有 `backend/`、`agent_core/`、`rag/`、`evals/`、`infra/`、`prototype/` 与治理文档均保留，尚未被本原型替换或删除。
+原有 `agent_core/`、`rag/`、`evals/`、`infra/`、`prototype/` 与治理文档均保留；后端与认证均在现有分层和契约生成链上增量实现，未创建第二套身份、HTTP Client 或数据库基础。
 
 ## 环境要求
 
@@ -73,6 +79,8 @@ docs/
 Set-Location .\Tegang-Smart-Education
 Copy-Item -LiteralPath .env.example -Destination .env
 pnpm bootstrap
+pnpm db:upgrade
+pnpm dev:backend
 pnpm dev:web
 ```
 
@@ -97,9 +105,9 @@ pnpm --filter @tegang/mobile prebuild:android
 
 直接打开 `apps/mobile/android`，使用 JDK 17，等待 Gradle 同步后运行 `app`。首次构建需要下载 Gradle 和 Maven 依赖。SDK 路径使用环境变量或未提交的 `local.properties`，不要写入源码。
 
-## 演示账号
+## 模拟组织与账号
 
-登录页不使用真实密码，点击角色卡即可切换：
+四个账号标识通过幂等 bootstrap 初始化，密码只从本机环境变量读取并保存 Argon2id 哈希。只有后端 `DEMO_MODE=true` 时，Web 才显示并允许“演示身份”快捷入口：
 
 | 角色 | 演示身份 | 可见范围 |
 | --- | --- | --- |
@@ -108,7 +116,7 @@ pnpm --filter @tegang/mobile prebuild:android
 | 审核员 | 审核员 R-001 | 高风险审批、只读报告、Agent 业务证据 |
 | 系统管理员 | 系统管理员 S-001 | 知识/规则配置与开发者 Trace |
 
-权限同时作用于导航、路由、数据和按钮。直接访问无权限 URL 会进入“无权限访问”页面。
+权限同时作用于导航、路由、数据和按钮；后端 RBAC 与资源范围才是安全权威。直接访问越权员工资源采用统一 404 防枚举，动作权限不足返回 403。
 
 ## 演示场景
 
@@ -152,7 +160,10 @@ pnpm test:e2e
 
 ```powershell
 pnpm run check
+pnpm test:backend
 ```
+
+Compose 会先运行一次性 `migrate` 服务，迁移成功后再启动 backend。宿主机迁移、迁移验证和分层说明见 [C-04 后端与持久化骨架](docs/development/c04-backend-persistence.md)；认证、授权、审计和安全初始化见 [组织、身份与权限基础](docs/development/identity-access-foundation.md)。
 
 Android 命令行构建：
 
@@ -180,14 +191,22 @@ VITE_API_BASE_URL=
 EXPO_PUBLIC_API_BASE_URL=
 ```
 
-当前 Web/Android 的既有 Mock 适配器只用于原型与自动化测试，不是正式产品运行的模型 Mock 模式。C-02 最小 FastAPI 只提供 `/health/*`；C-04 后续新增正式 HTTP 服务实现并在 `services/index.ts` 切换，不需要重写页面核心逻辑。详细边界见 [frontend-monorepo.md](docs/architecture/frontend-monorepo.md)。
+当前 Web/Android 的既有 Mock 适配器只用于尚未落地的原型业务与自动化测试，不是正式产品运行的模型 Mock 模式。认证已使用正式 HTTP API：Web 使用内存 Access Token 和 HttpOnly Refresh Cookie，Android 使用内存 Access Token 和 SecureStore Refresh Token；培训、审批、测评与 Agent 页面仍保留 Mock 边界，直到对应正式 API 实现。详细边界见 [frontend-monorepo.md](docs/architecture/frontend-monorepo.md)。
+
+当前后端公开的最小接口：
+
+- `GET /health/live`、`GET /health/ready`、`GET /health/dependencies`：兼容 C-02 健康语义；
+- `GET /api/v1/system/database-status`：只读运维纵向切片，验证 API → Service → Repository → SQLAlchemy → PostgreSQL，不返回用户、部门或培训数据。
+- `POST /api/v1/auth/login|refresh|logout`、`GET /api/v1/auth/me`：正式认证、Refresh 轮换与 fresh Principal；
+- `GET /api/v1/auth/demo-profiles`、`POST /api/v1/auth/demo-login`：仅显式 Demo 模式；
+- `GET /api/v1/identity/employee-profiles/{id}`：Repository 层本人/部门范围过滤的最小受保护资源切片。
 
 模型 API 只由后端通过 `MODEL_PROVIDER`、`MODEL_BASE_URL`、`MODEL_NAME`、`MODEL_API_KEY` 读取。禁止把模型 Key 放入 `VITE_*`、`EXPO_PUBLIC_*`、Android 包、Git、日志或飞书。真实模型连通性只通过显式 `pnpm model:check` 执行。
 
 ## 已知限制
 
-- 当前只有 C-02 最小 FastAPI 健康入口，没有正式业务后端、企业身份源、LMS 或知识库连接。
-- 状态保存在本地演示会话，刷新页面会回到初始 Mock 状态。
+- 当前已有组织、认证、RBAC、资源范围和审计基础，但没有完整业务 API、企业身份源、MFA、LMS 或知识库连接。
+- 正式身份会话可恢复；尚未落地的业务状态仍是本地 Mock，刷新页面会回到初始业务场景。
 - 模拟测评和报告不能证明真实培训效率或掌握度提升。
 - Android 首次 Gradle 构建依赖外部下载；离线环境需要预先准备缓存。
 - 本轮已用 Gradle Wrapper 和 Android 模拟器验证原生工程；Android Studio GUI 本身未由自动化流程打开。

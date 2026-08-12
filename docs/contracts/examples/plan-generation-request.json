@@ -16,6 +16,6 @@
   "idempotency_key": "idem_plan_generate_20260804_001",
   "request_id": "req_01ARZ3NDEKTSV4RRFFQ69G5FAV",
   "requested_at": "2026-08-04T08:00:00Z",
-  "schema_version": "2.1.0",
+  "schema_version": "2.2.0",
   "trace_id": "trc_01ARZ3NDEKTSV4RRFFQ69G5FAV"
 }

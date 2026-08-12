@@ -30,6 +30,7 @@ import {
 import { roleLabels } from "@tegang/shared-utils";
 import type { ContractPrototypeUserProfile, ContractUserRole } from "@tegang/types";
 import { services } from "../services";
+import { usePrototypeStore } from "../stores/prototype-store";
 
 const icons: Record<ContractUserRole, React.ReactNode> = {
   employee: <MobileOutlined />,
@@ -49,13 +50,19 @@ export function LoginPage() {
   const [developmentProfiles, setDevelopmentProfiles] = useState<ContractPrototypeUserProfile[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const role = usePrototypeStore((state) => state.role);
+  const demoMode = import.meta.env.VITE_DEMO_MODE === "true";
 
   useEffect(() => {
-    if (!import.meta.env.DEV) return;
+    if (role) navigate(homeRouteForRole(role), { replace: true });
+  }, [navigate, role]);
+
+  useEffect(() => {
+    if (!demoMode) return;
     void services.auth
       .listDevelopmentProfiles()
       .then(setDevelopmentProfiles);
-  }, []);
+  }, [demoMode]);
 
   const finishLogin = (role: ContractUserRole) => {
     const requestedPath = (
@@ -209,11 +216,11 @@ export function LoginPage() {
           </Form>
         </Card>
 
-        {import.meta.env.DEV && developmentProfiles.length ? (
-          <section className="development-login" aria-label="开发环境快捷入口">
-            <Divider>开发环境快捷入口</Divider>
+        {demoMode && developmentProfiles.length ? (
+          <section className="development-login" aria-label="演示身份快捷入口">
+            <Divider>演示身份快捷入口</Divider>
             <Typography.Paragraph type="secondary">
-              仅在本地开发环境显示，用于验证角色导航与权限边界。
+              以下均为模拟组织身份，仅在服务端 DEMO_MODE 启用时可用。
             </Typography.Paragraph>
             <Row gutter={[12, 12]}>
               {developmentProfiles.map((user) => (

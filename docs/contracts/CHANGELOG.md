@@ -2,6 +2,15 @@
 
 All notable changes to the cross-module contract are recorded here. Versions follow semantic versioning.
 
+## 2.2.0 - 2026-08-10
+
+- Added `OrganizationId`, `PositionId`, `SessionId`, and `AuditId` prefixes while preserving all existing ID meanings.
+- Added Organization and Position plus optional organization/position links on the existing Department and EmployeeProfile contracts.
+- Added login, refresh, logout, `/auth/me`, demo identity, fresh Principal, and scoped employee identity contracts.
+- Added a Web-only HttpOnly refresh-cookie projection and an optional Android refresh-token field returned only to the employee mobile client for immediate secure storage.
+- Regenerated JSON Schema, examples, manifest, and shared TypeScript; `2.0.0` and `2.1.0` remain supported.
+- Did not change event or Agent State versions and did not introduce a legacy adapter.
+
 ## 2.1.0 - 2026-08-10
 
 - Added the common API request context and optional response metadata without making new fields mandatory for `2.0.0` callers.

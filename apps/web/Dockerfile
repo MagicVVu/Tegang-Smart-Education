@@ -19,7 +19,9 @@ COPY apps/web ./apps/web
 COPY packages ./packages
 
 ARG VITE_API_BASE_URL=http://127.0.0.1:8000
+ARG VITE_DEMO_MODE=false
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ENV VITE_DEMO_MODE=$VITE_DEMO_MODE
 RUN pnpm build:web
 
 FROM node:24.18.0-bookworm-slim AS runtime

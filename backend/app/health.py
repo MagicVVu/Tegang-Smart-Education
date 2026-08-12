@@ -1,4 +1,4 @@
-"""Dependency probes used only by the C-02 readiness endpoints."""
+"""Dependency probes preserving the C-02 readiness contract in C-04."""
 
 from __future__ import annotations
 
@@ -106,4 +106,3 @@ async def collect_dependency_status(settings: Settings) -> dict[str, ProbeResult
         "redis": redis_result,
         "model_configuration": probe_model_configuration(settings),
     }
-

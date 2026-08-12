@@ -185,7 +185,7 @@
           "default": "low"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -448,7 +448,7 @@
           "$ref": "#/$defs/RiskLevel"
         },
         "schema_version": {
-          "default": "2.1.0",
+          "default": "2.2.0",
           "description": "Contract schema semantic version.",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
           "title": "Schema Version",
@@ -584,7 +584,7 @@
       "type": "string"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.1.0:assessment-result-response",
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:assessment-result-response",
   "additionalProperties": false,
   "properties": {
     "data": {
@@ -616,7 +616,7 @@
       "type": "string"
     },
     "schema_version": {
-      "default": "2.1.0",
+      "default": "2.2.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
@@ -640,6 +640,6 @@
   ],
   "title": "AssessmentResultResponse",
   "type": "object",
-  "x-contract-schema-version": "2.1.0",
+  "x-contract-schema-version": "2.2.0",
   "x-contract-source": "backend.app.schemas.api.AssessmentResultResponse"
 }

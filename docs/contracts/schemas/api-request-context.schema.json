@@ -11,7 +11,7 @@
       "type": "string"
     }
   },
-  "$id": "urn:tegang:smart-education:contracts:2.1.0:api-request-context",
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:api-request-context",
   "additionalProperties": false,
   "description": "Common API request context; role and department remain server-verified assertions.",
   "properties": {
@@ -92,7 +92,7 @@
       "title": "Requested At"
     },
     "schema_version": {
-      "default": "2.1.0",
+      "default": "2.2.0",
       "description": "Contract schema semantic version.",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
       "title": "Schema Version",
@@ -122,6 +122,6 @@
   ],
   "title": "ApiRequestContext",
   "type": "object",
-  "x-contract-schema-version": "2.1.0",
+  "x-contract-schema-version": "2.2.0",
   "x-contract-source": "backend.app.schemas.common.ApiRequestContext"
 }

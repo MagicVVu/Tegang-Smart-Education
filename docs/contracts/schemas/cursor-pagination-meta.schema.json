@@ -1,5 +1,5 @@
 {
-  "$id": "urn:tegang:smart-education:contracts:2.1.0:cursor-pagination-meta",
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:cursor-pagination-meta",
   "additionalProperties": false,
   "description": "Cursor metadata used only by list endpoints that select this strategy.",
   "properties": {
@@ -35,6 +35,6 @@
   ],
   "title": "CursorPaginationMeta",
   "type": "object",
-  "x-contract-schema-version": "2.1.0",
+  "x-contract-schema-version": "2.2.0",
   "x-contract-source": "backend.app.schemas.common.CursorPaginationMeta"
 }

@@ -29,6 +29,7 @@ import { roleLabels } from "@tegang/shared-utils";
 import { contractIds } from "@tegang/mock-data";
 import type { ContractUserRole } from "@tegang/types";
 import { usePrototypeStore } from "../stores/prototype-store";
+import { services } from "../services";
 
 const { Header, Sider, Content } = Layout;
 
@@ -188,6 +189,7 @@ export function AppShell({ children }: PropsWithChildren) {
                   aria-label="退出登录"
                   icon={<LogoutOutlined />}
                   onClick={() => {
+                    void services.auth.logout();
                     logout();
                     navigate("/login", { replace: true });
                   }}

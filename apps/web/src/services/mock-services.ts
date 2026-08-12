@@ -73,6 +73,12 @@ export const authService: AuthService = {
   async listDevelopmentProfiles() {
     await wait(60);
     return demoUsers.map((item) => ({ ...item }));
+  },
+  async restoreSession() {
+    return null;
+  },
+  async logout() {
+    usePrototypeStore.getState().logout();
   }
 };
 

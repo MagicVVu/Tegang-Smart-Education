@@ -1,5 +1,5 @@
 {
-  "$id": "urn:tegang:smart-education:contracts:2.1.0:plan-generation-input",
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:plan-generation-input",
   "additionalProperties": false,
   "properties": {
     "candidate_count": {
@@ -53,6 +53,6 @@
   ],
   "title": "PlanGenerationInput",
   "type": "object",
-  "x-contract-schema-version": "2.1.0",
+  "x-contract-schema-version": "2.2.0",
   "x-contract-source": "backend.app.schemas.api.PlanGenerationInput"
 }

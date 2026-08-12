@@ -4,6 +4,7 @@ from .agent import *
 from .api import *
 from .approval import *
 from .assessment import *
+from .auth import *
 from .common import *
 from .errors import *
 from .events import *

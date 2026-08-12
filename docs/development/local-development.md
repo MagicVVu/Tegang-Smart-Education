@@ -37,17 +37,19 @@ pnpm --filter @tegang/mobile prebuild:android
 
 Android 模拟器访问宿主机或 Docker 映射 API 使用 `http://10.0.2.2:8000`；真实设备使用宿主机局域网地址。禁止在 Android 包内保存模型 API Key。
 
-## 最小后端与 Compose
+## C-04 后端与 Compose
 
 ```powershell
-pnpm dev:backend
 pnpm compose:infra
+pnpm db:upgrade
+pnpm dev:backend
+pnpm test:backend
 pnpm compose:up
 pnpm health
 pnpm compose:down
 ```
 
-完整说明见 [Windows 开发与 Docker 复现基线](windows-docker-baseline.md) 和 [Quickstart](quickstart.md)。
+Compose 会先运行一次性迁移服务，再启动 backend。可逆迁移测试必须配置与运行库不同的一次性 `MIGRATION_TEST_DATABASE_URL`。完整说明见 [C-04 后端与持久化骨架](c04-backend-persistence.md)、[Windows 开发与 Docker 复现基线](windows-docker-baseline.md) 和 [Quickstart](quickstart.md)。
 
 ## 质量检查
 
@@ -55,6 +57,7 @@ pnpm compose:down
 pnpm typecheck
 pnpm lint
 pnpm test
+pnpm test:backend
 pnpm test:e2e
 pnpm run check
 ```

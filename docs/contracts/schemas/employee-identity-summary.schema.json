@@ -1,0 +1,57 @@
+{
+  "$id": "urn:tegang:smart-education:contracts:2.2.0:employee-identity-summary",
+  "additionalProperties": false,
+  "description": "Minimal non-sensitive projection returned through scoped identity access.",
+  "properties": {
+    "department_id": {
+      "description": "Immutable external department ID: dept_<ULID>.",
+      "examples": [
+        "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^dept_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Department Id",
+      "type": "string"
+    },
+    "display_name": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Display Name",
+      "type": "string"
+    },
+    "employee_profile_id": {
+      "description": "Immutable external employee profile ID: emp_<ULID>.",
+      "examples": [
+        "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^emp_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "Employee Profile Id",
+      "type": "string"
+    },
+    "job_title": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Job Title",
+      "type": "string"
+    },
+    "user_id": {
+      "description": "Immutable external user ID: usr_<ULID>.",
+      "examples": [
+        "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+      ],
+      "pattern": "^usr_[0-9A-HJKMNP-TV-Z]{26}$",
+      "title": "User Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "employee_profile_id",
+    "user_id",
+    "display_name",
+    "department_id",
+    "job_title"
+  ],
+  "title": "EmployeeIdentitySummary",
+  "type": "object",
+  "x-contract-schema-version": "2.2.0",
+  "x-contract-source": "backend.app.schemas.auth.EmployeeIdentitySummary"
+}

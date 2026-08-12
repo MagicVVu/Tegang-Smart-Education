@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { agentRun, approvalRecord, candidatePlans, trainingTask } from "@tegang/mock-data";
 import type {
   ContractAgentRun,
+  ContractAuthPrincipal,
   ContractApprovalDecision,
   ContractApprovalStatus,
   ContractLearningRecordStatus,
@@ -20,6 +21,7 @@ export type DemoScenario =
 
 interface PrototypeState {
   role: ContractUserRole | null;
+  principal: ContractAuthPrincipal | null;
   scenario: DemoScenario;
   task_status: ContractTrainingTaskStatus;
   learning_status: ContractLearningRecordStatus;
@@ -32,6 +34,7 @@ interface PrototypeState {
   assessment_passed: boolean | null;
   high_risk_passed: boolean | null;
   login: (role: ContractUserRole) => void;
+  setPrincipal: (principal: ContractAuthPrincipal) => void;
   logout: () => void;
   setScenario: (scenario: DemoScenario) => void;
   saveDraft: () => void;
@@ -67,6 +70,7 @@ const makeAgent = (): ContractAgentRun => ({
 
 const initialState = {
   role: null,
+  principal: null,
   scenario: "high_risk" as DemoScenario,
   task_status: trainingTask.task_status,
   learning_status: trainingTask.learning_status,
@@ -83,7 +87,8 @@ const initialState = {
 export const usePrototypeStore = create<PrototypeState>((set, get) => ({
   ...initialState,
   login: (role) => set({ role }),
-  logout: () => set({ role: null }),
+  setPrincipal: (principal) => set({ principal, role: principal.primary_role }),
+  logout: () => set({ role: null, principal: null }),
   setScenario: (scenario) => {
     const taskByScenario: Record<DemoScenario, ContractTrainingTaskStatus> = {
       normal: "TB-WAIT-CONFIRM",
