@@ -1,0 +1,29 @@
+{
+  "profile": "small",
+  "description": "本地开发、旗舰流程、单元测试与基础 E2E 的快速模拟数据集。",
+  "counts": {
+    "organizations": 1,
+    "departments": 4,
+    "roles": 4,
+    "positions": 8,
+    "users": 16,
+    "employee_profiles": 16,
+    "documents": 8,
+    "knowledge_citations": 8,
+    "knowledge_points": 24,
+    "questions": 48,
+    "courses": 8,
+    "training_goals": 3,
+    "training_tasks": 6,
+    "training_plans": 12,
+    "approvals": 4,
+    "learning_records": 24,
+    "assessment_sessions": 16,
+    "assessment_results": 16,
+    "remediations": 4,
+    "retests": 4,
+    "agent_runs": 6,
+    "agent_steps": 24,
+    "events": 36
+  }
+}

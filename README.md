@@ -193,6 +193,8 @@ EXPO_PUBLIC_API_BASE_URL=
 
 当前 Web/Android 的既有 Mock 适配器只用于尚未落地的原型业务与自动化测试，不是正式产品运行的模型 Mock 模式。认证已使用正式 HTTP API：Web 使用内存 Access Token 和 HttpOnly Refresh Cookie，Android 使用内存 Access Token 和 SecureStore Refresh Token；培训、审批、测评与 Agent 页面仍保留 Mock 边界，直到对应正式 API 实现。详细边界见 [frontend-monorepo.md](docs/architecture/frontend-monorepo.md)。
 
+三档确定性模拟数据位于 [`data`](data/README.md)：small 用于本地开发和旗舰流程，standard 用于检索/题库/规则评测，stress 用于显式批量验证。small 是已提交生成物，`packages/mock-data` 从 small 派生；standard/stress 不会在安装、普通启动或默认测试中自动生成。生成、校验、身份 seed、受限 reset 和字段白名单匿名导出见 [三档确定性模拟数据基线](docs/development/tiered-simulated-data.md)。
+
 当前后端公开的最小接口：
 
 - `GET /health/live`、`GET /health/ready`、`GET /health/dependencies`：兼容 C-02 健康语义；

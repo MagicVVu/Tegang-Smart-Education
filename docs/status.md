@@ -1,6 +1,6 @@
 # 项目状态看板
 
-更新时间：2026-08-10
+更新时间：2026-08-16
 
 总体状态：**代码型高保真原型 + 最小业务服务、组织身份与权限基础已建立**
 
@@ -14,6 +14,7 @@
 | C-02 Windows/Docker 基线 | Completed | 四服务、健康检查、持久化、真实模型连通性和中文/空格目录复现均已通过，历史验证记录保留 |
 | C-04 FastAPI 与持久化骨架 | Completed | 应用工厂、统一错误/关联日志、SQLAlchemy、Alembic、身份基础表、只读纵向接口、Web HTTP Client 和 CI 配置已实现并完成本地/Compose 验证 |
 | 组织、身份与权限基础 | Completed | 本地受控账号、Argon2id、Web/Android 会话、RBAC、部门/员工数据范围、默认拒绝、安全审计和受保护员工资源已实现；企业 SSO/LDAP/HR 同步仍后置 |
+| 三档确定性模拟数据 | Completed | small 已提交；standard/stress 按需生成；提供 generate、validate、身份 seed、受限 reset 和字段白名单匿名导出；完整业务对象仍保持版本化文件 |
 | 完整业务后端 | Not started | 培训、审批、测评、报告和企业身份源 API 尚未实现 |
 | 正式 RAG / Agent 后端 | Not started | 当前仅验证前端交互、业务状态和服务边界 |
 
