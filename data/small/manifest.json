@@ -1,0 +1,320 @@
+{
+  "c07_base_sha": "3ebd588222ba81157682a096cd2c7d1fd3e81c4b",
+  "contract_version": "2.2.0",
+  "dataset_version": "1.0.0",
+  "files": [
+    {
+      "bytes": 18486,
+      "path": "agent_runs.jsonl",
+      "records": 6,
+      "sha256": "43f933ad2f2b1f134f6bdbe84f2b7306e1d87c336ecea08d083e15f4b70bacaf"
+    },
+    {
+      "bytes": 28059,
+      "path": "agent_steps.jsonl",
+      "records": 24,
+      "sha256": "4a8504013b1cb3344a0099e3ac81d82655a1aa4878144346749176e1bd97cec6"
+    },
+    {
+      "bytes": 4480,
+      "path": "approvals.jsonl",
+      "records": 4,
+      "sha256": "68f1d8348eab92469d5150a7f4e49702b3448016efe1d50e84e2da8d017b152b"
+    },
+    {
+      "bytes": 28050,
+      "path": "assessment_results.jsonl",
+      "records": 16,
+      "sha256": "a08ddaebcac77dde3b33e8abfedcdccfa2893d78c12c8d76f95dc6d5095c4f15"
+    },
+    {
+      "bytes": 10952,
+      "path": "assessment_sessions.jsonl",
+      "records": 16,
+      "sha256": "77de03882daf1d2a4ade6ab541b04055600f97b45b4e18f3dc2e660273f2d093"
+    },
+    {
+      "bytes": 6622,
+      "path": "courses.jsonl",
+      "records": 8,
+      "sha256": "05c1fecc78692be4f95d69e1b51a7dc7dc4940fb49f46a94bfc5654a2c29702b"
+    },
+    {
+      "bytes": 2368,
+      "path": "departments.jsonl",
+      "records": 4,
+      "sha256": "b5e0f98239118bd0a291b8638e10104bf520c8dab411070573881b268d764781"
+    },
+    {
+      "bytes": 1140,
+      "path": "documents/simulated-knowledge-001.md",
+      "records": null,
+      "sha256": "dffa0d3db035011a45970d9fa732c2df8fae4f36aee8a7340517eabb15fcfee4"
+    },
+    {
+      "bytes": 1139,
+      "path": "documents/simulated-knowledge-002.md",
+      "records": null,
+      "sha256": "6787c7c937b57d435d4f29163a593a79d900311a00ef7ada982d12e76e5d75d8"
+    },
+    {
+      "bytes": 1139,
+      "path": "documents/simulated-knowledge-003.md",
+      "records": null,
+      "sha256": "42286d7e9d14021651bb7190a5950f7e0ec871dc845501df24288ddc91762cb3"
+    },
+    {
+      "bytes": 1140,
+      "path": "documents/simulated-knowledge-004.md",
+      "records": null,
+      "sha256": "4075ab7a67c817be3841a79f1a43a7f7d720e5f4bbc7612c120a55b937bcb0da"
+    },
+    {
+      "bytes": 1140,
+      "path": "documents/simulated-knowledge-005.md",
+      "records": null,
+      "sha256": "b3a77468bddafb0d01bb5bf9b027244a2dfc51458fd07c2bf0dd0df1c99cb682"
+    },
+    {
+      "bytes": 1143,
+      "path": "documents/simulated-knowledge-006.md",
+      "records": null,
+      "sha256": "635922fd9acf8003dd5565f97a5c0fc2f2ff2ba9a962a84db191b890cd053f44"
+    },
+    {
+      "bytes": 1139,
+      "path": "documents/simulated-knowledge-007.md",
+      "records": null,
+      "sha256": "de0b38977ea1d351dfba6e98183123e18720aa26ae1647ae836c69239ebc9588"
+    },
+    {
+      "bytes": 1136,
+      "path": "documents/simulated-knowledge-008.md",
+      "records": null,
+      "sha256": "4be589e8a7ba0e75f2c13f7cc03e2eda154d9585159c4a135601b5e63e4d87b9"
+    },
+    {
+      "bytes": 12722,
+      "path": "employee_profiles.jsonl",
+      "records": 16,
+      "sha256": "852c44fd5dfe2d99ad0f72f2a1c9f2793354c72c8f4a9b62d9042d2a82e1c944"
+    },
+    {
+      "bytes": 60450,
+      "path": "events.jsonl",
+      "records": 36,
+      "sha256": "fc995a94b152316f642eea853b2499083e11a4d6c2acf5da80e3e21714b5c978"
+    },
+    {
+      "bytes": 8559,
+      "path": "knowledge_citations.jsonl",
+      "records": 8,
+      "sha256": "a8c4422d33c9b7cfa4912ff404b39fc8a1e2123c8edda5175382a74e36976b85"
+    },
+    {
+      "bytes": 7008,
+      "path": "knowledge_points.jsonl",
+      "records": 24,
+      "sha256": "93e738faea05567e7cb89b00b2dc6e94cf8964096cfc6fc67b27d3fec47c8166"
+    },
+    {
+      "bytes": 6267,
+      "path": "learning_records.jsonl",
+      "records": 24,
+      "sha256": "e622f68d643c9721e296477451c04e1a5084d98e052a97006f115d9bf91676e2"
+    },
+    {
+      "bytes": 562,
+      "path": "organizations.jsonl",
+      "records": 1,
+      "sha256": "9b35007be9a06b6c104e3cd60bfe02aa2efe532557af4c4fb7dfe0bd1f39d853"
+    },
+    {
+      "bytes": 5209,
+      "path": "positions.jsonl",
+      "records": 8,
+      "sha256": "18b3927e9eb9fb4e2a63a5dfabd9c1a7c255da83e4db9f8df6cc4b5db2aadce2"
+    },
+    {
+      "bytes": 52381,
+      "path": "questions.jsonl",
+      "records": 48,
+      "sha256": "17f3c3daf09ad425ad2794e1e90de94b9409c45cc6bf2010b3995a563d7a5df3"
+    },
+    {
+      "bytes": 3615,
+      "path": "remediations.jsonl",
+      "records": 4,
+      "sha256": "50c058afa3aa3450d8bc99b970e95c023fdafc4346566d32d8b6b8c3e3ff2201"
+    },
+    {
+      "bytes": 3416,
+      "path": "retests.jsonl",
+      "records": 4,
+      "sha256": "e4f6007c32714190ff6bcbc0ae6657556eb2d4ddacf9fac1d29b7fd6551e2116"
+    },
+    {
+      "bytes": 2611,
+      "path": "roles.jsonl",
+      "records": 4,
+      "sha256": "5a6485bf615bb57e786ed4640bb0385ec140dbd2df4e0e80a0afeb680d8eb5c6"
+    },
+    {
+      "bytes": 2721,
+      "path": "training_goals.jsonl",
+      "records": 3,
+      "sha256": "3bff17569969071183c5f99644c6fbb3bd5c826695f90feeedd0df207b83d895"
+    },
+    {
+      "bytes": 19125,
+      "path": "training_plans.jsonl",
+      "records": 12,
+      "sha256": "f8414870f2a9d5de35cc25d928a866a13777e1cefd0cddf868c5b558c738b77d"
+    },
+    {
+      "bytes": 5744,
+      "path": "training_tasks.jsonl",
+      "records": 6,
+      "sha256": "9a4b418bd30dd8b5925622d18a5892d7fa45e188643298e5dc2a3f017d610096"
+    },
+    {
+      "bytes": 10110,
+      "path": "users.jsonl",
+      "records": 16,
+      "sha256": "ca0f9c2146228affd1806ad8bdeb193e0e1631094bfdc25d21b92034552ddcd0"
+    }
+  ],
+  "fixed_epoch": "2026-08-16T00:00:00Z",
+  "generated_at": "2026-08-16T00:00:00Z",
+  "generator_version": "1.0.0",
+  "id_ranges": {
+    "agent_runs": {
+      "first": "run_01M04F1S40VCRAWFDR55R14CBZ",
+      "last": "run_01M04F1S4507020RB8Z0DKN57C"
+    },
+    "agent_steps": {
+      "first": "step_01M04G09P0BCT24WTJM33VWWW9",
+      "last": "step_01M04G09PQFTB4X922BWSFRRTN"
+    },
+    "approvals": {
+      "first": "approval_01M049ANR0CF7H24E47X21FD95",
+      "last": "approval_01M049ANR3TWT39FAV22KZENJ5"
+    },
+    "assessment_results": {
+      "first": "assessment_result_01M04B7PW0C5G5M80XM82EY9GS",
+      "last": "assessment_result_01M04B7PWFNV3STS6X126X0G6C"
+    },
+    "assessment_sessions": {
+      "first": "assessment_01M04A96A03RFTSF41TVJ0RSK6",
+      "last": "assessment_01M04A96AFATM6QS3C4XV0M9CC"
+    },
+    "courses": {
+      "first": "course_01M044J2Y023VMY1V94VNHSTNR",
+      "last": "course_01M044J2Y7BNK1JH6PY4W1MFR8"
+    },
+    "departments": {
+      "first": "dept_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "last": "dept_01ARZ3NDEKTSV4RRFFQ69G5FAY"
+    },
+    "employee_profiles": {
+      "first": "emp_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "last": "emp_01M040R0PFBQ7T5BASA8KRNYFS"
+    },
+    "events": {
+      "first": "event_01M04JVVC0504Y74SCFBWZ9AJ5",
+      "last": "event_01M04JVVD3Y2MPQ9RSP2MQMPDK"
+    },
+    "knowledge_citations": {
+      "first": "know_01M041PH80E4V8HF66N5YZ15VE",
+      "last": "know_01M041PH87V56XPC56J8P43R1Y"
+    },
+    "knowledge_points": {
+      "first": "kp_01M042N1T0APS81540KBJJB9GF",
+      "last": "kp_01M042N1TQB16NAV2MTKZ9J5TC"
+    },
+    "organizations": {
+      "first": "org_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "last": "org_01ARZ3NDEKTSV4RRFFQ69G5FAV"
+    },
+    "positions": {
+      "first": "pos_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "last": "pos_01M03YTZJ39D9HE1R5W5A08G6G"
+    },
+    "questions": {
+      "first": "question_01M043KJC0QBAMVKS6NXE6J899",
+      "last": "question_01M043KJDFKMANJVEAQGHT2BB8"
+    },
+    "remediations": {
+      "first": "intervention_01M04D4R00HKKNY5YK9DXKEJCF",
+      "last": "intervention_01M04D4R03B0V94NWA7DGKX6E8"
+    },
+    "retests": {
+      "first": "retest_01M04E38J08RWSCWNTSP2ZMXJ7",
+      "last": "retest_01M04E38J3VQPQCJRDTF94395A"
+    },
+    "roles": {
+      "first": "role_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "last": "role_01ARZ3NDEKTSV4RRFFQ69G5FAY"
+    },
+    "training_goals": {
+      "first": "goal_01M045GKG0YKARB9345NMT6ZDM",
+      "last": "goal_01M045GKG2M2BCYV9H6N6Q5R36"
+    },
+    "training_plans": {
+      "first": "plan_01M047DMM0ACV9QPS6XFC9QZWN",
+      "last": "plan_01M047DMMBBTGM6F2ZDB142MRN"
+    },
+    "training_tasks": {
+      "first": "task_01M046F420RT87AVTSH37F903B",
+      "last": "task_01M046F4250WVMCGDMSEWW6QK8"
+    },
+    "users": {
+      "first": "usr_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+      "last": "usr_01M03ZSG4FFHSWGY31BDF5RS6G"
+    }
+  },
+  "manifest_sha256": "c00e448760c09ae79f6816a36722ffc15e89f9b1104b4e4f242c58e54398bd9a",
+  "object_counts": {
+    "agent_runs": 6,
+    "agent_steps": 24,
+    "approvals": 4,
+    "assessment_results": 16,
+    "assessment_sessions": 16,
+    "courses": 8,
+    "departments": 4,
+    "documents": 8,
+    "employee_profiles": 16,
+    "events": 36,
+    "knowledge_citations": 8,
+    "knowledge_points": 24,
+    "learning_records": 24,
+    "organizations": 1,
+    "positions": 8,
+    "questions": 48,
+    "remediations": 4,
+    "retests": 4,
+    "roles": 4,
+    "training_goals": 3,
+    "training_plans": 12,
+    "training_tasks": 6,
+    "users": 16
+  },
+  "parameters": {
+    "encoding": "UTF-8 without BOM",
+    "id_algorithm": "48-bit fixed-epoch offset plus SHA-256-derived 80-bit entropy, Crockford Base32 ULID",
+    "json_keys": "sorted",
+    "newline": "LF",
+    "profile_description": "本地开发、旗舰流程、单元测试与基础 E2E 的快速模拟数据集。",
+    "record_order": "deterministic generation index"
+  },
+  "profile": "small",
+  "random_seed": 20260816,
+  "related_artifacts": [
+    {
+      "bytes": 39378,
+      "path": "packages/mock-data/src/small.generated.ts",
+      "records": null,
+      "sha256": "7245d02a62eee71a4f634953de35c01c1e5033dd275a7013dba66dc7a30e88ab"
+    }
+  ]
+}

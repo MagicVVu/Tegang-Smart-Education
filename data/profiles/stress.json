@@ -1,0 +1,34 @@
+{
+  "profile": "stress",
+  "description": "批量任务、分页、批处理和后续压测使用的按需模拟数据集。",
+  "counts": {
+    "organizations": 1,
+    "departments": 4,
+    "roles": 4,
+    "positions": 24,
+    "users": 800,
+    "employee_profiles": 800,
+    "documents": 40,
+    "knowledge_citations": 40,
+    "knowledge_points": 200,
+    "questions": 400,
+    "courses": 40,
+    "training_goals": 40,
+    "training_tasks": 200,
+    "training_plans": 400,
+    "approvals": 80,
+    "learning_records": 8000,
+    "assessment_sessions": 4000,
+    "assessment_results": 4000,
+    "remediations": 800,
+    "retests": 800,
+    "agent_runs": 200,
+    "agent_steps": 1000,
+    "events": 2000
+  },
+  "overrides": {
+    "users": {"minimum": 500, "maximum": 1000},
+    "training_tasks": {"minimum": 1, "maximum": 2000},
+    "learning_records": {"minimum": 1, "maximum": 50000}
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "topics": [
+    {"title": "生产区域基础行为", "risk_level": "medium"},
+    {"title": "高温区域进入前确认", "risk_level": "high"},
+    {"title": "设备联锁与隔离边界", "risk_level": "high"},
+    {"title": "班组交接与异常上报", "risk_level": "medium"},
+    {"title": "培训任务与学习留痕", "risk_level": "low"},
+    {"title": "课程发布与版本核对", "risk_level": "medium"},
+    {"title": "高风险培训人工审批", "risk_level": "high"},
+    {"title": "审核证据与影响范围", "risk_level": "high"},
+    {"title": "账号权限与最小授权", "risk_level": "medium"},
+    {"title": "数据分类与访问控制", "risk_level": "medium"},
+    {"title": "测评用途与使用边界", "risk_level": "medium"},
+    {"title": "未达标后的定向补训", "risk_level": "medium"},
+    {"title": "复测与完成条件", "risk_level": "medium"},
+    {"title": "知识冲突与保守处理", "risk_level": "high"},
+    {"title": "信息不足时暂停流程", "risk_level": "medium"},
+    {"title": "Agent有限重试", "risk_level": "low"},
+    {"title": "失败回退与人工接管", "risk_level": "high"},
+    {"title": "无权限访问的安全响应", "risk_level": "high"},
+    {"title": "报告数据的模拟边界", "risk_level": "low"},
+    {"title": "事件追踪与审计摘要", "risk_level": "medium"}
+  ],
+  "departments": ["炼钢生产部", "培训管理", "安全管理", "智信部"],
+  "disclaimer": "本内容完全由确定性脚本生成，仅用于软件验证，不代表任何真实企业制度或人员情况。"
+}

@@ -1,0 +1,29 @@
+{
+  "profile": "standard",
+  "description": "RAG、题库、规则回归、筛选分页与后续评测使用的标准模拟数据集。",
+  "counts": {
+    "organizations": 1,
+    "departments": 4,
+    "roles": 4,
+    "positions": 16,
+    "users": 100,
+    "employee_profiles": 100,
+    "documents": 40,
+    "knowledge_citations": 40,
+    "knowledge_points": 200,
+    "questions": 400,
+    "courses": 40,
+    "training_goals": 12,
+    "training_tasks": 30,
+    "training_plans": 60,
+    "approvals": 12,
+    "learning_records": 600,
+    "assessment_sessions": 400,
+    "assessment_results": 400,
+    "remediations": 80,
+    "retests": 80,
+    "agent_runs": 30,
+    "agent_steps": 150,
+    "events": 300
+  }
+}
